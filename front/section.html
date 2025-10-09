@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section List Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 300px;
+            min-width: 200px;
+            background-image: linear-gradient(rgb(154, 50, 50), rgb(69, 11, 11));
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            overflow-y: auto;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 4px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .menu-icon {
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .main-content {
+            flex: 1;
+            background-color: #d4d4d4;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .content-wrapper {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .page-title {
+            color: #7d1414;
+            font-size: 24px;
+            margin-bottom: 25px;
+            font-weight: normal;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .add-button {
+            background-color: #7d1414;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .add-button:hover {
+            background-color: #5d0f0f;
+        }
+
+        .search-box {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+            font-size: 14px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #7d1414;
+        }
+
+        .assign-students {
+    flex: 1 1 auto; /* take remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
+        .section-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .section-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .section-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .section-list::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .section-list::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .section-item {
+            background-color: #d4d4d4;
+            padding: 18px 20px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .section-item:hover {
+            background-color: #c4c4c4;
+        }
+
+        .section-info {
+            flex: 0 0 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .section-name {
+            font-size: 15px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .section-details {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .arrow {
+            color: #666;
+            font-size: 18px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 0;
+            border-radius: 12px;
+            width: 1200px;
+            height: auto;
+            max-width: 95%;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-height: 80vh;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background-color: #f5f5f5;
+            padding: 20px 30px;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            color: #333;
+            font-weight: normal;
+        }
+
+        .modal-body {
+    display: flex;
+    gap: 30px;
+    height: 300px; /* adjust as needed */
+    padding: 25px 30px;
+    overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #7d1414;
+        }
+
+        .section-title {
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 12px;
+            margin-top: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+        }
+
+        .left-side {
+            flex: 0 0 280px;
+            /* fixed width for form fields column */
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .right-side {
+            flex: 1 1 auto;
+            /* take remaining space */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .students-list {
+            flex: 1 1 auto;
+            max-height: 250px;
+            /* Show approx. 6-8 students, adjust as needed */
+            overflow-y: auto;
+            /* Enable scrolling */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0;
+            background-color: white;
+        }
+
+        .students-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .students-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .students-list::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .student-checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .student-checkbox-item:last-child {
+            border-bottom: none;
+        }
+
+        .student-checkbox-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .student-checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .student-checkbox-label {
+            flex: 1;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .select-all-container {
+            padding: 10px;
+            border-bottom: 2px solid #ddd;
+            background-color: #f9f9f9;
+            margin-bottom: 5px;
+        }
+
+        .select-all-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .select-all-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .select-all-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .modal-footer {
+            padding: 18px 30px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            border-top: 1px solid #ddd;
+            background-color: white;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .cancel-btn {
+            padding: 10px 30px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .cancel-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .save-btn {
+            padding: 10px 30px;
+            background-color: #7d1414;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background-color: #5d0f0f;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 180px;
+                padding: 15px 8px;
+            }
+
+            .menu-item {
+                font-size: 13px;
+                padding: 10px 6px;
+                gap: 8px;
+            }
+
+            .menu-icon {
+                width: 18px;
+                height: 18px;
+                font-size: 12px;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .content-wrapper {
+                padding: 20px;
+            }
+
+            .header-section {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .modal-content {
+                max-height: 80vh;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .modal-body {
+                padding: 25px 30px;
+                overflow-y: hidden;
+                /* Prevent modal body from scrolling, only students-list scrolls */
+                flex: 1;
+                min-height: 0;
+
+                display: flex;
+                gap: 30px;
+                height: 300px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+
+            .cancel-btn,
+            .save-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <img class="image" src="euC (1).png" alt="Logo" style="width: 50%; margin-bottom: 20px; align-self: center;">
+        <a href="dashboard.html" class="menu-item" onclick="showPage('dashboard')">
+            <div class="menu-icon">◷</div>
+            <span>Dashboard</span>
+        </a>
+        <a href="index.html" class="menu-item" onclick="showPage('registration')">
+            <div class="menu-icon">◷</div>
+            <span>Registration</span>
+        </a>
+        <a href="sp.html" class="menu-item" onclick="showPage('student-profile')">
+            <div class="menu-icon">◷</div>
+            <span>Student Profile</span>
+        </a>
+        <a href="section.html" class="menu-item active" onclick="showPage('section-list')">
+            <div class="menu-icon">◷</div>
+            <span>Section List</span>
+        </a>
+    </div>
+
+    <div class="main-content">
+        <h1 class="page-title">Section List</h1>
+        <div class="content-wrapper">
+            <div class="header-section">
+                <button class="add-button" onclick="openModal()">
+                    <span>+</span>
+                    <span>Add Section</span>
+                </button>
+                <input type="text" class="search-box" placeholder="Search" id="searchBox" oninput="filterSections()">
+            </div>
+
+            <div class="section-list" id="sectionList">
+                <!-- Sections will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addSectionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create New Section</h2>
+            </div>
+            <form onsubmit="saveSection(event)">
+                <div class="modal-body">
+                    <div class="left-side">
+                        <div class="form-group">
+                            <label>Section Name *</label>
+                            <input type="text" id="sectionName" required placeholder="e.g., Grade 7 - Diamond">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Grade/Year Level *</label>
+                            <select id="gradeLevel" required>
+                                <option value="">Select Grade Level</option>
+                            <option value="Grade 1">Grade 1</option>
+                            <option value="Grade 2">Grade 2</option>
+                            <option value="Grade 3">Grade 3</option>
+                            <option value="Grade 4">Grade 4</option>
+                            <option value="Grade 5">Grade 5</option>
+                            <option value="Grade 6">Grade 6</option>
+                            <option value="Grade 7">Grade 7</option>
+                            <option value="Grade 8">Grade 8</option>
+                            <option value="Grade 9">Grade 9</option>
+                            <option value="Grade 10">Grade 10</option>
+                            <option value="Grade 11">Grade 11</option>
+                            <option value="Grade 12">Grade 12</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>School Year *</label>
+                            <input type="text" id="schoolYear" required placeholder="e.g., 2024-2025">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Adviser (Optional)</label>
+                            <input type="text" id="adviser" placeholder="Teacher name">
+                        </div>
+                    </div>
+
+                    <div class="right-side">
+                        <div class="section-title">Assign Students</div>
+  <input type="text" id="studentSearch" placeholder="Search students..." />
+                        <div class="students-list">
+                            <div class="select-all-container">
+                                <div class="select-all-item" onclick="toggleSelectAll()">
+                                    <input type="checkbox" id="selectAll">
+                                    <label class="select-all-label" for="selectAll">Select All</label>
+                                </div>
+                            </div>
+                            <div id="studentCheckboxList">
+                                <!-- Student checkboxes will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="save-btn">Save Section</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let allStudents = [];
+        let currentSectionId = null;
+
+        async function loadStudents() {
+            try {
+                const response = await fetch("http://localhost:5000/api/students");
+                if (response.ok) {
+                    allStudents = await response.json();
+                } else {
+                    console.error("Error loading students");
+                }
+            } catch (err) {
+                console.error("Error loading students:", err);
+            }
+        }
+
+        async function loadSections() {
+            try {
+                const response = await fetch("http://localhost:5000/api/sections");
+                if (response.ok) {
+                    const sections = await response.json();
+                    displaySections(sections);
+                } else {
+                    console.error("Error loading sections");
+                }
+            } catch (err) {
+                console.error("Error loading sections:", err);
+                // Show empty state on error
+                document.getElementById('sectionList').innerHTML = '<div class="empty-state">No sections found. Click "Add Section" to create one.</div>';
+            }
+        }
+
+        function displaySections(sections) {
+            const sectionList = document.getElementById("sectionList");
+
+            if (sections.length === 0) {
+                sectionList.innerHTML = '<div class="empty-state">No sections found. Click "Add Section" to create one.</div>';
+                return;
+            }
+
+            sectionList.innerHTML = "";
+
+            sections.forEach(section => {
+                const studentCount = section.students ? section.students.length : 0;
+
+                const sectionItem = document.createElement("div");
+                sectionItem.className = "section-item";
+                sectionItem.onclick = () => viewSection(section.id);
+                sectionItem.innerHTML = `
+                    <div class="section-info">
+                        <span class="section-name">${section.section_name}</span>
+                        <span class="section-details">${section.grade_level} • ${section.school_year} • ${studentCount} students</span>
+                    </div>
+                    <span class="arrow">›</span>
+                `;
+                sectionList.appendChild(sectionItem);
+            });
+        }
+
+        function populateStudentCheckboxes() {
+            const checkboxList = document.getElementById('studentCheckboxList');
+            checkboxList.innerHTML = '';
+
+            if (allStudents.length === 0) {
+                checkboxList.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">No students available</div>';
+                return;
+            }
+
+            allStudents.forEach(student => {
+                const fullName = `${student.first_name} ${student.middle_name ? student.middle_name + ' ' : ''}${student.last_name}`;
+
+                const item = document.createElement('div');
+                item.className = 'student-checkbox-item';
+                item.onclick = (e) => {
+                    if (e.target.tagName !== 'INPUT') {
+                        const checkbox = item.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                        updateSelectAllState();
+                    }
+                };
+
+                item.innerHTML = `
+                    <input type="checkbox" id="student_${student.id}" value="${student.id}" onclick="event.stopPropagation(); updateSelectAllState();">
+                    <label class="student-checkbox-label" for="student_${student.id}">${fullName}</label>
+                `;
+
+                checkboxList.appendChild(item);
+            });
+        }
+
+        function toggleSelectAll() {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const studentCheckboxes = document.querySelectorAll('#studentCheckboxList input[type="checkbox"]');
+
+            studentCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        }
+
+        function updateSelectAllState() {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const studentCheckboxes = document.querySelectorAll('#studentCheckboxList input[type="checkbox"]');
+            const checkedCount = Array.from(studentCheckboxes).filter(cb => cb.checked).length;
+
+            selectAllCheckbox.checked = checkedCount === studentCheckboxes.length && studentCheckboxes.length > 0;
+        }
+
+        async function openModal(sectionData = null) {
+            const modal = document.getElementById('addSectionModal');
+            const modalTitle = document.querySelector('.modal-title');
+
+            // Load students if not already loaded
+            if (allStudents.length === 0) {
+                await loadStudents();
+            }
+
+            populateStudentCheckboxes();
+
+            if (sectionData) {
+                currentSectionId = sectionData.id;
+                modalTitle.textContent = 'Edit Section';
+
+                document.getElementById('sectionName').value = sectionData.section_name || '';
+                document.getElementById('gradeLevel').value = sectionData.grade_level || '';
+                document.getElementById('schoolYear').value = sectionData.school_year || '';
+                document.getElementById('adviser').value = sectionData.adviser || '';
+
+                // Check the students that are in this section
+                if (sectionData.students) {
+                    sectionData.students.forEach(studentId => {
+                        const checkbox = document.getElementById(`student_${studentId}`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                    updateSelectAllState();
+                }
+            } else {
+                currentSectionId = null;
+                modalTitle.textContent = 'Create New Section';
+                document.querySelector('form').reset();
+                document.getElementById('selectAll').checked = false;
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('addSectionModal').classList.remove('active');
+            document.querySelector('form').reset();
+            currentSectionId = null;
+        }
+
+        async function saveSection(e) {
+            e.preventDefault();
+
+            const selectedStudents = Array.from(document.querySelectorAll('#studentCheckboxList input[type="checkbox"]:checked'))
+                .map(checkbox => parseInt(checkbox.value));
+
+            const sectionData = {
+                section_name: document.getElementById('sectionName').value,
+                grade_level: document.getElementById('gradeLevel').value,
+                school_year: document.getElementById('schoolYear').value,
+                adviser: document.getElementById('adviser').value,
+                students: selectedStudents
+            };
+
+            try {
+                const url = currentSectionId
+                    ? `http://localhost:5000/api/sections/${currentSectionId}`
+                    : "http://localhost:5000/api/sections";
+
+                const method = currentSectionId ? "PUT" : "POST";
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(sectionData)
+                });
+
+                if (response.ok) {
+                    await loadSections();
+                    closeModal();
+                    alert(currentSectionId ? 'Section updated successfully!' : 'Section created successfully!');
+                } else {
+                    alert("Error saving section");
+                }
+            } catch (err) {
+                console.error("Error saving section:", err);
+                alert("Could not connect to server");
+            }
+        }
+
+        async function viewSection(sectionId) {
+            try {
+                const response = await fetch(`http://localhost:5000/api/sections/${sectionId}`);
+                if (response.ok) {
+                    const sectionData = await response.json();
+                    openModal(sectionData);
+                } else {
+                    alert('Error loading section details');
+                }
+            } catch (err) {
+                console.error("Error fetching section:", err);
+                alert('Could not connect to server');
+            }
+        }
+
+        function filterSections() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const sections = document.querySelectorAll('.section-item');
+
+            sections.forEach(section => {
+                const name = section.querySelector('.section-name').textContent.toLowerCase();
+                const details = section.querySelector('.section-details').textContent.toLowerCase();
+                if (name.includes(searchTerm) || details.includes(searchTerm)) {
+                    section.style.display = 'flex';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        function showPage(page) {
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => item.classList.remove('active'));
+            event.target.closest('.menu-item').classList.add('active');
+
+        }
+
+        document.getElementById('addSectionModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Load sections on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            loadStudents();
+            loadSections();
+        });
+    </script>
+</body>
+
+</html>

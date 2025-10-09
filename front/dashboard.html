@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 300px;
+            min-width: 200px;
+            background-image: linear-gradient(rgb(154, 50, 50), rgb(69, 11, 11));
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            overflow-y: auto;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 4px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .menu-icon {
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .main-content {
+            flex: 1;
+            background-color: #d4d4d4;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .content-wrapper {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .page-title {
+            color: #7d1414;
+            font-size: 24px;
+            margin-bottom: 25px;
+            font-weight: normal;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .add-button {
+            background-color: #7d1414;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .add-button:hover {
+            background-color: #5d0f0f;
+        }
+
+        .search-box {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+            font-size: 14px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #7d1414;
+        }
+
+        .student-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .student-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .student-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .student-list::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .student-list::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .student-item {
+            background-color: #d4d4d4;
+            padding: 18px 20px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .student-item:hover {
+            background-color: #c4c4c4;
+        }
+
+        .student-name {
+            font-size: 15px;
+            color: #333;
+        }
+
+        .arrow {
+            color: #666;
+            font-size: 18px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 0;
+            border-radius: 12px;
+            width: 700px;
+            max-width: 95%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            background-color: #f5f5f5;
+            padding: 20px 30px;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            color: #333;
+            font-weight: normal;
+        }
+
+        .modal-body {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            overflow-y: auto;
+            max-height: calc(90vh - 180px);
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 5px;
+            margin-top: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+        }
+
+        .fieldset {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .fieldset legend {
+            font-size: 14px;
+            color: #666;
+            padding: 0 8px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+            display: grid;
+            grid-template-columns: 110px 1fr auto;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            color: #333;
+            text-align: left;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            background-color: white;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #7d1414;
+        }
+
+        .set-btn {
+            padding: 6px 16px;
+            background-color: #e0e0e0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .set-btn:hover {
+            background-color: #d0d0d0;
+        }
+
+        .year-level-group {
+            display: grid;
+            grid-template-columns: 110px 1fr 20px;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .year-level-group label {
+            font-size: 13px;
+            color: #333;
+        }
+
+        .year-level-group input {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-group-full {
+            grid-template-columns: 110px 1fr;
+        }
+
+        .modal-footer {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .cancel-btn {
+            padding: 10px 30px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .cancel-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .save-btn {
+            padding: 10px 30px;
+            background-color: #7d1414;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background-color: #5d0f0f;
+        }
+
+        .left-column {
+            grid-column: 1;
+        }
+
+        .right-column {
+            grid-column: 2;
+        }
+
+        /* Responsive Design - Sidebar stays on side */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+                padding: 15px 10px;
+            }
+
+            .menu-item {
+                font-size: 14px;
+                padding: 12px 8px;
+            }
+
+            .modal-content {
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 180px;
+                padding: 15px 8px;
+            }
+
+            .menu-item {
+                font-size: 13px;
+                padding: 10px 6px;
+                gap: 8px;
+            }
+
+            .menu-icon {
+                width: 18px;
+                height: 18px;
+                font-size: 12px;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .content-wrapper {
+                padding: 20px;
+            }
+
+            .header-section {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-height: 90vh;
+            }
+
+            .modal-body {
+                grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 15px;
+            }
+
+            .left-column,
+            .right-column {
+                grid-column: 1;
+            }
+
+            .form-group {
+                grid-template-columns: 90px 1fr auto;
+                gap: 8px;
+            }
+
+            .year-level-group {
+                grid-template-columns: 90px 1fr 20px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .cancel-btn,
+            .save-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 150px;
+                padding: 10px 5px;
+            }
+
+            .menu-item span {
+                font-size: 12px;
+            }
+
+            .form-group {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            .form-group label {
+                text-align: left;
+            }
+
+            .year-level-group {
+                grid-template-columns: 1fr;
+            }
+
+            .year-level-group span {
+                display: none;
+            }
+
+            .set-btn {
+                width: 100%;
+            }
+
+            .student-item {
+                padding: 15px;
+            }
+
+            .page-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <img class="image" src="euC (1).png" alt="Logo" style="width: 50%; margin-bottom: 20px; align-self: center;">
+        <a href="dashboard.html" class="menu-item active" onclick="showPage('dashboard')">
+            <div class="menu-icon">◷</div>
+            <span>Dashboard</span>
+        </a>
+        <a href="index.html" class="menu-item " onclick="showPage('registration')">
+            <div class="menu-icon">◷</div>
+            <span>Registration</span>
+        </a>
+        <a href="sp.html" class="menu-item" onclick="showPage('student-profile')">
+            <div class="menu-icon">◷</div>
+            <span>Student Profile</span>
+        </a>
+        <a href="section.html" class="menu-item" onclick="showPage('section-list')">
+            <div class="menu-icon">◷</div>
+            <span>Section List</span>
+        </a>
+    </div>
+</body>
+</html>

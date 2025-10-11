@@ -367,11 +367,9 @@
             border-color: #7d1414;
         }
 
-        .form-group input:disabled,
-        .form-group select:disabled {
+        .form-group input:disabled {
             background-color: #f5f5f5;
             cursor: not-allowed;
-            color: #666;
         }
 
         .set-btn {
@@ -386,11 +384,6 @@
 
         .set-btn:hover {
             background-color: #d0d0d0;
-        }
-
-        .set-btn:disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
         }
 
         .year-level-group {
@@ -533,11 +526,6 @@
             background-color: #c82333;
         }
 
-        .remove-family-btn:disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-
         .add-family-btn {
             background-color: #28a745;
             color: white;
@@ -552,11 +540,6 @@
 
         .add-family-btn:hover {
             background-color: #218838;
-        }
-
-        .add-family-btn:disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
         }
 
         .full-width {
@@ -579,6 +562,7 @@
             opacity: 0.3;
         }
 
+        /* Confirmation Modal */
         .confirmation-modal {
             display: none;
             position: fixed;
@@ -756,9 +740,71 @@
             box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
         }
 
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 200px;
+                padding: 15px 10px;
+            }
+
+            .menu-item {
+                font-size: 14px;
+                padding: 12px 8px;
+            }
+
+            .modal-content {
+                width: 90%;
+            }
+        }
+
         @media (max-width: 768px) {
+            .sidebar {
+                width: 180px;
+                padding: 15px 8px;
+            }
+
+            .menu-item {
+                font-size: 13px;
+                padding: 10px 6px;
+                gap: 8px;
+            }
+
+            .menu-icon {
+                width: 18px;
+                height: 18px;
+                font-size: 12px;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .content-wrapper {
+                padding: 20px;
+            }
+
+            .header-section {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .filter-tabs {
+                flex-wrap: wrap;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+
             .modal-body {
                 grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 15px;
             }
 
             .left-column,
@@ -766,14 +812,24 @@
                 grid-column: 1;
             }
 
+            .form-group {
+                grid-template-columns: 90px 1fr auto;
+                gap: 8px;
+            }
+
+            .year-level-group {
+                grid-template-columns: 90px 1fr 20px;
+            }
+
             .modal-footer {
                 flex-direction: column;
+                gap: 10px;
             }
 
             .action-buttons-left,
             .action-buttons-right {
-                width: 100%;
                 flex-direction: column;
+                width: 100%;
             }
 
             .cancel-btn,
@@ -783,25 +839,65 @@
                 width: 100%;
             }
         }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 150px;
+                padding: 10px 5px;
+            }
+
+            .menu-item span {
+                font-size: 12px;
+            }
+
+            .form-group {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            .form-group label {
+                text-align: left;
+            }
+
+            .year-level-group {
+                grid-template-columns: 1fr;
+            }
+
+            .year-level-group span {
+                display: none;
+            }
+
+            .set-btn {
+                width: 100%;
+            }
+
+            .student-item {
+                padding: 15px;
+            }
+
+            .page-title {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <div style="width: 80px; height: 80px; background-color: rgba(255,255,255,0.2); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🎓</div>
+        <img class="image" src="euC (1).png" alt="Logo" style="width: 50%; margin-bottom: 20px; align-self: center;">
         <a href="dashboard.html" class="menu-item">
-            <div class="menu-icon">📊</div>
+            <div class="menu-icon">◷</div>
             <span>Dashboard</span>
         </a>
         <a href="index.html" class="menu-item active">
-            <div class="menu-icon">📝</div>
+            <div class="menu-icon">◷</div>
             <span>Registration</span>
         </a>
         <a href="sp.html" class="menu-item">
-            <div class="menu-icon">👤</div>
+            <div class="menu-icon">◷</div>
             <span>Student Profile</span>
         </a>
         <a href="section.html" class="menu-item">
-            <div class="menu-icon">📋</div>
+            <div class="menu-icon">◷</div>
             <span>Section List</span>
         </a>
     </div>
@@ -816,7 +912,7 @@
                     <div class="filter-tab" data-status="accepted" onclick="filterByStatus('accepted')">Accepted</div>
                     <div class="filter-tab" data-status="rejected" onclick="filterByStatus('rejected')">Rejected</div>
                 </div>
-                <input type="text" class="search-box" placeholder="Search" id="searchBox" oninput="searchStudents()">
+                <input type="text" class="search-box" placeholder="Search" id="searchBox" oninput="filterStudents()">
             </div>
 
             <div class="student-list" id="studentList"></div>
@@ -831,6 +927,7 @@
             </div>
             <form onsubmit="saveStudent(event)" id="studentForm">
                 <div class="modal-body">
+                    <!-- Left Column -->
                     <div class="left-column">
                         <div class="form-group">
                             <label>Student No.</label>
@@ -927,6 +1024,7 @@
                         </div>
                     </div>
 
+                    <!-- Right Column -->
                     <div class="right-column">
                         <div class="year-level-group">
                             <label>Year Level</label>
@@ -991,6 +1089,7 @@
                         </div>
                     </div>
 
+                    <!-- Family Section - Full Width -->
                     <div class="full-width">
                         <div class="section-title">Family Information</div>
                         <div id="familyMembersContainer"></div>
@@ -1012,6 +1111,7 @@
         </div>
     </div>
 
+    <!-- Confirmation Modal -->
     <div class="confirmation-modal" id="confirmationModal">
         <div class="confirmation-content">
             <div class="confirmation-header" id="confirmHeader">
@@ -1051,10 +1151,6 @@
         let familyMemberCount = 0;
         let currentFilter = 'all';
         let pendingStatusAction = null;
-        let allStudents = []; // Store all students for filtering
-
-        // API Base URL
-        const API_URL = 'http://localhost:5000/api';
 
         function showConfirmationModal(action) {
             pendingStatusAction = action;
@@ -1066,10 +1162,12 @@
             const message = document.getElementById('confirmMessage');
             const actionBtn = document.getElementById('confirmActionBtn');
             
+            // Get student info
             const studentName = `${document.getElementById('firstName').value} ${document.getElementById('middleName').value} ${document.getElementById('lastName').value}`.trim();
             const studentNo = document.getElementById('studentNo').value;
             const program = document.getElementById('program').value;
             
+            // Fill in student info
             document.getElementById('confirmStudentName').textContent = studentName;
             document.getElementById('confirmStudentNo').textContent = studentNo || 'N/A';
             document.getElementById('confirmProgram').textContent = program;
@@ -1106,7 +1204,7 @@
             if (!currentStudentId || !pendingStatusAction) return;
 
             try {
-                const response = await fetch(`${API_URL}/students/${currentStudentId}/status`, {
+                const response = await fetch(`http://localhost:5000/api/students/${currentStudentId}/status`, {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ status: pendingStatusAction })
@@ -1122,13 +1220,13 @@
                 }
             } catch (err) {
                 console.error("Error updating status:", err);
-                alert("Could not connect to server. Make sure the backend is running on port 5000.");
+                alert("Could not connect to server");
             }
         }
 
         function addFamilyMember(memberData = null) {
             familyMemberCount++;
-            const memberId = memberData ? `family-${memberData.relation}-${familyMemberCount}` : `family-${familyMemberCount}`;
+            const memberId = memberData ? memberData.id : `family-${familyMemberCount}`;
             
             const container = document.getElementById('familyMembersContainer');
             const memberDiv = document.createElement('div');
@@ -1202,39 +1300,44 @@
 
         function updateStatusIndicator(status) {
             const indicator = document.getElementById('statusIndicator');
+            const reviewActions = document.getElementById('reviewActions');
             
             if (status === 'pending') {
                 indicator.className = 'status-indicator status-badge pending';
                 indicator.textContent = 'Pending Review';
+                reviewActions.style.display = 'flex';
             } else if (status === 'accepted') {
                 indicator.className = 'status-indicator status-badge accepted';
                 indicator.textContent = 'Accepted';
+                reviewActions.style.display = 'none';
             } else if (status === 'rejected') {
                 indicator.className = 'status-indicator status-badge rejected';
                 indicator.textContent = 'Rejected';
+                reviewActions.style.display = 'none';
             } else {
                 indicator.className = '';
                 indicator.textContent = '';
+                reviewActions.style.display = 'none';
             }
         }
 
-        function openModal(studentData = null, viewOnly = false) {
+        function openModal(studentData = null) {
             const modal = document.getElementById('addStudentModal');
             const modalTitle = document.querySelector('.modal-title');
-            const saveBtn = document.getElementById('saveBtn');
-            const cancelBtn = document.querySelector('.cancel-btn');
-            const reviewActions = document.getElementById('reviewActions');
             
+            // Clear family members
             document.getElementById('familyMembersContainer').innerHTML = '';
             familyMemberCount = 0;
             
             if (studentData) {
                 currentStudentId = studentData.id;
                 currentStudentStatus = studentData.status || 'pending';
-                modalTitle.textContent = viewOnly ? 'Student Application - Review' : 'Student Application';
+                modalTitle.textContent = 'Student Application';
                 
+                // Update status indicator
                 updateStatusIndicator(currentStudentStatus);
                 
+                // Pre-fill the form with student data
                 document.getElementById('studentNo').value = studentData.student_no || '';
                 document.getElementById('firstName').value = studentData.first_name || '';
                 document.getElementById('middleName').value = studentData.middle_name || '';
@@ -1260,50 +1363,11 @@
                 document.getElementById('age').value = studentData.age || '';
                 document.getElementById('section').value = studentData.section || '';
                 
+                // Load family members if they exist
                 if (studentData.family_members && studentData.family_members.length > 0) {
                     studentData.family_members.forEach(member => {
                         addFamilyMember(member);
                     });
-                }
-                
-                if (viewOnly) {
-                    const formInputs = document.querySelectorAll('#studentForm input, #studentForm select');
-                    formInputs.forEach(input => {
-                        input.disabled = true;
-                    });
-                    
-                    const familyButtons = document.querySelectorAll('.remove-family-btn, .add-family-btn, .set-btn');
-                    familyButtons.forEach(btn => {
-                        btn.disabled = true;
-                        btn.style.cursor = 'not-allowed';
-                        btn.style.opacity = '0.5';
-                    });
-                    
-                    if (currentStudentStatus === 'pending') {
-                        reviewActions.style.display = 'flex';
-                        saveBtn.style.display = 'none';
-                    } else {
-                        reviewActions.style.display = 'none';
-                        saveBtn.style.display = 'none';
-                    }
-                    
-                    cancelBtn.textContent = 'Close';
-                } else {
-                    const formInputs = document.querySelectorAll('#studentForm input, #studentForm select');
-                    formInputs.forEach(input => {
-                        input.disabled = false;
-                    });
-                    
-                    const familyButtons = document.querySelectorAll('.remove-family-btn, .add-family-btn, .set-btn');
-                    familyButtons.forEach(btn => {
-                        btn.disabled = false;
-                        btn.style.cursor = 'pointer';
-                        btn.style.opacity = '1';
-                    });
-                    
-                    saveBtn.style.display = 'inline-block';
-                    cancelBtn.textContent = 'Cancel';
-                    reviewActions.style.display = 'none';
                 }
             } else {
                 currentStudentId = null;
@@ -1311,15 +1375,6 @@
                 modalTitle.textContent = 'New Student';
                 updateStatusIndicator(null);
                 document.querySelector('form').reset();
-                
-                const formInputs = document.querySelectorAll('#studentForm input, #studentForm select');
-                formInputs.forEach(input => {
-                    input.disabled = false;
-                });
-                
-                saveBtn.style.display = 'inline-block';
-                cancelBtn.textContent = 'Cancel';
-                reviewActions.style.display = 'none';
             }
             
             modal.classList.add('active');
@@ -1332,6 +1387,41 @@
             familyMemberCount = 0;
             currentStudentId = null;
             currentStudentStatus = null;
+        }
+
+        document.getElementById('confirmationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeConfirmationModal();
+            }
+        });
+
+        async function updateApplicationStatus(newStatus) {
+            if (!currentStudentId) return;
+            
+            const confirmMessage = newStatus === 'accepted' 
+                ? 'Are you sure you want to accept this application?' 
+                : 'Are you sure you want to reject this application?';
+            
+            if (!confirm(confirmMessage)) return;
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/students/${currentStudentId}/status`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (response.ok) {
+                    alert(`Application ${newStatus} successfully!`);
+                    await loadStudents();
+                    closeModal();
+                } else {
+                    alert("Error updating application status");
+                }
+            } catch (err) {
+                console.error("Error updating status:", err);
+                alert("Could not connect to server");
+            }
         }
 
         async function saveStudent(e) {
@@ -1368,8 +1458,8 @@
 
             try {
                 const url = currentStudentId 
-                    ? `${API_URL}/students/${currentStudentId}`
-                    : `${API_URL}/students`;
+                    ? `http://localhost:5000/api/students/${currentStudentId}`
+                    : "http://localhost:5000/api/students";
                 const method = currentStudentId ? "PUT" : "POST";
 
                 const response = await fetch(url, {
@@ -1387,124 +1477,191 @@
                 }
             } catch (err) {
                 console.error("Error saving student:", err);
-                alert("Could not connect to server. Make sure the backend is running on port 5000.");
+                alert("Could not connect to server");
             }
         }
 
         async function loadStudents() {
             try {
-                const response = await fetch(`${API_URL}/students`);
+                const response = await fetch("http://localhost:5000/api/students");
                 const students = await response.json();
-                
-                allStudents = students; // Store for filtering
-                displayStudents(students);
+
+                const studentList = document.getElementById("studentList");
+                studentList.innerHTML = "";
+
+                // Filter students based on current filter
+                const filteredStudents = currentFilter === 'all' 
+                    ? students 
+                    : students.filter(s => (s.status || 'pending') === currentFilter);
+
+                if (filteredStudents.length === 0) {
+                    studentList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <p>No ${currentFilter === 'all' ? '' : currentFilter} applications found</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                filteredStudents.forEach(student => {
+                    const status = student.status || 'pending';
+                    const fullName = `${student.first_name} ${student.middle_name ? student.middle_name + " " : ""}${student.last_name}`;
+                    
+                    const studentItem = document.createElement("div");
+                    studentItem.className = `student-item ${status}`;
+                    studentItem.onclick = () => viewStudent(student.id);
+                    studentItem.innerHTML = `
+                        <div class="student-info">
+                            <div class="student-name">${fullName}</div>
+                            <div class="student-status">
+                                <span class="status-badge ${status}">${status}</span>
+                            </div>
+                        </div>
+                        <span class="arrow">›</span>
+                    `;
+                    studentList.appendChild(studentItem);
+                });
             } catch (err) {
                 console.error("Error loading students:", err);
                 const studentList = document.getElementById("studentList");
                 studentList.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">⚠️</div>
-                        <p>Error loading applications. Make sure the backend server is running on port 5000.</p>
+                        <p>Error loading applications. Please try again.</p>
                     </div>
                 `;
             }
         }
 
-        function displayStudents(students) {
-            const studentList = document.getElementById("studentList");
-            studentList.innerHTML = "";
-
-            const filteredStudents = currentFilter === 'all' 
-                ? students 
-                : students.filter(s => (s.status || 'pending') === currentFilter);
-
-            if (filteredStudents.length === 0) {
-                studentList.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📋</div>
-                        <p>No ${currentFilter === 'all' ? '' : currentFilter} applications found</p>
-                    </div>
-                `;
-                return;
-            }
-
-            filteredStudents.forEach(student => {
-                const status = student.status || 'pending';
-                const fullName = `${student.first_name} ${student.middle_name ? student.middle_name + " " : ""}${student.last_name}`;
-                
-                const studentItem = document.createElement("div");
-                studentItem.className = `student-item ${status}`;
-                studentItem.onclick = () => viewStudent(student.id);
-                studentItem.innerHTML = `
-                    <div class="student-info">
-                        <div class="student-name">${fullName}</div>
-                        <div class="student-status">
-                            <span class="status-badge ${status}">${status}</span>
-                        </div>
-                    </div>
-                    <span class="arrow">›</span>
-                `;
-                studentList.appendChild(studentItem);
-            });
-        }
+        document.addEventListener("DOMContentLoaded", loadStudents);
 
         async function viewStudent(id) {
-            console.log('Attempting to fetch student with ID:', id);
-            console.log('URL:', `${API_URL}/students/${id}`);
-            
             try {
-                const response = await fetch(`${API_URL}/students/${id}`);
-                console.log('Response status:', response.status);
-                
+                const response = await fetch(`http://localhost:5000/api/students/${id}`);
                 if (response.ok) {
                     const studentData = await response.json();
-                    console.log('Student data received:', studentData);
-                    openModal(studentData, true);
+                    
+                    // If student is pending, show confirmation modal directly
+                    if (studentData.status === 'pending' || !studentData.status) {
+                        currentStudentId = studentData.id;
+                        currentStudentStatus = studentData.status || 'pending';
+                        
+                        // Pre-fill form data for the confirmation modal
+                        document.getElementById('studentNo').value = studentData.student_no || '';
+                        document.getElementById('firstName').value = studentData.first_name || '';
+                        document.getElementById('middleName').value = studentData.middle_name || '';
+                        document.getElementById('lastName').value = studentData.last_name || '';
+                        document.getElementById('program').value = studentData.program || '';
+                        
+                        // Show the decision prompt directly
+                        showDecisionPrompt(studentData);
+                    } else {
+                        // For accepted/rejected students, show full profile
+                        openModal(studentData);
+                    }
                 } else {
-                    const errorText = await response.text();
-                    console.error('Error response:', errorText);
-                    alert(`Error loading student details: ${response.status} - ${errorText}`);
+                    alert('Error loading student details');
                 }
             } catch (err) {
                 console.error("Error fetching student:", err);
-                alert(`Could not connect to server: ${err.message}\nMake sure the backend is running on port 5000.`);
+                alert('Could not connect to server');
+            }
+        }
+
+        function showDecisionPrompt(studentData) {
+            const modal = document.getElementById('confirmationModal');
+            const header = document.getElementById('confirmHeader');
+            const icon = document.getElementById('confirmIcon');
+            const title = document.getElementById('confirmTitle');
+            const subtitle = document.getElementById('confirmSubtitle');
+            const message = document.getElementById('confirmMessage');
+            const footer = document.querySelector('.confirmation-footer');
+            
+            // Get student info
+            const fullName = `${studentData.first_name} ${studentData.middle_name ? studentData.middle_name + ' ' : ''}${studentData.last_name}`;
+            const studentNo = studentData.student_no || 'N/A';
+            const program = studentData.program || 'N/A';
+            
+            // Fill in student info
+            document.getElementById('confirmStudentName').textContent = fullName;
+            document.getElementById('confirmStudentNo').textContent = studentNo;
+            document.getElementById('confirmProgram').textContent = program;
+            
+            // Set as decision prompt (neutral colors)
+            header.className = 'confirmation-header';
+            header.style.background = 'linear-gradient(135deg, rgb(154, 50, 50) 0%, rgb(69, 11, 11) 100%)';
+            icon.textContent = '?';
+            title.textContent = 'Review Application';
+            subtitle.textContent = 'Make a decision on this application';
+            message.className = 'confirmation-message';
+            message.style.background = '#f8f9fa';
+            message.style.color = '#333';
+            message.style.border = 'none';
+            message.innerHTML = `
+                <strong>📋 Application Review</strong><br><br>
+                Please review this application and decide whether to accept or reject the applicant. 
+                You can also view the full details before making a decision.
+            `;
+            
+            // Replace footer buttons with decision options
+            footer.innerHTML = `
+                <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Close</button>
+                <button type="button" class="confirm-cancel-btn" onclick="viewFullDetails()">View Full Details</button>
+                <button type="button" class="confirm-action-btn reject" onclick="showConfirmationModal('rejected')">✗ Reject</button>
+                <button type="button" class="confirm-action-btn accept" onclick="showConfirmationModal('accepted')">✓ Accept</button>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        function viewFullDetails() {
+            closeConfirmationModal();
+            // Fetch and open the full modal
+            if (currentStudentId) {
+                fetch(`http://localhost:5000/api/students/${currentStudentId}`)
+                    .then(response => response.json())
+                    .then(studentData => {
+                        openModal(studentData);
+                    })
+                    .catch(err => {
+                        console.error("Error fetching student:", err);
+                        alert('Could not load student details');
+                    });
             }
         }
 
         function filterByStatus(status) {
             currentFilter = status;
             
+            // Update active tab
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
             document.querySelector(`[data-status="${status}"]`).classList.add('active');
             
-            displayStudents(allStudents);
+            // Reload students with filter
+            loadStudents();
         }
 
-        async function searchStudents() {
-            const searchTerm = document.getElementById('searchBox').value;
+        function filterStudents() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const students = document.querySelectorAll('.student-item');
             
-            if (searchTerm.trim() === '') {
-                // If search is empty, just display all students with current filter
-                displayStudents(allStudents);
-                return;
-            }
+            students.forEach(student => {
+                const name = student.querySelector('.student-name').textContent.toLowerCase();
+                if (name.includes(searchTerm)) {
+                    student.style.display = 'flex';
+                } else {
+                    student.style.display = 'none';
+                }
+            });
+        }
 
-            try {
-                const response = await fetch(`${API_URL}/students/search?q=${encodeURIComponent(searchTerm)}`);
-                const students = await response.json();
-                allStudents = students;
-                displayStudents(students);
-            } catch (err) {
-                console.error("Error searching students:", err);
-                // Fallback to client-side search if API fails
-                const filtered = allStudents.filter(student => {
-                    const fullName = `${student.first_name} ${student.middle_name || ''} ${student.last_name}`.toLowerCase();
-                    return fullName.includes(searchTerm.toLowerCase());
-                });
-                displayStudents(filtered);
-            }
+        function showPage(page) {
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => item.classList.remove('active'));
+            event.target.closest('.menu-item').classList.add('active');
         }
 
         document.getElementById('addStudentModal').addEventListener('click', function(e) {
@@ -1512,15 +1669,6 @@
                 closeModal();
             }
         });
-
-        document.getElementById('confirmationModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeConfirmationModal();
-            }
-        });
-
-        // Load students when page loads
-        document.addEventListener("DOMContentLoaded", loadStudents);
     </script>
 </body>
 </html>

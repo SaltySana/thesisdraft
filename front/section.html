@@ -20,6 +20,7 @@
         }
 
         .sidebar {
+
             width: 300px;
             min-width: 200px;
             background-image: linear-gradient(rgb(154, 50, 50), rgb(69, 11, 11));
@@ -272,7 +273,28 @@
             border-color: #7d1414;
         }
 
+
+        .section-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.section-title-container #studentSearch {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 200px;
+}
+
+.section-title-container #studentSearch:focus {
+    outline: none;
+    border-color: #7d1414;
+}
         .section-title {
+        display: inline;
             font-size: 16px;
             color: #333;
             font-weight: 600;
@@ -517,7 +539,6 @@
         <div class="content-wrapper">
             <div class="header-section">
                 <button class="add-button" onclick="openModal()">
-                    <span>+</span>
                     <span>Add Section</span>
                 </button>
                 <input type="text" class="search-box" placeholder="Search" id="searchBox" oninput="filterSections()">
@@ -573,8 +594,10 @@
                     </div>
 
                     <div class="right-side">
-                        <div class="section-title">Assign Students</div>
-  <input type="text" id="studentSearch" placeholder="Search students..." />
+<div class="section-title-container">
+    <div class="section-title">Assign Students</div>
+    <input type="text" id="studentSearch" placeholder="Search students..." />
+</div>
                         <div class="students-list">
                             <div class="select-all-container">
                                 <div class="select-all-item" onclick="toggleSelectAll()">
@@ -837,6 +860,40 @@
             loadStudents();
             loadSections();
         });
+
+        document.addEventListener("DOMContentLoaded", () => {
+    loadStudents();
+    loadSections();
+
+    // Add search event listener
+    const searchInput = document.getElementById("studentSearch");
+    if (searchInput) {
+        searchInput.addEventListener("input", handleStudentSearch);
+    }
+});
+
+async function handleStudentSearch(e) {
+    const query = e.target.value.trim();
+
+    if (query.length === 0) {
+        // reload all students if search is cleared
+        await loadStudents();
+        populateStudentCheckboxes();
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:5000/api/students/search?q=${encodeURIComponent(query)}`);
+        if (response.ok) {
+            allStudents = await response.json();
+            populateStudentCheckboxes();
+        } else {
+            console.error("Search failed");
+        }
+    } catch (err) {
+        console.error("Error searching students:", err);
+    }
+}
     </script>
 </body>
 

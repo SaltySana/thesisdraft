@@ -192,9 +192,13 @@
             background-color: white;
             padding: 0;
             border-radius: 12px;
-            width: 700px;
+            width: 800px;
             max-width: 95%;
+            max-height: 85vh;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
         .modal-header {
@@ -216,7 +220,26 @@
             grid-template-columns: 1fr 1fr;
             gap: 25px;
             overflow-y: auto;
-            max-height: calc(90vh - 180px);
+            flex: 1;
+            max-height: calc(85vh - 140px);
+        }
+
+        .modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
 
         .form-section {
@@ -325,6 +348,8 @@
             justify-content: flex-end;
             gap: 10px;
             border-top: 1px solid #ddd;
+            flex-shrink: 0;
+            background-color: white;
         }
 
         .cancel-btn {
@@ -362,7 +387,60 @@
             grid-column: 2;
         }
 
-        /* Responsive Design - Sidebar stays on side */
+        .family-member {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .family-member-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .remove-family-btn {
+            background-color: #993131;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .remove-family-btn:hover {
+            background-color: #761e01;
+        }
+
+        .add-family-btn {
+            background-color: #993131;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .add-family-btn:hover {
+            background-color: #761e01;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        #familyMembersContainer {
+            max-height: none;
+        }
+
+        /* Responsive Design */
         @media (max-width: 1024px) {
             .sidebar {
                 width: 200px;
@@ -417,7 +495,6 @@
 
             .modal-content {
                 width: 95%;
-                max-height: 90vh;
             }
 
             .modal-body {
@@ -495,40 +572,35 @@
 <body>
     <div class="sidebar">
         <img class="image" src="euC (1).png" alt="Logo" style="width: 50%; margin-bottom: 20px; align-self: center;">
-        <a href="dashboard.html" class="menu-item" onclick="showPage('dashboard')">
+        <a href="dashboard.html" class="menu-item">
             <div class="menu-icon">◷</div>
             <span>Dashboard</span>
         </a>
-        <a href="index.html" class="menu-item " onclick="showPage('registration')">
+        <a href="index.html" class="menu-item">
             <div class="menu-icon">◷</div>
             <span>Registration</span>
         </a>
-        <a href="sp.html" class="menu-item active" onclick="showPage('student-profile')">
+        <a href="sp.html" class="menu-item active">
             <div class="menu-icon">◷</div>
             <span>Student Profile</span>
         </a>
-        <a href="section.html" class="menu-item" onclick="showPage('section-list')">
+        <a href="section.html" class="menu-item">
             <div class="menu-icon">◷</div>
             <span>Section List</span>
         </a>
     </div>
 
     <div class="main-content">
-        <h1 class="page-title">Registration</h1>
+        <h1 class="page-title">Student Profile</h1>
         <div class="content-wrapper">
-            
-            
             <div class="header-section">
                 <button class="add-button" onclick="openModal()">
-                    <span>+</span>
                     <span>Add Student</span>
                 </button>
                 <input type="text" class="search-box" placeholder="Search" id="searchBox" oninput="filterStudents()">
             </div>
 
-            <div class="student-list" id="studentList">
-            
-            </div>
+            <div class="student-list" id="studentList"></div>
         </div>
     </div>
 
@@ -603,16 +675,15 @@
                             <input type="text" id="religion">
                         </div>
                         
-                    <div class="section-title">
-                         Contacts/Address</div>
-
-                        <div class="form-group form-group-full">
-                            <label>LRN</label>
-                            <input type="text" id="email">
-                        </div>
+                        <div class="section-title">Contacts/Address</div>
 
                         <div class="form-group form-group-full">
                             <label>Email</label>
+                            <input type="email" id="email">
+                        </div>
+
+                        <div class="form-group form-group-full">
+                            <label>Phone</label>
                             <input type="text" id="phone">
                         </div>
 
@@ -628,23 +699,21 @@
 
                         <div class="form-group form-group-full">
                             <label>City/Town</label>
-                            <input type="text" id="city/town">
+                            <input type="text" id="city">
                         </div>
 
                         <div class="form-group form-group-full">
                             <label>Province</label>
                             <input type="text" id="province">
                         </div>
-
                     </div>
-                    
 
                     <!-- Right Column -->
                     <div class="right-column">
                         <div class="year-level-group">
                             <label>Year Level</label>
                             <input type="text" id="yearLevel">
-                            <span style="font-size: 20px; color: #666;">›</span>
+                            <span style="font-size: 20px; color: #666;"></span>
                         </div>
                         
                         <fieldset class="fieldset">
@@ -703,6 +772,13 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Family Section - Full Width -->
+                    <div class="full-width">
+                        <div class="section-title">Family Information</div>
+                        <div id="familyMembersContainer"></div>
+                        <button type="button" class="add-family-btn" onclick="addFamilyMember()">Add Family Member</button>
+                    </div>
                 </div>
                 
                 <div class="modal-footer">
@@ -715,13 +791,92 @@
 
     <script>
         let currentStudentId = null;
+        let familyMemberCount = 0;
+        let familyMembers = [];
+
+        function addFamilyMember(memberData = null) {
+            familyMemberCount++;
+            const memberId = memberData ? memberData.id : `family-${familyMemberCount}`;
+            
+            const container = document.getElementById('familyMembersContainer');
+            const memberDiv = document.createElement('div');
+            memberDiv.className = 'family-member';
+            memberDiv.id = memberId;
+            
+            memberDiv.innerHTML = `
+                <div class="family-member-header">
+                    <strong>Family Member ${familyMemberCount}</strong>
+                    <button type="button" class="remove-family-btn" onclick="removeFamilyMember('${memberId}')">Remove</button>
+                </div>
+                
+                <div class="form-group form-group-full">
+                    <label>Relation</label>
+                    <select class="family-relation" required>
+                        <option value="">Select Relation</option>
+                        <option value="Mother" ${memberData && memberData.relation === 'Mother' ? 'selected' : ''}>Mother</option>
+                        <option value="Father" ${memberData && memberData.relation === 'Father' ? 'selected' : ''}>Father</option>
+                        <option value="Guardian" ${memberData && memberData.relation === 'Guardian' ? 'selected' : ''}>Guardian</option>
+                    </select>
+                </div>
+                
+                <div class="form-group form-group-full">
+                    <label>Full Name</label>
+                    <input type="text" class="family-name" value="${memberData ? memberData.name : ''}" required>
+                </div>
+                
+                <div class="form-group form-group-full">
+                    <label>Occupation</label>
+                    <input type="text" class="family-occupation" value="${memberData ? memberData.occupation : ''}">
+                </div>
+                
+                <div class="form-group form-group-full">
+                    <label>Contact No.</label>
+                    <input type="text" class="family-contact" value="${memberData ? memberData.contact : ''}">
+                </div>
+                
+                <div class="form-group form-group-full">
+                    <label>Address</label>
+                    <input type="text" class="family-address" value="${memberData ? memberData.address : ''}">
+                </div>
+            `;
+            
+            container.appendChild(memberDiv);
+        }
+
+        function removeFamilyMember(memberId) {
+            const member = document.getElementById(memberId);
+            if (member) {
+                member.remove();
+            }
+        }
+
+        function collectFamilyData() {
+            const familyMembers = [];
+            const memberDivs = document.querySelectorAll('.family-member');
+            
+            memberDivs.forEach(div => {
+                const member = {
+                    relation: div.querySelector('.family-relation').value,
+                    name: div.querySelector('.family-name').value,
+                    occupation: div.querySelector('.family-occupation').value,
+                    contact: div.querySelector('.family-contact').value,
+                    address: div.querySelector('.family-address').value
+                };
+                familyMembers.push(member);
+            });
+            
+            return familyMembers;
+        }
 
         function openModal(studentData = null) {
             const modal = document.getElementById('addStudentModal');
             const modalTitle = document.querySelector('.modal-title');
             
+            // Clear family members
+            document.getElementById('familyMembersContainer').innerHTML = '';
+            familyMemberCount = 0;
+            
             if (studentData) {
-                // Edit mode
                 currentStudentId = studentData.id;
                 modalTitle.textContent = 'Edit Student Profile';
                 
@@ -741,7 +896,7 @@
                 document.getElementById('phone').value = studentData.phone || '';
                 document.getElementById('street').value = studentData.street || '';
                 document.getElementById('brgy').value = studentData.barangay || '';
-                document.getElementById('city/town').value = studentData.city || '';
+                document.getElementById('city').value = studentData.city || '';
                 document.getElementById('province').value = studentData.province || '';
                 document.getElementById('yearLevel').value = studentData.year_level || '';
                 document.getElementById('admissionDate').value = studentData.admission_date || '';
@@ -750,8 +905,14 @@
                 document.getElementById('gender').value = studentData.gender || '';
                 document.getElementById('age').value = studentData.age || '';
                 document.getElementById('section').value = studentData.section || '';
+                
+                // Load family members if they exist
+                if (studentData.family_members && studentData.family_members.length > 0) {
+                    studentData.family_members.forEach(member => {
+                        addFamilyMember(member);
+                    });
+                }
             } else {
-                // Add mode
                 currentStudentId = null;
                 modalTitle.textContent = 'Student Profile';
                 document.querySelector('form').reset();
@@ -763,6 +924,8 @@
         function closeModal() {
             document.getElementById('addStudentModal').classList.remove('active');
             document.querySelector('form').reset();
+            document.getElementById('familyMembersContainer').innerHTML = '';
+            familyMemberCount = 0;
             currentStudentId = null;
         }
 
@@ -770,14 +933,41 @@
             e.preventDefault();
 
             const student = {
+                student_no: document.getElementById('studentNo').value,
                 first_name: document.getElementById('firstName').value,
                 middle_name: document.getElementById('middleName').value,
-                last_name: document.getElementById('lastName').value
+                last_name: document.getElementById('lastName').value,
+                ext_name: document.getElementById('extName').value,
+                program: document.getElementById('program').value,
+                curriculum_code: document.getElementById('curriculumCode').value,
+                date_graduated: document.getElementById('dateGraduated').value,
+                lrn: document.getElementById('LRN').value,
+                citizenship: document.getElementById('citizenship').value,
+                religion: document.getElementById('religion').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                street: document.getElementById('street').value,
+                barangay: document.getElementById('brgy').value,
+                city: document.getElementById('city').value,
+                province: document.getElementById('province').value,
+                year_level: document.getElementById('yearLevel').value,
+                admission_date: document.getElementById('admissionDate').value,
+                school_year: document.getElementById('schoolYear').value,
+                period: document.getElementById('period').value,
+                gender: document.getElementById('gender').value,
+                age: document.getElementById('age').value,
+                section: document.getElementById('section').value,
+                family_members: collectFamilyData()
             };
 
             try {
-                const response = await fetch("http://localhost:5000/api/students", {
-                    method: "POST",
+                const url = currentStudentId 
+                    ? `http://localhost:5000/api/students/${currentStudentId}`
+                    : "http://localhost:5000/api/students";
+                const method = currentStudentId ? "PUT" : "POST";
+
+                const response = await fetch(url, {
+                    method: method,
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(student)
                 });
@@ -785,11 +975,12 @@
                 if (response.ok) {
                     await loadStudents();
                     closeModal();
+                    alert(currentStudentId ? "Student updated successfully!" : "Student added successfully!");
                 } else {
-                    alert("Error adding student");
+                    alert("Error saving student");
                 }
             } catch (err) {
-                console.error("Error adding student:", err);
+                console.error("Error saving student:", err);
                 alert("Could not connect to server");
             }
         }
@@ -823,7 +1014,6 @@
 
         async function viewStudent(name, id) {
             try {
-                // Fetch full student details from the server
                 const response = await fetch(`http://localhost:5000/api/students/${id}`);
                 if (response.ok) {
                     const studentData = await response.json();

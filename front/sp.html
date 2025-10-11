@@ -824,10 +824,6 @@
                     <input type="text" class="family-name" value="${memberData ? memberData.name : ''}" required>
                 </div>
                 
-                <div class="form-group form-group-full">
-                    <label>Occupation</label>
-                    <input type="text" class="family-occupation" value="${memberData ? memberData.occupation : ''}">
-                </div>
                 
                 <div class="form-group form-group-full">
                     <label>Contact No.</label>
@@ -858,7 +854,6 @@
                 const member = {
                     relation: div.querySelector('.family-relation').value,
                     name: div.querySelector('.family-name').value,
-                    occupation: div.querySelector('.family-occupation').value,
                     contact: div.querySelector('.family-contact').value,
                     address: div.querySelector('.family-address').value
                 };

@@ -86,22 +86,35 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            gap: 15px;
         }
 
-        .add-button {
-            background-color: #7d1414;
-            color: white;
-            border: none;
-            padding: 10px 20px;
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
             border-radius: 4px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
             font-size: 14px;
+            transition: all 0.3s;
         }
 
-        .add-button:hover {
+        .filter-tab.active {
+            background-color: #7d1414;
+            color: white;
+            border-color: #7d1414;
+        }
+
+        .filter-tab:hover {
+            background-color: #e0e0e0;
+        }
+
+        .filter-tab.active:hover {
             background-color: #5d0f0f;
         }
 
@@ -155,15 +168,63 @@
             align-items: center;
             cursor: pointer;
             transition: background-color 0.3s;
+            position: relative;
         }
 
         .student-item:hover {
             background-color: #c4c4c4;
         }
 
+        .student-item.pending {
+            border-left: 4px solid #ffc107;
+        }
+
+        .student-item.accepted {
+            border-left: 4px solid #28a745;
+        }
+
+        .student-item.rejected {
+            border-left: 4px solid #dc3545;
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
         .student-name {
             font-size: 15px;
             color: #333;
+            font-weight: 500;
+        }
+
+        .student-status {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.accepted {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.rejected {
+            background-color: #f8d7da;
+            color: #721c24;
         }
 
         .arrow {
@@ -192,9 +253,13 @@
             background-color: white;
             padding: 0;
             border-radius: 12px;
-            width: 700px;
+            width: 800px;
             max-width: 95%;
+            max-height: 85vh;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
         .modal-header {
@@ -202,6 +267,9 @@
             padding: 20px 30px;
             border-radius: 12px 12px 0 0;
             border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .modal-title {
@@ -210,19 +278,39 @@
             font-weight: normal;
         }
 
+        .status-indicator {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
         .modal-body {
             padding: 30px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 25px;
             overflow-y: auto;
-            max-height: calc(90vh - 180px);
+            flex: 1;
+            max-height: calc(85vh - 140px);
         }
 
-        .form-section {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
 
         .section-title {
@@ -279,6 +367,13 @@
             border-color: #7d1414;
         }
 
+        .form-group input:disabled,
+        .form-group select:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            color: #666;
+        }
+
         .set-btn {
             padding: 6px 16px;
             background-color: #e0e0e0;
@@ -291,6 +386,11 @@
 
         .set-btn:hover {
             background-color: #d0d0d0;
+        }
+
+        .set-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
         }
 
         .year-level-group {
@@ -322,9 +422,21 @@
         .modal-footer {
             padding: 20px 30px;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             gap: 10px;
             border-top: 1px solid #ddd;
+            flex-shrink: 0;
+            background-color: white;
+        }
+
+        .action-buttons-left {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-buttons-right {
+            display: flex;
+            gap: 10px;
         }
 
         .cancel-btn {
@@ -354,6 +466,36 @@
             background-color: #5d0f0f;
         }
 
+        .accept-btn {
+            padding: 10px 30px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .accept-btn:hover {
+            background-color: #218838;
+        }
+
+        .reject-btn {
+            padding: 10px 30px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .reject-btn:hover {
+            background-color: #c82333;
+        }
+
         .left-column {
             grid-column: 1;
         }
@@ -362,69 +504,261 @@
             grid-column: 2;
         }
 
-        /* Responsive Design - Sidebar stays on side */
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 200px;
-                padding: 15px 10px;
-            }
+        .family-member {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
 
-            .menu-item {
-                font-size: 14px;
-                padding: 12px 8px;
-            }
+        .family-member-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
 
-            .modal-content {
-                width: 90%;
-            }
+        .remove-family-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .remove-family-btn:hover {
+            background-color: #c82333;
+        }
+
+        .remove-family-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .add-family-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .add-family-btn:hover {
+            background-color: #218838;
+        }
+
+        .add-family-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        #familyMembersContainer {
+            max-height: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            opacity: 0.3;
+        }
+
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .confirmation-modal.active {
+            display: flex;
+        }
+
+        .confirmation-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .confirmation-header {
+            padding: 25px 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .confirmation-header.accept {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .confirmation-header.reject {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        .confirmation-icon {
+            font-size: 32px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirmation-header-text h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .confirmation-header-text p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .confirmation-body {
+            padding: 30px;
+        }
+
+        .student-info-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #7d1414;
+        }
+
+        .student-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .student-info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .student-info-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .student-info-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .confirmation-message {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .confirmation-message.accept {
+            color: #155724;
+            background-color: #d4edda;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #28a745;
+        }
+
+        .confirmation-message.reject {
+            color: #721c24;
+            background-color: #f8d7da;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .confirmation-footer {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            border-top: 1px solid #ddd;
+            background-color: #f8f9fa;
+        }
+
+        .confirm-cancel-btn {
+            padding: 10px 24px;
+            background-color: white;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .confirm-cancel-btn:hover {
+            background-color: #f5f5f5;
+            border-color: #999;
+        }
+
+        .confirm-action-btn {
+            padding: 10px 24px;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .confirm-action-btn.accept {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .confirm-action-btn.accept:hover {
+            background: linear-gradient(135deg, #218838 0%, #1aa179 100%);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .confirm-action-btn.reject {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .confirm-action-btn.reject:hover {
+            background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
         }
 
         @media (max-width: 768px) {
-            .sidebar {
-                width: 180px;
-                padding: 15px 8px;
-            }
-
-            .menu-item {
-                font-size: 13px;
-                padding: 10px 6px;
-                gap: 8px;
-            }
-
-            .menu-icon {
-                width: 18px;
-                height: 18px;
-                font-size: 12px;
-            }
-
-            .main-content {
-                padding: 15px;
-            }
-
-            .content-wrapper {
-                padding: 20px;
-            }
-
-            .header-section {
-                flex-direction: column;
-                gap: 15px;
-                align-items: stretch;
-                
-            }
-
-            .search-box {
-                width: 100%;
-            }
-
-            .modal-content {
-                width: 95%;
-                max-height: 90vh;
-            }
-
             .modal-body {
                 grid-template-columns: 1fr;
-                padding: 20px;
-                gap: 15px;
             }
 
             .left-column,
@@ -432,84 +766,42 @@
                 grid-column: 1;
             }
 
-            .form-group {
-                grid-template-columns: 90px 1fr auto;
-                gap: 8px;
-            }
-
-            .year-level-group {
-                grid-template-columns: 90px 1fr 20px;
-            }
-
             .modal-footer {
                 flex-direction: column;
-                gap: 10px;
+            }
+
+            .action-buttons-left,
+            .action-buttons-right {
+                width: 100%;
+                flex-direction: column;
             }
 
             .cancel-btn,
-            .save-btn {
+            .save-btn,
+            .accept-btn,
+            .reject-btn {
                 width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .sidebar {
-                width: 150px;
-                padding: 10px 5px;
-            }
-
-            .menu-item span {
-                font-size: 12px;
-            }
-
-            .form-group {
-                grid-template-columns: 1fr;
-                gap: 5px;
-            }
-
-            .form-group label {
-                text-align: left;
-            }
-
-            .year-level-group {
-                grid-template-columns: 1fr;
-            }
-
-            .year-level-group span {
-                display: none;
-            }
-
-            .set-btn {
-                width: 100%;
-            }
-
-            .student-item {
-                padding: 15px;
-            }
-
-            .page-title {
-                font-size: 20px;
             }
         }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <img class="image" src="euC (1).png" alt="Logo" style="width: 50%; margin-bottom: 20px; align-self: center;">
-        <a href="dashboard.html" class="menu-item" onclick="showPage('dashboard')">
-            <div class="menu-icon">◷</div>
+        <div style="width: 80px; height: 80px; background-color: rgba(255,255,255,0.2); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🎓</div>
+        <a href="dashboard.html" class="menu-item">
+            <div class="menu-icon">📊</div>
             <span>Dashboard</span>
         </a>
-        <a href="index.html" class="menu-item active" onclick="showPage('registration')">
-            <div class="menu-icon">◷</div>
+        <a href="index.html" class="menu-item active">
+            <div class="menu-icon">📝</div>
             <span>Registration</span>
         </a>
-        <a href="sp.html" class="menu-item" onclick="showPage('student-profile')">
-            <div class="menu-icon">◷</div>
+        <a href="sp.html" class="menu-item">
+            <div class="menu-icon">👤</div>
             <span>Student Profile</span>
         </a>
-        <a href="section.html" class="menu-item" onclick="showPage('section-list')">
-            <div class="menu-icon">◷</div>
+        <a href="section.html" class="menu-item">
+            <div class="menu-icon">📋</div>
             <span>Section List</span>
         </a>
     </div>
@@ -517,14 +809,17 @@
     <div class="main-content">
         <h1 class="page-title">Registration</h1>
         <div class="content-wrapper">
-            
-            
             <div class="header-section">
-                <input type="text" class="search-box" placeholder="Search" id="searchBox" oninput="filterStudents()">
+                <div class="filter-tabs">
+                    <div class="filter-tab active" data-status="all" onclick="filterByStatus('all')">All</div>
+                    <div class="filter-tab" data-status="pending" onclick="filterByStatus('pending')">Pending</div>
+                    <div class="filter-tab" data-status="accepted" onclick="filterByStatus('accepted')">Accepted</div>
+                    <div class="filter-tab" data-status="rejected" onclick="filterByStatus('rejected')">Rejected</div>
+                </div>
+                <input type="text" class="search-box" placeholder="Search" id="searchBox" oninput="searchStudents()">
             </div>
 
-            <div class="student-list" id="studentList">
-            </div>
+            <div class="student-list" id="studentList"></div>
         </div>
     </div>
 
@@ -532,10 +827,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">Student Profile</h2>
+                <div class="status-indicator" id="statusIndicator"></div>
             </div>
-            <form onsubmit="addStudent(event)">
+            <form onsubmit="saveStudent(event)" id="studentForm">
                 <div class="modal-body">
-                    <!-- Left Column -->
                     <div class="left-column">
                         <div class="form-group">
                             <label>Student No.</label>
@@ -599,16 +894,15 @@
                             <input type="text" id="religion">
                         </div>
                         
-                    <div class="section-title">
-                         Contacts/Address</div>
-
-                        <div class="form-group form-group-full">
-                            <label>LRN</label>
-                            <input type="text" id="email">
-                        </div>
+                        <div class="section-title">Contacts/Address</div>
 
                         <div class="form-group form-group-full">
                             <label>Email</label>
+                            <input type="email" id="email">
+                        </div>
+
+                        <div class="form-group form-group-full">
+                            <label>Phone</label>
                             <input type="text" id="phone">
                         </div>
 
@@ -624,18 +918,15 @@
 
                         <div class="form-group form-group-full">
                             <label>City/Town</label>
-                            <input type="text" id="city/town">
+                            <input type="text" id="city">
                         </div>
 
                         <div class="form-group form-group-full">
                             <label>Province</label>
                             <input type="text" id="province">
                         </div>
-
                     </div>
-                    
 
-                    <!-- Right Column -->
                     <div class="right-column">
                         <div class="year-level-group">
                             <label>Year Level</label>
@@ -699,29 +990,251 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="full-width">
+                        <div class="section-title">Family Information</div>
+                        <div id="familyMembersContainer"></div>
+                        <button type="button" class="add-family-btn" onclick="addFamilyMember()">+ Add Family Member</button>
+                    </div>
                 </div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="save-btn">Save</button>
+                    <div class="action-buttons-left" id="reviewActions" style="display: none;">
+                        <button type="button" class="accept-btn" onclick="showConfirmationModal('accepted')">✓ Accept</button>
+                        <button type="button" class="reject-btn" onclick="showConfirmationModal('rejected')">✗ Reject</button>
+                    </div>
+                    <div class="action-buttons-right">
+                        <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="save-btn" id="saveBtn">Save</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="confirmation-content">
+            <div class="confirmation-header" id="confirmHeader">
+                <div class="confirmation-icon" id="confirmIcon"></div>
+                <div class="confirmation-header-text">
+                    <h3 id="confirmTitle"></h3>
+                    <p id="confirmSubtitle"></p>
+                </div>
+            </div>
+            <div class="confirmation-body">
+                <div class="student-info-card">
+                    <div class="student-info-row">
+                        <span class="student-info-label">Applicant Name:</span>
+                        <span class="student-info-value" id="confirmStudentName"></span>
+                    </div>
+                    <div class="student-info-row">
+                        <span class="student-info-label">Student Number:</span>
+                        <span class="student-info-value" id="confirmStudentNo"></span>
+                    </div>
+                    <div class="student-info-row">
+                        <span class="student-info-label">Program:</span>
+                        <span class="student-info-value" id="confirmProgram"></span>
+                    </div>
+                </div>
+                <div class="confirmation-message" id="confirmMessage"></div>
+            </div>
+            <div class="confirmation-footer">
+                <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Cancel</button>
+                <button type="button" class="confirm-action-btn" id="confirmActionBtn" onclick="confirmApplicationStatus()"></button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentStudentId = null;
+        let currentStudentStatus = null;
+        let familyMemberCount = 0;
+        let currentFilter = 'all';
+        let pendingStatusAction = null;
+        let allStudents = []; // Store all students for filtering
 
-        function openModal(studentData = null) {
+        // API Base URL
+        const API_URL = 'http://localhost:5000/api';
+
+        function showConfirmationModal(action) {
+            pendingStatusAction = action;
+            const modal = document.getElementById('confirmationModal');
+            const header = document.getElementById('confirmHeader');
+            const icon = document.getElementById('confirmIcon');
+            const title = document.getElementById('confirmTitle');
+            const subtitle = document.getElementById('confirmSubtitle');
+            const message = document.getElementById('confirmMessage');
+            const actionBtn = document.getElementById('confirmActionBtn');
+            
+            const studentName = `${document.getElementById('firstName').value} ${document.getElementById('middleName').value} ${document.getElementById('lastName').value}`.trim();
+            const studentNo = document.getElementById('studentNo').value;
+            const program = document.getElementById('program').value;
+            
+            document.getElementById('confirmStudentName').textContent = studentName;
+            document.getElementById('confirmStudentNo').textContent = studentNo || 'N/A';
+            document.getElementById('confirmProgram').textContent = program;
+            
+            if (action === 'accepted') {
+                header.className = 'confirmation-header accept';
+                icon.textContent = '✓';
+                title.textContent = 'Accept Application';
+                subtitle.textContent = 'Approve this student for enrollment';
+                message.className = 'confirmation-message accept';
+                message.textContent = '✓ By accepting this application, the student will be enrolled in the system and can proceed with their registration. This action confirms that all requirements have been met.';
+                actionBtn.className = 'confirm-action-btn accept';
+                actionBtn.textContent = 'Confirm Accept';
+            } else {
+                header.className = 'confirmation-header reject';
+                icon.textContent = '✗';
+                title.textContent = 'Reject Application';
+                subtitle.textContent = 'Decline this student application';
+                message.className = 'confirmation-message reject';
+                message.textContent = '✗ By rejecting this application, the student will not be enrolled. This action indicates that the requirements were not met or the application contains issues. The applicant will be notified of this decision.';
+                actionBtn.className = 'confirm-action-btn reject';
+                actionBtn.textContent = 'Confirm Reject';
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeConfirmationModal() {
+            document.getElementById('confirmationModal').classList.remove('active');
+            pendingStatusAction = null;
+        }
+
+        async function confirmApplicationStatus() {
+            if (!currentStudentId || !pendingStatusAction) return;
+
+            try {
+                const response = await fetch(`${API_URL}/students/${currentStudentId}/status`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status: pendingStatusAction })
+                });
+
+                if (response.ok) {
+                    closeConfirmationModal();
+                    closeModal();
+                    alert(`Application ${pendingStatusAction} successfully!`);
+                    await loadStudents();
+                } else {
+                    alert("Error updating application status");
+                }
+            } catch (err) {
+                console.error("Error updating status:", err);
+                alert("Could not connect to server. Make sure the backend is running on port 5000.");
+            }
+        }
+
+        function addFamilyMember(memberData = null) {
+            familyMemberCount++;
+            const memberId = memberData ? `family-${memberData.relation}-${familyMemberCount}` : `family-${familyMemberCount}`;
+            
+            const container = document.getElementById('familyMembersContainer');
+            const memberDiv = document.createElement('div');
+            memberDiv.className = 'family-member';
+            memberDiv.id = memberId;
+            
+            memberDiv.innerHTML = `
+                <div class="family-member-header">
+                    <strong>Family Member ${familyMemberCount}</strong>
+                    <button type="button" class="remove-family-btn" onclick="removeFamilyMember('${memberId}')">Remove</button>
+                </div>
+                
+                <div class="form-group form-group-full">
+                    <label>Relation</label>
+                    <select class="family-relation" required>
+                        <option value="">Select Relation</option>
+                        <option value="Mother" ${memberData && memberData.relation === 'Mother' ? 'selected' : ''}>Mother</option>
+                        <option value="Father" ${memberData && memberData.relation === 'Father' ? 'selected' : ''}>Father</option>
+                        <option value="Guardian" ${memberData && memberData.relation === 'Guardian' ? 'selected' : ''}>Guardian</option>
+                    </select>
+                </div>
+                
+                <div class="form-group form-group-full">
+                    <label>Full Name</label>
+                    <input type="text" class="family-name" value="${memberData ? memberData.name : ''}" required>
+                </div>
+                
+                <div class="form-group form-group-full">
+                    <label>Occupation</label>
+                    <input type="text" class="family-occupation" value="${memberData ? memberData.occupation : ''}">
+                </div>
+                
+                <div class="form-group form-group-full">
+                    <label>Contact No.</label>
+                    <input type="text" class="family-contact" value="${memberData ? memberData.contact : ''}">
+                </div>
+                
+                <div class="form-group form-group-full">
+                    <label>Address</label>
+                    <input type="text" class="family-address" value="${memberData ? memberData.address : ''}">
+                </div>
+            `;
+            
+            container.appendChild(memberDiv);
+        }
+
+        function removeFamilyMember(memberId) {
+            const member = document.getElementById(memberId);
+            if (member) {
+                member.remove();
+            }
+        }
+
+        function collectFamilyData() {
+            const familyMembers = [];
+            const memberDivs = document.querySelectorAll('.family-member');
+            
+            memberDivs.forEach(div => {
+                const member = {
+                    relation: div.querySelector('.family-relation').value,
+                    name: div.querySelector('.family-name').value,
+                    occupation: div.querySelector('.family-occupation').value,
+                    contact: div.querySelector('.family-contact').value,
+                    address: div.querySelector('.family-address').value
+                };
+                familyMembers.push(member);
+            });
+            
+            return familyMembers;
+        }
+
+        function updateStatusIndicator(status) {
+            const indicator = document.getElementById('statusIndicator');
+            
+            if (status === 'pending') {
+                indicator.className = 'status-indicator status-badge pending';
+                indicator.textContent = 'Pending Review';
+            } else if (status === 'accepted') {
+                indicator.className = 'status-indicator status-badge accepted';
+                indicator.textContent = 'Accepted';
+            } else if (status === 'rejected') {
+                indicator.className = 'status-indicator status-badge rejected';
+                indicator.textContent = 'Rejected';
+            } else {
+                indicator.className = '';
+                indicator.textContent = '';
+            }
+        }
+
+        function openModal(studentData = null, viewOnly = false) {
             const modal = document.getElementById('addStudentModal');
             const modalTitle = document.querySelector('.modal-title');
+            const saveBtn = document.getElementById('saveBtn');
+            const cancelBtn = document.querySelector('.cancel-btn');
+            const reviewActions = document.getElementById('reviewActions');
+            
+            document.getElementById('familyMembersContainer').innerHTML = '';
+            familyMemberCount = 0;
             
             if (studentData) {
-                // Edit mode
                 currentStudentId = studentData.id;
-                modalTitle.textContent = 'Edit Student Profile';
+                currentStudentStatus = studentData.status || 'pending';
+                modalTitle.textContent = viewOnly ? 'Student Application - Review' : 'Student Application';
                 
-                // Pre-fill the form with student data
+                updateStatusIndicator(currentStudentStatus);
+                
                 document.getElementById('studentNo').value = studentData.student_no || '';
                 document.getElementById('firstName').value = studentData.first_name || '';
                 document.getElementById('middleName').value = studentData.middle_name || '';
@@ -737,7 +1250,7 @@
                 document.getElementById('phone').value = studentData.phone || '';
                 document.getElementById('street').value = studentData.street || '';
                 document.getElementById('brgy').value = studentData.barangay || '';
-                document.getElementById('city/town').value = studentData.city || '';
+                document.getElementById('city').value = studentData.city || '';
                 document.getElementById('province').value = studentData.province || '';
                 document.getElementById('yearLevel').value = studentData.year_level || '';
                 document.getElementById('admissionDate').value = studentData.admission_date || '';
@@ -746,11 +1259,67 @@
                 document.getElementById('gender').value = studentData.gender || '';
                 document.getElementById('age').value = studentData.age || '';
                 document.getElementById('section').value = studentData.section || '';
+                
+                if (studentData.family_members && studentData.family_members.length > 0) {
+                    studentData.family_members.forEach(member => {
+                        addFamilyMember(member);
+                    });
+                }
+                
+                if (viewOnly) {
+                    const formInputs = document.querySelectorAll('#studentForm input, #studentForm select');
+                    formInputs.forEach(input => {
+                        input.disabled = true;
+                    });
+                    
+                    const familyButtons = document.querySelectorAll('.remove-family-btn, .add-family-btn, .set-btn');
+                    familyButtons.forEach(btn => {
+                        btn.disabled = true;
+                        btn.style.cursor = 'not-allowed';
+                        btn.style.opacity = '0.5';
+                    });
+                    
+                    if (currentStudentStatus === 'pending') {
+                        reviewActions.style.display = 'flex';
+                        saveBtn.style.display = 'none';
+                    } else {
+                        reviewActions.style.display = 'none';
+                        saveBtn.style.display = 'none';
+                    }
+                    
+                    cancelBtn.textContent = 'Close';
+                } else {
+                    const formInputs = document.querySelectorAll('#studentForm input, #studentForm select');
+                    formInputs.forEach(input => {
+                        input.disabled = false;
+                    });
+                    
+                    const familyButtons = document.querySelectorAll('.remove-family-btn, .add-family-btn, .set-btn');
+                    familyButtons.forEach(btn => {
+                        btn.disabled = false;
+                        btn.style.cursor = 'pointer';
+                        btn.style.opacity = '1';
+                    });
+                    
+                    saveBtn.style.display = 'inline-block';
+                    cancelBtn.textContent = 'Cancel';
+                    reviewActions.style.display = 'none';
+                }
             } else {
-                // Add mode
                 currentStudentId = null;
-                modalTitle.textContent = 'Student Profile';
+                currentStudentStatus = null;
+                modalTitle.textContent = 'New Student';
+                updateStatusIndicator(null);
                 document.querySelector('form').reset();
+                
+                const formInputs = document.querySelectorAll('#studentForm input, #studentForm select');
+                formInputs.forEach(input => {
+                    input.disabled = false;
+                });
+                
+                saveBtn.style.display = 'inline-block';
+                cancelBtn.textContent = 'Cancel';
+                reviewActions.style.display = 'none';
             }
             
             modal.classList.add('active');
@@ -759,21 +1328,52 @@
         function closeModal() {
             document.getElementById('addStudentModal').classList.remove('active');
             document.querySelector('form').reset();
+            document.getElementById('familyMembersContainer').innerHTML = '';
+            familyMemberCount = 0;
             currentStudentId = null;
+            currentStudentStatus = null;
         }
 
-        async function addStudent(e) {
+        async function saveStudent(e) {
             e.preventDefault();
 
             const student = {
+                student_no: document.getElementById('studentNo').value,
                 first_name: document.getElementById('firstName').value,
                 middle_name: document.getElementById('middleName').value,
-                last_name: document.getElementById('lastName').value
+                last_name: document.getElementById('lastName').value,
+                ext_name: document.getElementById('extName').value,
+                program: document.getElementById('program').value,
+                curriculum_code: document.getElementById('curriculumCode').value,
+                date_graduated: document.getElementById('dateGraduated').value,
+                lrn: document.getElementById('LRN').value,
+                citizenship: document.getElementById('citizenship').value,
+                religion: document.getElementById('religion').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                street: document.getElementById('street').value,
+                barangay: document.getElementById('brgy').value,
+                city: document.getElementById('city').value,
+                province: document.getElementById('province').value,
+                year_level: document.getElementById('yearLevel').value,
+                admission_date: document.getElementById('admissionDate').value,
+                school_year: document.getElementById('schoolYear').value,
+                period: document.getElementById('period').value,
+                gender: document.getElementById('gender').value,
+                age: document.getElementById('age').value,
+                section: document.getElementById('section').value,
+                family_members: collectFamilyData(),
+                status: currentStudentStatus || 'pending'
             };
 
             try {
-                const response = await fetch("http://localhost:5000/api/students", {
-                    method: "POST",
+                const url = currentStudentId 
+                    ? `${API_URL}/students/${currentStudentId}`
+                    : `${API_URL}/students`;
+                const method = currentStudentId ? "PUT" : "POST";
+
+                const response = await fetch(url, {
+                    method: method,
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(student)
                 });
@@ -781,76 +1381,130 @@
                 if (response.ok) {
                     await loadStudents();
                     closeModal();
+                    alert(currentStudentId ? "Student updated successfully!" : "Student application submitted successfully!");
                 } else {
-                    alert("Error adding student");
+                    alert("Error saving student");
                 }
             } catch (err) {
-                console.error("Error adding student:", err);
-                alert("Could not connect to server");
+                console.error("Error saving student:", err);
+                alert("Could not connect to server. Make sure the backend is running on port 5000.");
             }
         }
 
         async function loadStudents() {
             try {
-                const response = await fetch("http://localhost:5000/api/students");
+                const response = await fetch(`${API_URL}/students`);
                 const students = await response.json();
-
-                const studentList = document.getElementById("studentList");
-                studentList.innerHTML = "";
-
-                students.forEach(student => {
-                    const fullName = `${student.first_name} ${student.middle_name ? student.middle_name + " " : ""}${student.last_name}`;
-                    
-                    const studentItem = document.createElement("div");
-                    studentItem.className = "student-item";
-                    studentItem.onclick = () => viewStudent(fullName, student.id);
-                    studentItem.innerHTML = `
-                        <span class="student-name">${fullName}</span>
-                        <span class="arrow">›</span>
-                    `;
-                    studentList.appendChild(studentItem);
-                });
+                
+                allStudents = students; // Store for filtering
+                displayStudents(students);
             } catch (err) {
                 console.error("Error loading students:", err);
+                const studentList = document.getElementById("studentList");
+                studentList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⚠️</div>
+                        <p>Error loading applications. Make sure the backend server is running on port 5000.</p>
+                    </div>
+                `;
             }
         }
 
-        document.addEventListener("DOMContentLoaded", loadStudents);
+        function displayStudents(students) {
+            const studentList = document.getElementById("studentList");
+            studentList.innerHTML = "";
 
-        async function viewStudent(name, id) {
-            try {
-                // Fetch full student details from the server
-                const response = await fetch(`http://localhost:5000/api/students/${id}`);
-                if (response.ok) {
-                    const studentData = await response.json();
-                    openModal(studentData);
-                } else {
-                    alert('Error loading student details');
-                }
-            } catch (err) {
-                console.error("Error fetching student:", err);
-                alert('Could not connect to server');
+            const filteredStudents = currentFilter === 'all' 
+                ? students 
+                : students.filter(s => (s.status || 'pending') === currentFilter);
+
+            if (filteredStudents.length === 0) {
+                studentList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <p>No ${currentFilter === 'all' ? '' : currentFilter} applications found</p>
+                    </div>
+                `;
+                return;
             }
-        }
 
-        function filterStudents() {
-            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
-            const students = document.querySelectorAll('.student-item');
-            
-            students.forEach(student => {
-                const name = student.querySelector('.student-name').textContent.toLowerCase();
-                if (name.includes(searchTerm)) {
-                    student.style.display = 'flex';
-                } else {
-                    student.style.display = 'none';
-                }
+            filteredStudents.forEach(student => {
+                const status = student.status || 'pending';
+                const fullName = `${student.first_name} ${student.middle_name ? student.middle_name + " " : ""}${student.last_name}`;
+                
+                const studentItem = document.createElement("div");
+                studentItem.className = `student-item ${status}`;
+                studentItem.onclick = () => viewStudent(student.id);
+                studentItem.innerHTML = `
+                    <div class="student-info">
+                        <div class="student-name">${fullName}</div>
+                        <div class="student-status">
+                            <span class="status-badge ${status}">${status}</span>
+                        </div>
+                    </div>
+                    <span class="arrow">›</span>
+                `;
+                studentList.appendChild(studentItem);
             });
         }
 
-        function showPage(page) {
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => item.classList.remove('active'));
-            event.target.closest('.menu-item').classList.add('active');
+        async function viewStudent(id) {
+            console.log('Attempting to fetch student with ID:', id);
+            console.log('URL:', `${API_URL}/students/${id}`);
+            
+            try {
+                const response = await fetch(`${API_URL}/students/${id}`);
+                console.log('Response status:', response.status);
+                
+                if (response.ok) {
+                    const studentData = await response.json();
+                    console.log('Student data received:', studentData);
+                    openModal(studentData, true);
+                } else {
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    alert(`Error loading student details: ${response.status} - ${errorText}`);
+                }
+            } catch (err) {
+                console.error("Error fetching student:", err);
+                alert(`Could not connect to server: ${err.message}\nMake sure the backend is running on port 5000.`);
+            }
+        }
+
+        function filterByStatus(status) {
+            currentFilter = status;
+            
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-status="${status}"]`).classList.add('active');
+            
+            displayStudents(allStudents);
+        }
+
+        async function searchStudents() {
+            const searchTerm = document.getElementById('searchBox').value;
+            
+            if (searchTerm.trim() === '') {
+                // If search is empty, just display all students with current filter
+                displayStudents(allStudents);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/students/search?q=${encodeURIComponent(searchTerm)}`);
+                const students = await response.json();
+                allStudents = students;
+                displayStudents(students);
+            } catch (err) {
+                console.error("Error searching students:", err);
+                // Fallback to client-side search if API fails
+                const filtered = allStudents.filter(student => {
+                    const fullName = `${student.first_name} ${student.middle_name || ''} ${student.last_name}`.toLowerCase();
+                    return fullName.includes(searchTerm.toLowerCase());
+                });
+                displayStudents(filtered);
+            }
         }
 
         document.getElementById('addStudentModal').addEventListener('click', function(e) {
@@ -858,6 +1512,15 @@
                 closeModal();
             }
         });
+
+        document.getElementById('confirmationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeConfirmationModal();
+            }
+        });
+
+        // Load students when page loads
+        document.addEventListener("DOMContentLoaded", loadStudents);
     </script>
 </body>
 </html>

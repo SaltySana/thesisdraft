@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Dashboard</title>
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
             margin: 0;
@@ -68,314 +69,283 @@
             overflow-y: auto;
         }
 
-        .content-wrapper {
-            background-color: white;
-            border-radius: 8px;
-            padding: 30px;
-        }
-
         .page-title {
             color: #7d1414;
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 25px;
-            font-weight: normal;
+            font-weight: 600;
         }
 
-        .header-section {
+        /* Announcement Carousel */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+
+        .carousel-wrapper {
             display: flex;
-            justify-content: space-between;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
             align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #7d1414 0%, #9a3232 100%);
+            color: white;
+            padding: 40px;
+            position: relative;
+        }
+
+        .carousel-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+            pointer-events: none;
+        }
+
+        .carousel-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .carousel-content h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .carousel-content p {
+            font-size: 18px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: white;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-arrow:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .carousel-arrow.left {
+            left: 20px;
+        }
+
+        .carousel-arrow.right {
+            right: 20px;
+        }
+
+        /* Bottom Charts Section */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 25px;
+            height: calc(100vh - 500px);
+            min-height: 400px;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-header {
             margin-bottom: 20px;
         }
 
-        .add-button {
-            background-color: #7d1414;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+        .chart-title {
+            font-size: 20px;
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 0.3px;
+        }
+
+        .grade-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .grade-btn {
+            padding: 8px 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .grade-btn:hover {
+            border-color: #7d1414;
+            color: #7d1414;
+            transform: translateY(-2px);
+        }
+
+        .grade-btn.active {
+            background: linear-gradient(135deg, #7d1414 0%, #9a3232 100%);
+            color: white;
+            border-color: #7d1414;
+            box-shadow: 0 4px 12px rgba(125, 20, 20, 0.3);
+        }
+
+        .toggle-container {
+            display: flex;
+            gap: 5px;
+            background: #f0f0f0;
+            padding: 4px;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        .toggle-btn {
+            padding: 6px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .toggle-btn.active {
+            background: white;
+            color: #7d1414;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .chart-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 250px;
+        }
+
+        .pie-chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 240px;
+            max-height: 240px;
+            margin: 0 auto;
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 14px;
         }
 
-        .add-button:hover {
-            background-color: #5d0f0f;
-        }
-
-        .search-box {
-            padding: 10px 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 200px;
-            font-size: 14px;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: #7d1414;
-        }
-
-        .student-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
-            max-height: 500px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-
-        .student-list::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .student-list::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        .legend-color {
+            width: 16px;
+            height: 16px;
             border-radius: 4px;
         }
 
-        .student-list::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
-
-        .student-list::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        .student-item {
-            background-color: #d4d4d4;
-            padding: 18px 20px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .student-item:hover {
-            background-color: #c4c4c4;
-        }
-
-        .student-name {
-            font-size: 15px;
-            color: #333;
-        }
-
-        .arrow {
-            color: #666;
-            font-size: 18px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background-color: white;
-            padding: 0;
-            border-radius: 12px;
-            width: 700px;
-            max-width: 95%;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .modal-header {
-            background-color: #f5f5f5;
-            padding: 20px 30px;
-            border-radius: 12px 12px 0 0;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .modal-title {
-            font-size: 20px;
-            color: #333;
-            font-weight: normal;
-        }
-
-        .modal-body {
-            padding: 30px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            overflow-y: auto;
-            max-height: calc(90vh - 180px);
-        }
-
-        .form-section {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .section-title {
-            font-size: 16px;
+        .legend-label {
             color: #333;
             font-weight: 600;
-            margin-bottom: 5px;
-            margin-top: 15px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 8px;
         }
 
-        .fieldset {
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 10px;
-        }
-
-        .fieldset legend {
-            font-size: 14px;
+        .legend-value {
             color: #666;
-            padding: 0 8px;
         }
 
-        .form-group {
-            margin-bottom: 12px;
-            display: grid;
-            grid-template-columns: 110px 1fr auto;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-group label {
-            font-size: 13px;
-            color: #333;
-            text-align: left;
-        }
-
-        .form-group input,
-        .form-group select {
-            padding: 6px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 13px;
-            background-color: white;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #7d1414;
-        }
-
-        .set-btn {
-            padding: 6px 16px;
-            background-color: #e0e0e0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .set-btn:hover {
-            background-color: #d0d0d0;
-        }
-
-        .year-level-group {
-            display: grid;
-            grid-template-columns: 110px 1fr 20px;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .year-level-group label {
-            font-size: 13px;
-            color: #333;
-        }
-
-        .year-level-group input {
-            padding: 6px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 13px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .form-group-full {
-            grid-template-columns: 110px 1fr;
-        }
-
-        .modal-footer {
-            padding: 20px 30px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            border-top: 1px solid #ddd;
-        }
-
-        .cancel-btn {
-            padding: 10px 30px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .cancel-btn:hover {
-            background-color: #f5f5f5;
-        }
-
-        .save-btn {
-            padding: 10px 30px;
-            background-color: #7d1414;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .save-btn:hover {
-            background-color: #5d0f0f;
-        }
-
-        .left-column {
-            grid-column: 1;
-        }
-
-        .right-column {
-            grid-column: 2;
-        }
-
-        /* Responsive Design - Sidebar stays on side */
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 200px;
-                padding: 15px 10px;
+        @media (max-width: 1200px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+                height: auto;
             }
 
-            .menu-item {
-                font-size: 14px;
-                padding: 12px 8px;
-            }
-
-            .modal-content {
-                width: 90%;
+            .pie-chart-wrapper {
+                max-width: 280px;
+                max-height: 280px;
             }
         }
 
@@ -401,93 +371,36 @@
                 padding: 15px;
             }
 
-            .content-wrapper {
-                padding: 20px;
+            .carousel-container {
+                height: 250px;
             }
 
-            .header-section {
+            .carousel-content h2 {
+                font-size: 24px;
+            }
+
+            .carousel-content p {
+                font-size: 16px;
+            }
+
+            .carousel-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .grade-buttons {
+                justify-content: center;
+            }
+
+            .chart-controls {
                 flex-direction: column;
-                gap: 15px;
                 align-items: stretch;
             }
 
-            .search-box {
+            .toggle-container {
                 width: 100%;
-            }
-
-            .modal-content {
-                width: 95%;
-                max-height: 90vh;
-            }
-
-            .modal-body {
-                grid-template-columns: 1fr;
-                padding: 20px;
-                gap: 15px;
-            }
-
-            .left-column,
-            .right-column {
-                grid-column: 1;
-            }
-
-            .form-group {
-                grid-template-columns: 90px 1fr auto;
-                gap: 8px;
-            }
-
-            .year-level-group {
-                grid-template-columns: 90px 1fr 20px;
-            }
-
-            .modal-footer {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .cancel-btn,
-            .save-btn {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .sidebar {
-                width: 150px;
-                padding: 10px 5px;
-            }
-
-            .menu-item span {
-                font-size: 12px;
-            }
-
-            .form-group {
-                grid-template-columns: 1fr;
-                gap: 5px;
-            }
-
-            .form-group label {
-                text-align: left;
-            }
-
-            .year-level-group {
-                grid-template-columns: 1fr;
-            }
-
-            .year-level-group span {
-                display: none;
-            }
-
-            .set-btn {
-                width: 100%;
-            }
-
-            .student-item {
-                padding: 15px;
-            }
-
-            .page-title {
-                font-size: 20px;
+                justify-content: center;
             }
         }
     </style>
@@ -495,22 +408,382 @@
 <body>
     <div class="sidebar">
         <img class="image" src="euC (1).png" alt="Logo" style="width: 50%; margin-bottom: 20px; align-self: center;">
-        <a href="dashboard.html" class="menu-item active" onclick="showPage('dashboard')">
+        <a href="dashboard.html" class="menu-item active">
             <div class="menu-icon">◷</div>
             <span>Dashboard</span>
         </a>
-        <a href="index.html" class="menu-item " onclick="showPage('registration')">
+        <a href="index.html" class="menu-item">
             <div class="menu-icon">◷</div>
             <span>Registration</span>
         </a>
-        <a href="sp.html" class="menu-item" onclick="showPage('student-profile')">
+        <a href="sp.html" class="menu-item">
             <div class="menu-icon">◷</div>
             <span>Student Profile</span>
         </a>
-        <a href="section.html" class="menu-item" onclick="showPage('section-list')">
+        <a href="section.html" class="menu-item">
             <div class="menu-icon">◷</div>
             <span>Section List</span>
         </a>
     </div>
+
+    <div class="main-content">
+        <h1 class="page-title">Dashboard</h1>
+
+        <!-- Announcement Carousel -->
+        <div class="carousel-container">
+            <div class="carousel-wrapper" id="carouselWrapper">
+                <div class="carousel-slide">
+                    <div class="carousel-content">
+                        <h2>Welcome to the New School Year!</h2>
+                        <p>We are excited to announce the beginning of Academic Year 2024-2025. Let's make this year successful together!</p>
+                    </div>
+                </div>
+                <div class="carousel-slide" style="background: linear-gradient(135deg, #7d1414 0%, #9a3232 100%);">
+                    <div class="carousel-content">
+                        <h2>Enrollment Period Extended</h2>
+                        <p>Good news! The enrollment period has been extended until October 30th. Don't miss this opportunity to register your students.</p>
+                    </div>
+                </div>
+                <div class="carousel-slide" style="background: linear-gradient(135deg, #7d1414 0%, #9a3232 100%);">
+                    <div class="carousel-content">
+                        <h2>Parent-Teacher Conference</h2>
+                        <p>Join us for the upcoming Parent-Teacher Conference on November 15th. Let's work together for your child's success!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="carousel-arrow left" onclick="moveCarousel(-1)">‹</button>
+            <button class="carousel-arrow right" onclick="moveCarousel(1)">›</button>
+            
+            <div class="carousel-nav" id="carouselNav">
+                <span class="carousel-dot active" onclick="goToSlide(0)"></span>
+                <span class="carousel-dot" onclick="goToSlide(1)"></span>
+                <span class="carousel-dot" onclick="goToSlide(2)"></span>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <!-- Enrollment Pie Chart -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Previous Students Enrollment Status</h3>
+                    <div class="chart-controls">
+                        <div class="grade-buttons">
+                            <button class="grade-btn active" onclick="switchGrade(7)">Grade 7</button>
+                            <button class="grade-btn" onclick="switchGrade(8)">Grade 8</button>
+                            <button class="grade-btn" onclick="switchGrade(9)">Grade 9</button>
+                            <button class="grade-btn" onclick="switchGrade(10)">Grade 10</button>
+                        </div>
+                        <div class="toggle-container">
+                            <button class="toggle-btn active" onclick="toggleDisplay('percentage')">Percentage</button>
+                            <button class="toggle-btn" onclick="toggleDisplay('number')">Number</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-content">
+                    <div class="pie-chart-wrapper">
+                        <canvas id="enrollmentChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-legend" id="chartLegend"></div>
+            </div>
+
+            <!-- Line Chart -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Daily Enrollment Tracker (Last 7 Days)</h3>
+                </div>
+                <div class="chart-content">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Carousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const wrapper = document.getElementById('carouselWrapper');
+
+        function updateCarousel() {
+            wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function moveCarousel(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+            if (currentSlide >= slides.length) currentSlide = 0;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+
+        // Auto-advance carousel
+        setInterval(() => moveCarousel(1), 5000);
+
+        // Enrollment data for different grades
+        const enrollmentData = {
+            7: { enrolled: 85, notEnrolled: 15 },
+            8: { enrolled: 92, notEnrolled: 8 },
+            9: { enrolled: 78, notEnrolled: 22 },
+            10: { enrolled: 88, notEnrolled: 12 }
+        };
+
+        let currentGrade = 7;
+        let displayMode = 'percentage';
+
+        // Initialize Pie Chart
+        const ctx = document.getElementById('enrollmentChart').getContext('2d');
+        let enrollmentChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Enrolled', 'Not Enrolled'],
+                datasets: [{
+                    data: [enrollmentData[7].enrolled, enrollmentData[7].notEnrolled],
+                    backgroundColor: [
+                        'rgba(125, 20, 20, 0.9)',
+                        'rgba(200, 200, 200, 0.7)'
+                    ],
+                    borderWidth: 0,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                
+                                if (displayMode === 'percentage') {
+                                    return `${label}: ${percentage}%`;
+                                } else {
+                                    return `${label}: ${value} students`;
+                                }
+                            }
+                        },
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        borderRadius: 8,
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+
+        function updateLegend() {
+            const data = enrollmentData[currentGrade];
+            const total = data.enrolled + data.notEnrolled;
+            const legendHtml = `
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(125, 20, 20, 0.9);"></div>
+                    <span class="legend-label">Enrolled:</span>
+                    <span class="legend-value">${displayMode === 'percentage' ? ((data.enrolled / total) * 100).toFixed(1) + '%' : data.enrolled + ' students'}</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: rgba(200, 200, 200, 0.7);"></div>
+                    <span class="legend-label">Not Enrolled:</span>
+                    <span class="legend-value">${displayMode === 'percentage' ? ((data.notEnrolled / total) * 100).toFixed(1) + '%' : data.notEnrolled + ' students'}</span>
+                </div>
+            `;
+            document.getElementById('chartLegend').innerHTML = legendHtml;
+        }
+
+        function switchGrade(grade) {
+            currentGrade = grade;
+            
+            // Update button states
+            document.querySelectorAll('.grade-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update chart data
+            const data = enrollmentData[grade];
+            enrollmentChart.data.datasets[0].data = [data.enrolled, data.notEnrolled];
+            enrollmentChart.update();
+            
+            updateLegend();
+        }
+
+        function toggleDisplay(mode) {
+            displayMode = mode;
+            
+            // Update button states
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateLegend();
+        }
+
+        // Initialize legend
+        updateLegend();
+
+        // Generate last 7 days labels and data
+        function getLast7Days() {
+            const days = [];
+            const today = new Date();
+            
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                
+                const month = date.toLocaleDateString('en-US', { month: 'short' });
+                const day = date.getDate();
+                days.push(`${month} ${day}`);
+            }
+            
+            return days;
+        }
+
+        // Fetch enrollment data from API
+        async function fetchEnrollmentData() {
+            try {
+                const response = await fetch('http://localhost:5000/api/enrollment/daily');
+                if (response.ok) {
+                    const data = await response.json();
+                    return data;
+                } else {
+                    console.error('Error fetching enrollment data');
+                    return generateSampleData();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                return generateSampleData();
+            }
+        }
+
+        // Generate sample data for demonstration
+        function generateSampleData() {
+            const data = [];
+            for (let i = 0; i < 7; i++) {
+                data.push(Math.floor(Math.random() * 15) + 5);
+            }
+            return data;
+        }
+
+        // Initialize Line Chart
+        const trendCtx = document.getElementById('trendChart').getContext('2d');
+        let trendChart;
+
+        async function initializeTrendChart() {
+            const labels = getLast7Days();
+            const enrollmentCounts = await fetchEnrollmentData();
+
+            trendChart = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Students Enrolled',
+                        data: enrollmentCounts,
+                        borderColor: 'rgba(125, 20, 20, 1)',
+                        backgroundColor: 'rgba(125, 20, 20, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: 'rgba(125, 20, 20, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        pointHoverBackgroundColor: 'rgba(125, 20, 20, 1)',
+                        pointHoverBorderColor: '#fff',
+                        pointHoverBorderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            borderRadius: 8,
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 13 },
+                            callbacks: {
+                                label: function(context) {
+                                    return `Enrolled: ${context.parsed.y} student${context.parsed.y !== 1 ? 's' : ''}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12
+                                },
+                                stepSize: 5,
+                                callback: function(value) {
+                                    return Number.isInteger(value) ? value : '';
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Number of Students',
+                                font: {
+                                    size: 13,
+                                    weight: 'bold'
+                                },
+                                color: '#666'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Date',
+                                font: {
+                                    size: 13,
+                                    weight: 'bold'
+                                },
+                                color: '#666'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize the chart
+        initializeTrendChart();
+    </script>
 </body>
 </html>

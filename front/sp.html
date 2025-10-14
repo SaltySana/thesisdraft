@@ -191,34 +191,61 @@
         .modal-content {
             background-color: white;
             padding: 0;
-            border-radius: 12px;
+            border-radius: 16px;
             width: 800px;
             max-width: 95%;
             max-height: 85vh;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.05);
             overflow: hidden;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .modal-header {
-            background-color: #f5f5f5;
-            padding: 20px 30px;
-            border-radius: 12px 12px 0 0;
-            border-bottom: 1px solid #ddd;
+            background: linear-gradient(135deg, #7d1414 0%, #9a3232 100%);
+            padding: 25px 35px;
+            border-radius: 16px 16px 0 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+            pointer-events: none;
         }
 
         .modal-title {
-            font-size: 20px;
-            color: #333;
-            font-weight: normal;
+            font-size: 22px;
+            color: white;
+            font-weight: 600;
+            position: relative;
+            letter-spacing: 0.3px;
         }
 
         .modal-body {
-            padding: 30px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 35px;
+            padding: 30px 35px;
+            background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%);
             overflow-y: auto;
             flex: 1;
             max-height: calc(85vh - 140px);
@@ -240,6 +267,58 @@
 
         .modal-body::-webkit-scrollbar-thumb:hover {
             background: #555;
+        }
+
+        .modal-footer {
+            padding: 20px 35px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            border-top: 2px solid #f0f0f0;
+            background: linear-gradient(to top, #fafafa 0%, #ffffff 100%);
+            border-radius: 0 0 16px 16px;
+            flex-shrink: 0;
+        }
+
+        .cancel-btn {
+            padding: 12px 32px;
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn:hover {
+            background-color: #f8f8f8;
+            border-color: #b0b0b0;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .save-btn {
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #7d1414 0%, #9a3232 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(125, 20, 20, 0.3);
+        }
+
+        .save-btn:hover {
+            background: linear-gradient(135deg, #5d0f0f 0%, #7d1414 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(125, 20, 20, 0.4);
+        }
+
+        .save-btn:active {
+            transform: translateY(0);
         }
 
         .form-section {
@@ -342,43 +421,6 @@
             grid-template-columns: 110px 1fr;
         }
 
-        .modal-footer {
-            padding: 20px 30px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            border-top: 1px solid #ddd;
-            flex-shrink: 0;
-            background-color: white;
-        }
-
-        .cancel-btn {
-            padding: 10px 30px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .cancel-btn:hover {
-            background-color: #f5f5f5;
-        }
-
-        .save-btn {
-            padding: 10px 30px;
-            background-color: #7d1414;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .save-btn:hover {
-            background-color: #5d0f0f;
-        }
-
         .left-column {
             grid-column: 1;
         }
@@ -440,7 +482,6 @@
             max-height: none;
         }
 
-        /* Responsive Design */
         @media (max-width: 1024px) {
             .sidebar {
                 width: 200px;
@@ -792,11 +833,15 @@
     <script>
         let currentStudentId = null;
         let familyMemberCount = 0;
-        let familyMembers = [];
+
+        // Helper to ensure empty string for any falsy value
+        function safeValue(val) {
+            return (val === undefined || val === null || val === 'null') ? '' : val;
+        }
 
         function addFamilyMember(memberData = null) {
             familyMemberCount++;
-            const memberId = memberData ? memberData.id : `family-${familyMemberCount}`;
+            const memberId = `family-${Date.now()}-${familyMemberCount}`;
             
             const container = document.getElementById('familyMembersContainer');
             const memberDiv = document.createElement('div');
@@ -821,18 +866,17 @@
                 
                 <div class="form-group form-group-full">
                     <label>Full Name</label>
-                    <input type="text" class="family-name" value="${memberData ? memberData.name : ''}" required>
+                    <input type="text" class="family-name" value="${memberData ? safeValue(memberData.name) : ''}" required>
                 </div>
-                
                 
                 <div class="form-group form-group-full">
                     <label>Contact No.</label>
-                    <input type="text" class="family-contact" value="${memberData ? memberData.contact : ''}">
+                    <input type="text" class="family-contact" value="${memberData ? safeValue(memberData.contact) : ''}">
                 </div>
                 
                 <div class="form-group form-group-full">
                     <label>Address</label>
-                    <input type="text" class="family-address" value="${memberData ? memberData.address : ''}">
+                    <input type="text" class="family-address" value="${memberData ? safeValue(memberData.address) : ''}">
                 </div>
             `;
             
@@ -843,6 +887,15 @@
             const member = document.getElementById(memberId);
             if (member) {
                 member.remove();
+                // Renumber remaining family members
+                const members = document.querySelectorAll('.family-member');
+                familyMemberCount = members.length;
+                members.forEach((member, index) => {
+                    const header = member.querySelector('.family-member-header strong');
+                    if (header) {
+                        header.textContent = `Family Member ${index + 1}`;
+                    }
+                });
             }
         }
 
@@ -866,43 +919,46 @@
         function openModal(studentData = null) {
             const modal = document.getElementById('addStudentModal');
             const modalTitle = document.querySelector('.modal-title');
-            
-            // Clear family members
+            const form = modal.querySelector('form');
+
+            // Always reset the form before filling data
+            form.reset();
             document.getElementById('familyMembersContainer').innerHTML = '';
             familyMemberCount = 0;
-            
+
             if (studentData) {
                 currentStudentId = studentData.id;
                 modalTitle.textContent = 'Edit Student Profile';
-                
-                // Pre-fill the form with student data
-                document.getElementById('studentNo').value = studentData.student_no || '';
-                document.getElementById('firstName').value = studentData.first_name || '';
-                document.getElementById('middleName').value = studentData.middle_name || '';
-                document.getElementById('lastName').value = studentData.last_name || '';
-                document.getElementById('extName').value = studentData.ext_name || '';
-                document.getElementById('program').value = studentData.program || '';
-                document.getElementById('curriculumCode').value = studentData.curriculum_code || '';
-                document.getElementById('dateGraduated').value = studentData.date_graduated || '';
-                document.getElementById('LRN').value = studentData.lrn || '';
-                document.getElementById('citizenship').value = studentData.citizenship || '';
-                document.getElementById('religion').value = studentData.religion || '';
-                document.getElementById('email').value = studentData.email || '';
-                document.getElementById('phone').value = studentData.phone || '';
-                document.getElementById('street').value = studentData.street || '';
-                document.getElementById('brgy').value = studentData.barangay || '';
-                document.getElementById('city').value = studentData.city || '';
-                document.getElementById('province').value = studentData.province || '';
-                document.getElementById('yearLevel').value = studentData.year_level || '';
-                document.getElementById('admissionDate').value = studentData.admission_date || '';
-                document.getElementById('schoolYear').value = studentData.school_year || '';
-                document.getElementById('period').value = studentData.period || '';
-                document.getElementById('gender').value = studentData.gender || '';
-                document.getElementById('age').value = studentData.age || '';
-                document.getElementById('section').value = studentData.section || '';
-                
+
+                // Fill in all the basic fields
+                document.getElementById('studentNo').value = safeValue(studentData.student_no);
+                document.getElementById('firstName').value = safeValue(studentData.first_name);
+                document.getElementById('middleName').value = safeValue(studentData.middle_name);
+                document.getElementById('lastName').value = safeValue(studentData.last_name);
+                document.getElementById('extName').value = safeValue(studentData.ext_name);
+                document.getElementById('program').value = safeValue(studentData.program);
+                document.getElementById('curriculumCode').value = safeValue(studentData.curriculum_code);
+                document.getElementById('dateGraduated').value = safeValue(studentData.date_graduated);
+                document.getElementById('LRN').value = safeValue(studentData.lrn);
+                document.getElementById('citizenship').value = safeValue(studentData.citizenship);
+                document.getElementById('religion').value = safeValue(studentData.religion);
+                document.getElementById('email').value = safeValue(studentData.email);
+                document.getElementById('phone').value = safeValue(studentData.phone);
+                document.getElementById('street').value = safeValue(studentData.street);
+                document.getElementById('brgy').value = safeValue(studentData.barangay);
+                document.getElementById('city').value = safeValue(studentData.city);
+                document.getElementById('province').value = safeValue(studentData.province);
+                document.getElementById('yearLevel').value = safeValue(studentData.year_level);
+                document.getElementById('admissionDate').value = safeValue(studentData.admission_date);
+                document.getElementById('schoolYear').value = safeValue(studentData.school_year);
+                document.getElementById('period').value = safeValue(studentData.period);
+                document.getElementById('gender').value = safeValue(studentData.gender);
+                document.getElementById('age').value = safeValue(studentData.age);
+                document.getElementById('section').value = safeValue(studentData.section);
+
                 // Load family members if they exist
-                if (studentData.family_members && studentData.family_members.length > 0) {
+                console.log("Family members from DB:", studentData.family_members);
+                if (studentData.family_members && Array.isArray(studentData.family_members) && studentData.family_members.length > 0) {
                     studentData.family_members.forEach(member => {
                         addFamilyMember(member);
                     });
@@ -910,15 +966,16 @@
             } else {
                 currentStudentId = null;
                 modalTitle.textContent = 'Student Profile';
-                document.querySelector('form').reset();
             }
-            
+
             modal.classList.add('active');
         }
 
         function closeModal() {
-            document.getElementById('addStudentModal').classList.remove('active');
-            document.querySelector('form').reset();
+            const modal = document.getElementById('addStudentModal');
+            const form = modal.querySelector('form');
+            modal.classList.remove('active');
+            form.reset();
             document.getElementById('familyMembersContainer').innerHTML = '';
             familyMemberCount = 0;
             currentStudentId = null;
@@ -956,7 +1013,7 @@
             };
 
             try {
-                const url = currentStudentId 
+                const url = currentStudentId
                     ? `http://localhost:5000/api/students/${currentStudentId}`
                     : "http://localhost:5000/api/students";
                 const method = currentStudentId ? "PUT" : "POST";
@@ -985,6 +1042,8 @@
                 const response = await fetch("http://localhost:5000/api/students");
                 const students = await response.json();
 
+                console.log("Fetched students:", students);
+
                 const studentList = document.getElementById("studentList");
                 studentList.innerHTML = "";
 
@@ -993,7 +1052,7 @@
                     
                     const studentItem = document.createElement("div");
                     studentItem.className = "student-item";
-                    studentItem.onclick = () => viewStudent(fullName, student.id);
+                    studentItem.onclick = () => viewStudent(student.id);
                     studentItem.innerHTML = `
                         <span class="student-name">${fullName}</span>
                         <span class="arrow">›</span>
@@ -1005,13 +1064,14 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", loadStudents);
-
-        async function viewStudent(name, id) {
+        async function viewStudent(id) {
+            console.log("Requesting student with id:", id);
             try {
                 const response = await fetch(`http://localhost:5000/api/students/${id}`);
+                console.log("Response status:", response.status);
                 if (response.ok) {
                     const studentData = await response.json();
+                    console.log("Student data received:", studentData);
                     openModal(studentData);
                 } else {
                     alert('Error loading student details');
@@ -1042,10 +1102,16 @@
             event.target.closest('.menu-item').classList.add('active');
         }
 
+        // Close modal when clicking outside
         document.getElementById('addStudentModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
             }
+        });
+
+        // Load students on page load
+        document.addEventListener("DOMContentLoaded", function() {
+            loadStudents();
         });
     </script>
 </body>

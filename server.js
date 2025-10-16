@@ -171,9 +171,46 @@ app.put("/api/students/:id", (req, res) => {
         res.json({ id: studentId, ...s });
     });
 });
-
+app.post("/api/login", (req, res) => {
+    const { username, password } = req.body;
+    
+    console.log("\n=== LOGIN ATTEMPT ===");
+    console.log("Username:", username);
+    
+    const sql = "SELECT * FROM accounts WHERE username = ? AND password = ?";
+    
+    db.query(sql, [username, password], (err, results) => {
+        if (err) {
+            console.error("❌ Database error:", err);
+            return res.status(500).json({ 
+                success: false, 
+                message: "Server error. Please try again later." 
+            });
+        }
+        
+        console.log("Query results:", results.length);
+        
+        if (results.length > 0) {
+            console.log("✅ Login successful for user:", username);
+            res.json({ 
+                success: true, 
+                message: "Login successful",
+                user: {
+                    username: results[0].username
+                }
+            });
+        } else {
+            console.log("❌ Invalid credentials for user:", username);
+            res.status(401).json({ 
+                success: false, 
+                message: "Invalid username or password" 
+            });
+        }
+    });
+});
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
     console.log(`Database: school_db`);
 });
+

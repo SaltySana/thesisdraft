@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,10 +15,11 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             height: 100vh;
             overflow: hidden;
+            background: #f0f2f5;
         }
 
         .sidebar {
@@ -97,23 +99,31 @@
         }
 
         .filter-tab {
-            padding: 8px 16px;
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            background: #ebebeb 0%;
+            color: rgb(0, 0, 0);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 10px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 14px;
-            transition: all 0.3s;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(11, 4, 4, 0.3);
         }
 
         .filter-tab.active {
-            background-color: #7d1414;
+            background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
             color: white;
             border-color: #7d1414;
+            box-shadow: 0 4px 12px rgba(125, 20, 20, 0.3);
         }
 
         .filter-tab:hover {
-            background-color: #e0e0e0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(125, 20, 20, 0.4);
         }
 
         .filter-tab.active:hover {
@@ -234,6 +244,7 @@
             font-size: 18px;
         }
 
+        /* MODERN MODAL STYLES */
         .modal {
             display: none;
             position: fixed;
@@ -241,10 +252,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal.active {
@@ -252,243 +270,305 @@
         }
 
         .modal-content {
-            background-color: white;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             padding: 0;
-            border-radius: 12px;
-            width: 800px;
+            border-radius: 24px;
+            width: 900px;
             max-width: 95%;
-            max-height: 85vh;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-height: 90vh;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .modal-header {
-            background-color: #f5f5f5;
-            padding: 20px 30px;
-            border-radius: 12px 12px 0 0;
-            border-bottom: 1px solid #ddd;
+            background: linear-gradient(135deg, rgba(154, 50, 50, 0.95) 0%, rgba(69, 11, 11, 0.95) 100%);
+            padding: 32px 40px;
+            border-radius: 24px 24px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            pointer-events: none;
         }
 
         .modal-title {
-            font-size: 20px;
-            color: #333;
-            font-weight: normal;
+            font-size: 28px;
+            color: white;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            z-index: 1;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .status-indicator {
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 13px;
             font-weight: 600;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .modal-body {
-            padding: 30px;
+            padding: 40px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 32px;
             overflow-y: auto;
             flex: 1;
-            max-height: calc(85vh - 140px);
+            max-height: calc(90vh - 200px);
         }
 
         .modal-body::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
 
         .modal-body::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
         }
 
         .modal-body::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
-
-        .modal-body::-webkit-scrollbar-thumb:hover {
-            background: #555;
+            background: linear-gradient(180deg, #7d1414 0%, #5d0f0f 100%);
+            border-radius: 10px;
         }
 
         .section-title {
-            font-size: 16px;
-            color: #333;
-            font-weight: 600;
-            margin-bottom: 5px;
-            margin-top: 15px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 8px;
+            font-size: 18px;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 8px;
+            margin-top: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.3px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, #7d1414 0%, #5d0f0f 100%);
+            border-radius: 2px;
         }
 
         .fieldset {
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 10px;
+            border: 2px solid #e8e8e8;
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 16px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .fieldset legend {
-            font-size: 14px;
-            color: #666;
-            padding: 0 8px;
+            font-size: 15px;
+            color: #7d1414;
+            padding: 0 12px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 20px;
             display: grid;
-            grid-template-columns: 110px 1fr auto;
+            grid-template-columns: 120px 1fr auto;
             align-items: center;
-            gap: 10px;
+            gap: 16px;
         }
 
         .form-group label {
-            font-size: 13px;
-            color: #333;
+            font-size: 14px;
+            color: #495057;
             text-align: left;
+            font-weight: 500;
+            letter-spacing: 0.2px;
         }
 
         .form-group input,
         .form-group select {
-            padding: 6px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 13px;
-            background-color: white;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            background: white;
             width: 100%;
             box-sizing: border-box;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
             border-color: #7d1414;
+            box-shadow: 0 0 0 4px rgba(125, 20, 20, 0.1);
+            transform: translateY(-1px);
         }
 
-        .form-group input:disabled {
+        .form-group input:disabled,
+        .form-group select:disabled {
             background-color: #f5f5f5;
             cursor: not-allowed;
         }
 
         .set-btn {
-            padding: 6px 16px;
-            background-color: #e0e0e0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
             cursor: pointer;
             white-space: nowrap;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(125, 20, 20, 0.3);
         }
 
         .set-btn:hover {
-            background-color: #d0d0d0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(125, 20, 20, 0.4);
+        }
+
+        .set-btn:active {
+            transform: translateY(0);
         }
 
         .year-level-group {
             display: grid;
-            grid-template-columns: 110px 1fr 20px;
+            grid-template-columns: 120px 1fr 20px;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .year-level-group label {
-            font-size: 13px;
-            color: #333;
+            font-size: 14px;
+            color: #495057;
+            font-weight: 500;
         }
 
         .year-level-group input {
-            padding: 6px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 13px;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
             width: 100%;
             box-sizing: border-box;
+            background: white;
+            transition: all 0.3s ease;
         }
 
         .form-group-full {
-            grid-template-columns: 110px 1fr;
+            grid-template-columns: 120px 1fr;
         }
 
         .modal-footer {
-            padding: 20px 30px;
+            padding: 28px 40px;
             display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            border-top: 1px solid #ddd;
+            justify-content: flex-end;
+            gap: 12px;
+            border-top: 2px solid #e8e8e8;
             flex-shrink: 0;
-            background-color: white;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 0 0 24px 24px;
         }
 
-        .action-buttons-left {
+        .action-buttons {
             display: flex;
-            gap: 10px;
-        }
-
-        .action-buttons-right {
-            display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .cancel-btn {
-            padding: 10px 30px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
+            padding: 14px 32px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            font-size: 15px;
             cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .cancel-btn:hover {
-            background-color: #f5f5f5;
-        }
-
-        .save-btn {
-            padding: 10px 30px;
-            background-color: #7d1414;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .save-btn:hover {
-            background-color: #5d0f0f;
+            background: #f8f9fa;
+            border-color: #adb5bd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .accept-btn {
-            padding: 10px 30px;
-            background-color: #28a745;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 12px;
+            font-size: 15px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
         }
 
         .accept-btn:hover {
-            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
         }
 
         .reject-btn {
-            padding: 10px 30px;
-            background-color: #dc3545;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 12px;
+            font-size: 15px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(220, 53, 69, 0.3);
         }
 
         .reject-btn:hover {
-            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
         }
 
         .left-column {
@@ -500,48 +580,71 @@
         }
 
         .family-member {
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 15px;
-            background-color: #f9f9f9;
+            border: 2px solid #e8e8e8;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .family-member:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
         }
 
         .family-member-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .family-member-header strong {
+            color: #2c3e50;
+            font-size: 16px;
+            letter-spacing: -0.2px;
         }
 
         .remove-family-btn {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .remove-family-btn:hover {
-            background-color: #c82333;
-        }
-
-        .add-family-btn {
-            background-color: #28a745;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             color: white;
             border: none;
             padding: 8px 16px;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 13px;
             cursor: pointer;
-            margin-top: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
+        }
+
+        .remove-family-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+
+        .add-family-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 16px;
             width: 100%;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.2);
         }
 
         .add-family-btn:hover {
-            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
         }
 
         .full-width {
@@ -564,7 +667,7 @@
             opacity: 0.3;
         }
 
-        /* Confirmation Modal */
+        /* CONFIRMATION MODAL - MODERNIZED */
         .confirmation-modal {
             display: none;
             position: fixed;
@@ -572,10 +675,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(10px);
             justify-content: center;
             align-items: center;
             z-index: 2000;
+            animation: fadeIn 0.3s ease;
         }
 
         .confirmation-modal.active {
@@ -583,20 +688,33 @@
         }
 
         .confirmation-content {
-            background-color: white;
-            border-radius: 12px;
-            width: 500px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 24px;
+            width: 550px;
             max-width: 90%;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
             overflow: hidden;
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .confirmation-header {
-            padding: 25px 30px;
+            padding: 32px 36px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            border-bottom: 1px solid #ddd;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confirmation-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            pointer-events: none;
         }
 
         .confirmation-header.accept {
@@ -610,44 +728,54 @@
         }
 
         .confirmation-icon {
-            font-size: 32px;
-            width: 50px;
-            height: 50px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
+            font-size: 36px;
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .confirmation-header-text {
+            z-index: 1;
         }
 
         .confirmation-header-text h3 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 4px;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
         }
 
         .confirmation-header-text p {
-            font-size: 13px;
-            opacity: 0.9;
+            font-size: 14px;
+            opacity: 0.95;
+            font-weight: 500;
         }
 
         .confirmation-body {
-            padding: 30px;
+            padding: 36px;
         }
 
         .student-info-card {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
             border-left: 4px solid #7d1414;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         }
 
         .student-info-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 14px;
+            margin-bottom: 14px;
+            font-size: 15px;
         }
 
         .student-info-row:last-child {
@@ -655,91 +783,97 @@
         }
 
         .student-info-label {
-            color: #666;
-            font-weight: 500;
+            color: #6c757d;
+            font-weight: 600;
         }
 
         .student-info-value {
-            color: #333;
-            font-weight: 600;
+            color: #2c3e50;
+            font-weight: 700;
         }
 
         .confirmation-message {
             font-size: 15px;
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            color: #495057;
+            line-height: 1.7;
+            margin-bottom: 24px;
         }
 
         .confirmation-message.accept {
             color: #155724;
-            background-color: #d4edda;
-            padding: 15px;
-            border-radius: 6px;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            padding: 20px;
+            border-radius: 12px;
             border-left: 4px solid #28a745;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.1);
         }
 
         .confirmation-message.reject {
             color: #721c24;
-            background-color: #f8d7da;
-            padding: 15px;
-            border-radius: 6px;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            padding: 20px;
+            border-radius: 12px;
             border-left: 4px solid #dc3545;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.1);
         }
 
         .confirmation-footer {
-            padding: 20px 30px;
+            padding: 24px 36px;
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
-            border-top: 1px solid #ddd;
-            background-color: #f8f9fa;
+            gap: 12px;
+            border-top: 2px solid #e8e8e8;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
         }
 
         .confirm-cancel-btn {
-            padding: 10px 24px;
-            background-color: white;
-            border: 2px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
+            padding: 12px 28px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            font-size: 15px;
             cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .confirm-cancel-btn:hover {
-            background-color: #f5f5f5;
-            border-color: #999;
+            background: #f8f9fa;
+            border-color: #adb5bd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .confirm-action-btn {
-            padding: 10px 24px;
+            padding: 12px 28px;
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 12px;
+            font-size: 15px;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            font-weight: 700;
+            transition: all 0.3s ease;
         }
 
         .confirm-action-btn.accept {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
         }
 
         .confirm-action-btn.accept:hover {
-            background: linear-gradient(135deg, #218838 0%, #1aa179 100%);
-            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
         }
 
         .confirm-action-btn.reject {
             background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            box-shadow: 0 4px 16px rgba(220, 53, 69, 0.3);
         }
 
         .confirm-action-btn.reject:hover {
-            background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
-            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
         }
 
         /* Responsive Design */
@@ -828,14 +962,12 @@
                 gap: 10px;
             }
 
-            .action-buttons-left,
-            .action-buttons-right {
+            .action-buttons {
                 flex-direction: column;
                 width: 100%;
             }
 
             .cancel-btn,
-            .save-btn,
             .accept-btn,
             .reject-btn {
                 width: 100%;
@@ -927,7 +1059,7 @@
                 <h2 class="modal-title">Student Profile</h2>
                 <div class="status-indicator" id="statusIndicator"></div>
             </div>
-            <form onsubmit="saveStudent(event)" id="studentForm">
+            <form onsubmit="return false;" id="studentForm">
                 <div class="modal-body">
                     <!-- Left Column -->
                     <div class="left-column">
@@ -1100,13 +1232,13 @@
                 </div>
                 
                 <div class="modal-footer">
-                    <div class="action-buttons-left" id="reviewActions" style="display: none;">
-                        <button type="button" class="accept-btn" onclick="showConfirmationModal('accepted')">✓ Accept</button>
-                        <button type="button" class="reject-btn" onclick="showConfirmationModal('rejected')">✗ Reject</button>
-                    </div>
-                    <div class="action-buttons-right">
+                    <div class="action-buttons" id="reviewActions" style="display: none;">
                         <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
-                        <button type="submit" class="save-btn" id="saveBtn">Save</button>
+                        <button type="button" class="reject-btn" onclick="showConfirmationModal('rejected')">Reject</button>
+                        <button type="button" class="accept-btn" onclick="showConfirmationModal('accepted')">Accept</button>
+                    </div>
+                    <div class="action-buttons" id="viewOnlyActions" style="display: none;">
+                        <button type="button" class="cancel-btn" onclick="closeModal()">Close</button>
                     </div>
                 </div>
             </form>
@@ -1117,7 +1249,6 @@
     <div class="confirmation-modal" id="confirmationModal">
         <div class="confirmation-content">
             <div class="confirmation-header" id="confirmHeader">
-                <div class="confirmation-icon" id="confirmIcon"></div>
                 <div class="confirmation-header-text">
                     <h3 id="confirmTitle"></h3>
                     <p id="confirmSubtitle"></p>
@@ -1164,12 +1295,10 @@
             const message = document.getElementById('confirmMessage');
             const actionBtn = document.getElementById('confirmActionBtn');
             
-            // Get student info
             const studentName = `${document.getElementById('firstName').value} ${document.getElementById('middleName').value} ${document.getElementById('lastName').value}`.trim();
             const studentNo = document.getElementById('studentNo').value;
             const program = document.getElementById('program').value;
             
-            // Fill in student info
             document.getElementById('confirmStudentName').textContent = studentName;
             document.getElementById('confirmStudentNo').textContent = studentNo || 'N/A';
             document.getElementById('confirmProgram').textContent = program;
@@ -1282,44 +1411,41 @@
             }
         }
 
-        function collectFamilyData() {
-            const familyMembers = [];
-            const memberDivs = document.querySelectorAll('.family-member');
-            
-            memberDivs.forEach(div => {
-                const member = {
-                    relation: div.querySelector('.family-relation').value,
-                    name: div.querySelector('.family-name').value,
-                    occupation: div.querySelector('.family-occupation').value,
-                    contact: div.querySelector('.family-contact').value,
-                    address: div.querySelector('.family-address').value
-                };
-                familyMembers.push(member);
-            });
-            
-            return familyMembers;
-        }
-
         function updateStatusIndicator(status) {
             const indicator = document.getElementById('statusIndicator');
             const reviewActions = document.getElementById('reviewActions');
+            const viewOnlyActions = document.getElementById('viewOnlyActions');
+            
+            const formInputs = document.querySelectorAll('#studentForm input, #studentForm select');
+            formInputs.forEach(input => {
+                input.setAttribute('readonly', true);
+                input.style.pointerEvents = 'none';
+            });
+            
+            document.querySelectorAll('.remove-family-btn, .add-family-btn, .set-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
             
             if (status === 'pending') {
                 indicator.className = 'status-indicator status-badge pending';
                 indicator.textContent = 'Pending Review';
                 reviewActions.style.display = 'flex';
+                viewOnlyActions.style.display = 'none';
             } else if (status === 'accepted') {
                 indicator.className = 'status-indicator status-badge accepted';
                 indicator.textContent = 'Accepted';
                 reviewActions.style.display = 'none';
+                viewOnlyActions.style.display = 'flex';
             } else if (status === 'rejected') {
                 indicator.className = 'status-indicator status-badge rejected';
                 indicator.textContent = 'Rejected';
                 reviewActions.style.display = 'none';
+                viewOnlyActions.style.display = 'flex';
             } else {
                 indicator.className = '';
                 indicator.textContent = '';
                 reviewActions.style.display = 'none';
+                viewOnlyActions.style.display = 'none';
             }
         }
 
@@ -1327,7 +1453,6 @@
             const modal = document.getElementById('addStudentModal');
             const modalTitle = document.querySelector('.modal-title');
             
-            // Clear family members
             document.getElementById('familyMembersContainer').innerHTML = '';
             familyMemberCount = 0;
             
@@ -1336,10 +1461,8 @@
                 currentStudentStatus = studentData.status || 'pending';
                 modalTitle.textContent = 'Student Application';
                 
-                // Update status indicator
                 updateStatusIndicator(currentStudentStatus);
                 
-                // Pre-fill the form with student data
                 document.getElementById('studentNo').value = studentData.student_no || '';
                 document.getElementById('firstName').value = studentData.first_name || '';
                 document.getElementById('middleName').value = studentData.middle_name || '';
@@ -1365,7 +1488,6 @@
                 document.getElementById('age').value = studentData.age || '';
                 document.getElementById('section').value = studentData.section || '';
                 
-                // Load family members if they exist
                 if (studentData.family_members && studentData.family_members.length > 0) {
                     studentData.family_members.forEach(member => {
                         addFamilyMember(member);
@@ -1397,92 +1519,6 @@
             }
         });
 
-        async function updateApplicationStatus(newStatus) {
-            if (!currentStudentId) return;
-            
-            const confirmMessage = newStatus === 'accepted' 
-                ? 'Are you sure you want to accept this application?' 
-                : 'Are you sure you want to reject this application?';
-            
-            if (!confirm(confirmMessage)) return;
-
-            try {
-                const response = await fetch(`http://localhost:5000/api/students/${currentStudentId}/status`, {
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ status: newStatus })
-                });
-
-                if (response.ok) {
-                    alert(`Application ${newStatus} successfully!`);
-                    await loadStudents();
-                    closeModal();
-                } else {
-                    alert("Error updating application status");
-                }
-            } catch (err) {
-                console.error("Error updating status:", err);
-                alert("Could not connect to server");
-            }
-        }
-
-        async function saveStudent(e) {
-            e.preventDefault();
-
-            const student = {
-                student_no: document.getElementById('studentNo').value,
-                first_name: document.getElementById('firstName').value,
-                middle_name: document.getElementById('middleName').value,
-                last_name: document.getElementById('lastName').value,
-                ext_name: document.getElementById('extName').value,
-                program: document.getElementById('program').value,
-                curriculum_code: document.getElementById('curriculumCode').value,
-                date_graduated: document.getElementById('dateGraduated').value,
-                lrn: document.getElementById('LRN').value,
-                citizenship: document.getElementById('citizenship').value,
-                religion: document.getElementById('religion').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                street: document.getElementById('street').value,
-                barangay: document.getElementById('brgy').value,
-                city: document.getElementById('city').value,
-                province: document.getElementById('province').value,
-                year_level: document.getElementById('yearLevel').value,
-                admission_date: document.getElementById('admissionDate').value,
-                school_year: document.getElementById('schoolYear').value,
-                period: document.getElementById('period').value,
-                gender: document.getElementById('gender').value,
-                age: document.getElementById('age').value,
-                section: document.getElementById('section').value,
-                family_members: collectFamilyData(),
-                status: currentStudentStatus || 'pending'
-            };
-
-            try {
-                const url = currentStudentId 
-                    ? `http://localhost:5000/api/students/${currentStudentId}`
-                    : "http://localhost:5000/api/students";
-                const method = currentStudentId ? "PUT" : "POST";
-
-                const response = await fetch(url, {
-                    method: method,
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(student)
-                });
-
-                if (response.ok) {
-                    await loadStudents();
-                    closeModal();
-                    alert(currentStudentId ? "Student updated successfully!" : "Student application submitted successfully!");
-                } else {
-                    alert("Error saving student");
-                }
-            } catch (err) {
-                console.error("Error saving student:", err);
-                alert("Could not connect to server");
-            }
-        }
-
         async function loadStudents() {
             try {
                 const response = await fetch("http://localhost:5000/api/students");
@@ -1491,7 +1527,6 @@
                 const studentList = document.getElementById("studentList");
                 studentList.innerHTML = "";
 
-                // Filter students based on current filter
                 const filteredStudents = currentFilter === 'all' 
                     ? students 
                     : students.filter(s => (s.status || 'pending') === currentFilter);
@@ -1544,22 +1579,18 @@
                 if (response.ok) {
                     const studentData = await response.json();
                     
-                    // If student is pending, show confirmation modal directly
                     if (studentData.status === 'pending' || !studentData.status) {
                         currentStudentId = studentData.id;
                         currentStudentStatus = studentData.status || 'pending';
                         
-                        // Pre-fill form data for the confirmation modal
                         document.getElementById('studentNo').value = studentData.student_no || '';
                         document.getElementById('firstName').value = studentData.first_name || '';
                         document.getElementById('middleName').value = studentData.middle_name || '';
                         document.getElementById('lastName').value = studentData.last_name || '';
                         document.getElementById('program').value = studentData.program || '';
                         
-                        // Show the decision prompt directly
                         showDecisionPrompt(studentData);
                     } else {
-                        // For accepted/rejected students, show full profile
                         openModal(studentData);
                     }
                 } else {
@@ -1580,38 +1611,33 @@
             const message = document.getElementById('confirmMessage');
             const footer = document.querySelector('.confirmation-footer');
             
-            // Get student info
             const fullName = `${studentData.first_name} ${studentData.middle_name ? studentData.middle_name + ' ' : ''}${studentData.last_name}`;
             const studentNo = studentData.student_no || 'N/A';
             const program = studentData.program || 'N/A';
             
-            // Fill in student info
             document.getElementById('confirmStudentName').textContent = fullName;
             document.getElementById('confirmStudentNo').textContent = studentNo;
             document.getElementById('confirmProgram').textContent = program;
             
-            // Set as decision prompt (neutral colors)
             header.className = 'confirmation-header';
             header.style.background = 'linear-gradient(135deg, rgb(154, 50, 50) 0%, rgb(69, 11, 11) 100%)';
-            icon.textContent = '?';
+            header.style.color = 'white';
             title.textContent = 'Review Application';
-            subtitle.textContent = 'Make a decision on this application';
             message.className = 'confirmation-message';
             message.style.background = '#f8f9fa';
             message.style.color = '#333';
             message.style.border = 'none';
             message.innerHTML = `
-                <strong>📋 Application Review</strong><br><br>
+                <strong>Application Review</strong><br><br>
                 Please review this application and decide whether to accept or reject the applicant. 
                 You can also view the full details before making a decision.
             `;
             
-            // Replace footer buttons with decision options
             footer.innerHTML = `
                 <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Close</button>
                 <button type="button" class="confirm-cancel-btn" onclick="viewFullDetails()">View Full Details</button>
-                <button type="button" class="confirm-action-btn reject" onclick="showConfirmationModal('rejected')">✗ Reject</button>
-                <button type="button" class="confirm-action-btn accept" onclick="showConfirmationModal('accepted')">✓ Accept</button>
+                <button type="button" class="confirm-action-btn reject" onclick="showConfirmationModal('rejected')">Reject</button>
+                <button type="button" class="confirm-action-btn accept" onclick="showConfirmationModal('accepted')">Accept</button>
             `;
             
             modal.classList.add('active');
@@ -1619,7 +1645,6 @@
 
         function viewFullDetails() {
             closeConfirmationModal();
-            // Fetch and open the full modal
             if (currentStudentId) {
                 fetch(`http://localhost:5000/api/students/${currentStudentId}`)
                     .then(response => response.json())
@@ -1636,13 +1661,11 @@
         function filterByStatus(status) {
             currentFilter = status;
             
-            // Update active tab
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
             document.querySelector(`[data-status="${status}"]`).classList.add('active');
             
-            // Reload students with filter
             loadStudents();
         }
 
@@ -1658,12 +1681,6 @@
                     student.style.display = 'none';
                 }
             });
-        }
-
-        function showPage(page) {
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => item.classList.remove('active'));
-            event.target.closest('.menu-item').classList.add('active');
         }
 
         document.getElementById('addStudentModal').addEventListener('click', function(e) {

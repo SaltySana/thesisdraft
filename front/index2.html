@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Admission</title>
+  <style>
+    /* 🎨 School Theme
+       Primary: Maroon (#800000)
+       Accent: Gold (#DAA520)
+       Soft Orange (#FFB347)
+    */
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #fafafa;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 16px;
+      padding: 50px 60px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      width: 90%;
+      max-width: 480px;
+      transition: transform 0.2s ease;
+    }
+
+    h1 {
+      color: #800000;
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 35px;
+      font-size: 1.05rem;
+    }
+
+    .header-line {
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #800000, #DAA520);
+      margin: 10px auto 25px;
+      border-radius: 2px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      background: linear-gradient(90deg, #DAA520, #FFB347);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      padding: 15px 0;
+      margin: 12px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 🖱️ Hover Effect: Gold → Maroon with subtle glow */
+    button:hover {
+      background: linear-gradient(90deg, #800000, #A52A2A);
+      box-shadow: 0 5px 12px rgba(128, 0, 0, 0.3);
+      transform: scale(1.03);
+      color: #FFD700;
+    }
+
+    footer {
+      margin-top: 25px;
+      font-size: 0.85rem;
+      color: #777;
+    }
+
+    /* Slight animation on hover of entire card */
+    .container:hover {
+      transform: scale(1.01);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to School Admission</h1>
+    <div class="header-line"></div>
+    <p>Select your enrollment level:</p>
+
+    <button onclick="location.href='preschool.html'">Pre-school</button>
+    <button onclick="location.href='elementary.html'">Elementary</button>
+    <button onclick="location.href='highschool.html'">High School</button>
+    <button onclick="location.href='shs.html'">Senior High School</button>
+
+    <footer>© 2025 Manuel S. Enverga University Candelaria Foundation Inc. — All Rights Reserved</footer>
+  </div>
+</body>
+</html>

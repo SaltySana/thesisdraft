@@ -13,10 +13,11 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             height: 100vh;
             overflow: hidden;
+            background: #f0f2f5;
         }
 
         .sidebar {
@@ -90,20 +91,24 @@
         }
 
         .add-button {
-            background-color: #7d1414;
+            background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            padding: 12px 28px;
+            border-radius: 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(125, 20, 20, 0.3);
         }
 
         .add-button:hover {
-            background-color: #5d0f0f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(125, 20, 20, 0.4);
         }
 
         .search-box {
@@ -117,12 +122,6 @@
         .search-box:focus {
             outline: none;
             border-color: #7d1414;
-        }
-
-        .assign-students {
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: column;
         }
 
         .section-list {
@@ -191,6 +190,7 @@
             font-size: 18px;
         }
 
+        /* MODERN MODAL STYLES */
         .modal {
             display: none;
             position: fixed;
@@ -198,10 +198,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal.active {
@@ -209,24 +216,24 @@
         }
 
         .modal-content {
-            background-color: white;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             padding: 0;
-            border-radius: 16px;
+            border-radius: 24px;
             width: 1200px;
-            height: auto;
             max-width: 95%;
-            max-height: 85vh;
+            max-height: 90vh;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.05);
             overflow: hidden;
-            animation: modalSlideIn 0.3s ease-out;
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes modalSlideIn {
+        @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(-20px) scale(0.95);
+                transform: translateY(30px) scale(0.95);
             }
             to {
                 opacity: 1;
@@ -235,9 +242,9 @@
         }
 
         .modal-header {
-            background: linear-gradient(135deg, #7d1414 0%, #9a3232 100%);
-            padding: 25px 35px;
-            border-radius: 16px 16px 0 0;
+            background: linear-gradient(135deg, rgba(154, 50, 50, 0.95) 0%, rgba(69, 11, 11, 0.95) 100%);
+            padding: 32px 40px;
+            border-radius: 24px 24px 0 0;
             position: relative;
             overflow: hidden;
         }
@@ -249,71 +256,82 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
             pointer-events: none;
         }
 
         .modal-title {
-            font-size: 22px;
+            font-size: 28px;
             color: white;
             font-weight: 600;
+            letter-spacing: -0.5px;
+            z-index: 1;
             position: relative;
-            letter-spacing: 0.3px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .modal-body {
             display: flex;
-            gap: 35px;
-            height: 450px;
-            padding: 30px 35px;
+            gap: 32px;
+            padding: 40px;
             overflow: hidden;
-            background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%);
+        }
+
+        .left-side {
+            flex: 0 0 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .right-side {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 4px;
         }
 
         .form-group label {
             display: block;
             font-size: 13px;
-            color: #555;
+            color: #495057;
             margin-bottom: 8px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 11px;
+            letter-spacing: 0.3px;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 12px 14px;
+            padding: 12px 16px;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 14px;
-            background-color: white;
+            background: white;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
             border-color: #7d1414;
-            box-shadow: 0 0 0 3px rgba(125, 20, 20, 0.1);
+            box-shadow: 0 0 0 4px rgba(125, 20, 20, 0.1);
             transform: translateY(-1px);
-        }
-
-        .form-group input:hover,
-        .form-group select:hover {
-            border-color: #b0b0b0;
         }
 
         .section-title-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 16px;
             gap: 10px;
         }
 
@@ -326,9 +344,9 @@
         .section-title-container #studentSearch {
             padding: 10px 14px;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
-            width: 200px;
+            width: 220px;
             transition: all 0.3s ease;
         }
 
@@ -338,75 +356,50 @@
             box-shadow: 0 0 0 3px rgba(125, 20, 20, 0.1);
         }
 
-        .section-title-container #studentSearch:hover {
-            border-color: #b0b0b0;
-        }
-
         .filter-button {
-            padding: 10px 16px;
-            background-color: white;
+            padding: 10px 18px;
+            background: white;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
             transition: all 0.3s ease;
-            font-weight: 500;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         }
 
         .filter-button:hover {
-            background-color: #f8f8f8;
-            border-color: #b0b0b0;
+            background: #f8f9fa;
+            border-color: #adb5bd;
             transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .filter-button.active {
-            background: linear-gradient(135deg, #7d1414 0%, #9a3232 100%);
+            background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
             color: white;
             border-color: #7d1414;
             box-shadow: 0 4px 12px rgba(125, 20, 20, 0.3);
         }
 
         .section-title {
-            display: inline;
-            font-size: 16px;
-            color: #333;
+            font-size: 18px;
+            color: #2c3e50;
             font-weight: 700;
-            margin-bottom: 12px;
-            margin-top: 20px;
-            padding-bottom: 8px;
-            letter-spacing: 0.3px;
-        }
-
-        .left-side {
-            flex: 0 0 280px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .right-side {
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: column;
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            letter-spacing: -0.3px;
         }
 
         .students-list {
-            flex: 1 1 auto;
-            max-height: 380px;
+            flex: 1;
+            max-height: 400px;
             overflow-y: auto;
             border: 2px solid #e8e8e8;
-            border-radius: 10px;
-            padding: 0;
-            background-color: white;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            background: white;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
         }
 
         .students-list::-webkit-scrollbar {
@@ -414,24 +407,19 @@
         }
 
         .students-list::-webkit-scrollbar-track {
-            background: #f5f5f5;
+            background: rgba(0, 0, 0, 0.05);
             border-radius: 10px;
         }
 
         .students-list::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #7d1414 0%, #9a3232 100%);
+            background: linear-gradient(180deg, #7d1414 0%, #5d0f0f 100%);
             border-radius: 10px;
-            border: 2px solid #f5f5f5;
-        }
-
-        .students-list::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #5d0f0f 0%, #7d1414 100%);
         }
 
         .student-checkbox-item {
             display: flex;
             align-items: center;
-            padding: 12px 14px;
+            padding: 14px 16px;
             border-bottom: 1px solid #f0f0f0;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -443,7 +431,7 @@
 
         .student-checkbox-item:hover {
             background: linear-gradient(to right, #fff5f5 0%, #ffffff 100%);
-            padding-left: 18px;
+            padding-left: 20px;
         }
 
         .student-checkbox-item input[type="checkbox"] {
@@ -463,10 +451,9 @@
         }
 
         .select-all-container {
-            padding: 12px 14px;
+            padding: 14px 16px;
             border-bottom: 2px solid #e8e8e8;
-            background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
-            margin-bottom: 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
             position: sticky;
             top: 0;
             z-index: 1;
@@ -487,64 +474,60 @@
         }
 
         .select-all-label {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: #333;
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-size: 12px;
         }
 
         .modal-footer {
-            padding: 20px 35px;
+            padding: 28px 40px;
             display: flex;
             justify-content: flex-end;
             gap: 12px;
-            border-top: 2px solid #f0f0f0;
-            background: linear-gradient(to top, #fafafa 0%, #ffffff 100%);
-            border-radius: 0 0 16px 16px;
+            border-top: 2px solid #e8e8e8;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 0 0 24px 24px;
+            flex-shrink: 0;
         }
 
         .cancel-btn {
-            padding: 12px 32px;
-            background-color: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 14px 32px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            font-size: 15px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .cancel-btn:hover {
-            background-color: #f8f8f8;
-            border-color: #b0b0b0;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: #f8f9fa;
+            border-color: #adb5bd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .save-btn {
-            padding: 12px 32px;
-            background: linear-gradient(135deg, #7d1414 0%, #9a3232 100%);
+            padding: 14px 32px;
+            background: linear-gradient(rgb(154, 50, 50), rgb(69, 11, 11));
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 12px;
+            font-size: 15px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(125, 20, 20, 0.3);
+            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
         }
 
         .save-btn:hover {
-            background: linear-gradient(135deg, #5d0f0f 0%, #7d1414 100%);
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(125, 20, 20, 0.4);
-        }
-
-        .save-btn:active {
-            transform: translateY(0);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
         }
 
         .empty-state {
@@ -553,28 +536,22 @@
             color: #999;
         }
 
-        /* Filter Modal Styles */
+        /* Filter Modal */
         .filter-modal-content {
-            background-color: white;
-            padding: 0;
-            border-radius: 16px;
-            width: 420px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 24px;
+            width: 480px;
             max-width: 90%;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.05);
-            animation: modalSlideIn 0.3s ease-out;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
             overflow: hidden;
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .filter-modal-header {
-            background: linear-gradient(135deg, #7d1414 0%, #9a3232 100%);
-            padding: 20px 30px;
-            border-radius: 16px 16px 0 0;
+            background: linear-gradient(135deg, rgba(154, 50, 50, 0.95) 0%, rgba(69, 11, 11, 0.95) 100%);
+            padding: 28px 32px;
             position: relative;
             overflow: hidden;
-            flex-shrink: 0;
         }
 
         .filter-modal-header::before {
@@ -584,24 +561,23 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
             pointer-events: none;
         }
 
         .filter-modal-title {
-            font-size: 20px;
+            font-size: 22px;
             color: white;
             font-weight: 600;
             position: relative;
-            letter-spacing: 0.3px;
+            letter-spacing: -0.3px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .filter-modal-body {
-            padding: 25px 30px;
-            background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%);
+            padding: 32px;
+            max-height: 60vh;
             overflow-y: auto;
-            flex: 1;
-            min-height: 0;
         }
 
         .filter-modal-body::-webkit-scrollbar {
@@ -609,26 +585,21 @@
         }
 
         .filter-modal-body::-webkit-scrollbar-track {
-            background: #f5f5f5;
+            background: rgba(0, 0, 0, 0.05);
             border-radius: 10px;
         }
 
         .filter-modal-body::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #7d1414 0%, #9a3232 100%);
+            background: linear-gradient(180deg, #7d1414 0%, #5d0f0f 100%);
             border-radius: 10px;
-            border: 2px solid #f5f5f5;
-        }
-
-        .filter-modal-body::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #5d0f0f 0%, #7d1414 100%);
         }
 
         .filter-option {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             background: white;
-            padding: 18px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         }
 
         .filter-option:last-child {
@@ -637,12 +608,11 @@
 
         .filter-option-label {
             display: block;
-            font-size: 12px;
-            color: #555;
+            font-size: 13px;
+            color: #495057;
             margin-bottom: 12px;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
         .filter-radio-group {
@@ -656,7 +626,7 @@
             align-items: center;
             padding: 10px 12px;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 10px;
             transition: all 0.2s ease;
         }
 
@@ -681,21 +651,20 @@
         }
 
         .filter-modal-footer {
-            padding: 18px 30px;
+            padding: 24px 32px;
             display: flex;
             justify-content: space-between;
             gap: 12px;
-            border-top: 2px solid #f0f0f0;
-            background: linear-gradient(to top, #fafafa 0%, #ffffff 100%);
-            border-radius: 0 0 16px 16px;
-            flex-shrink: 0;
+            border-top: 2px solid #e8e8e8;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 0 0 24px 24px;
         }
 
         .clear-filter-btn {
-            padding: 10px 20px;
-            background-color: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
             font-size: 14px;
             cursor: pointer;
             font-weight: 600;
@@ -704,29 +673,28 @@
         }
 
         .clear-filter-btn:hover {
-            background-color: #fff5f5;
+            background: #fff5f5;
             border-color: #7d1414;
             color: #7d1414;
             transform: translateY(-1px);
         }
 
         .apply-filter-btn {
-            padding: 10px 28px;
-            background: linear-gradient(135deg, #7d1414 0%, #9a3232 100%);
+            padding: 12px 32px;
+            background: linear-gradient(rgb(154, 50, 50), rgb(69, 11, 11));
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 14px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(125, 20, 20, 0.3);
+            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
         }
 
         .apply-filter-btn:hover {
-            background: linear-gradient(135deg, #5d0f0f 0%, #7d1414 100%);
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(125, 20, 20, 0.4);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
         }
 
         @media (max-width: 768px) {
@@ -735,44 +703,13 @@
                 padding: 15px 8px;
             }
 
-            .menu-item {
-                font-size: 13px;
-                padding: 10px 6px;
-                gap: 8px;
-            }
-
-            .menu-icon {
-                width: 18px;
-                height: 18px;
-                font-size: 12px;
-            }
-
-            .main-content {
-                padding: 15px;
-            }
-
-            .content-wrapper {
-                padding: 20px;
-            }
-
-            .header-section {
-                flex-direction: column;
-                gap: 15px;
-                align-items: stretch;
-            }
-
-            .search-box {
-                width: 100%;
-            }
-
             .modal-content {
                 max-height: 80vh;
             }
 
             .modal-body {
-                padding: 25px 30px;
+                padding: 24px;
                 flex-direction: column;
-                height: auto;
             }
 
             .left-side {
@@ -798,19 +735,19 @@
 <body>
     <div class="sidebar">
         <img class="image" src="euC (1).png" alt="Logo" style="width: 50%; margin-bottom: 20px; align-self: center;">
-        <a href="dashboard.html" class="menu-item" onclick="showPage('dashboard')">
+        <a href="dashboard.html" class="menu-item">
             <div class="menu-icon">◷</div>
             <span>Dashboard</span>
         </a>
-        <a href="index.html" class="menu-item" onclick="showPage('registration')">
+        <a href="registration.html" class="menu-item">
             <div class="menu-icon">◷</div>
             <span>Registration</span>
         </a>
-        <a href="sp.html" class="menu-item" onclick="showPage('student-profile')">
+        <a href="sp.html" class="menu-item">
             <div class="menu-icon">◷</div>
             <span>Student Profile</span>
         </a>
-        <a href="section.html" class="menu-item active" onclick="showPage('section-list')">
+        <a href="section.html" class="menu-item active">
             <div class="menu-icon">◷</div>
             <span>Section List</span>
         </a>
@@ -963,8 +900,7 @@
             </div>
             <div class="filter-modal-footer">
                 <button type="button" class="clear-filter-btn" onclick="clearFilters()">Clear All</button>
-                <button type="button" class="cancel-btn" onclick="closeFilterModal()">Cancel</button>
-                <button type="button" class="apply-filter-btn" onclick="applyFilters()">Apply</button>
+                <button type="button" class="apply-filter-btn" onclick="applyFilters()">Apply Filters</button>
             </div>
         </div>
     </div>
@@ -1195,12 +1131,6 @@
             });
         }
 
-        function showPage(page) {
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => item.classList.remove('active'));
-            event.target.closest('.menu-item').classList.add('active');
-        }
-
         async function handleStudentSearch(e) {
             const query = e.target.value.trim();
 
@@ -1268,14 +1198,12 @@
         function applyCurrentFilters() {
             filteredStudents = [...allStudents];
 
-            // Filter by grade level
             if (activeFilters.gradeFilter) {
                 filteredStudents = filteredStudents.filter(student => 
                     student.grade_level === activeFilters.gradeFilter
                 );
             }
 
-            // Sort by name
             if (activeFilters.nameSort) {
                 filteredStudents.sort((a, b) => {
                     const nameA = `${a.first_name} ${a.last_name}`.toLowerCase();
@@ -1289,7 +1217,6 @@
                 });
             }
 
-            // Sort by general average
             if (activeFilters.gradeSort) {
                 filteredStudents.sort((a, b) => {
                     const gradeA = parseFloat(a.general_average) || 0;

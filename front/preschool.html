@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pre-school Enrollment</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 750px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 30px 40px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #2c3e50;
+    }
+
+    h2 {
+      border-bottom: 2px solid #e67e22;
+      padding-bottom: 5px;
+      margin-top: 30px;
+      color: #2c3e50;
+      font-size: 1.2rem;
+    }
+
+    form label {
+      display: block;
+      font-weight: 600;
+      margin-top: 15px;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #e67e22;
+    }
+
+    .required::after {
+      content: " *";
+      color: red;
+    }
+
+    .optional {
+      font-weight: normal;
+      color: #777;
+      font-size: 0.9em;
+    }
+
+    button {
+      margin-top: 25px;
+      background: #e67e22;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #d35400;
+    }
+
+    .guardian-group {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    dialog {
+      border: none;
+      border-radius: 10px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    dialog button {
+      width: auto;
+      background: #27ae60;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Pre-school Enrollment Form</h1>
+
+    <form id="preschoolForm">
+
+      <!-- 🧒 Student Information -->
+      <h2>Student Information</h2>
+
+      <label class="required">First Name</label>
+      <input type="text" name="first_name" required>
+
+      <label class="required">Middle Name</label>
+      <input type="text" name="middle_name" required>
+
+      <label class="required">Last Name</label>
+      <input type="text" name="last_name" required>
+
+      <label class="optional">Nickname (Optional)</label>
+      <input type="text" name="nickname" placeholder="e.g. Mia">
+
+      <label class="required">Gender</label>
+      <select name="gender" required>
+        <option value="">-- Select --</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+
+      <label class="required">Birthdate</label>
+      <input type="date" name="birthdate" required>
+
+      <label class="required">Cellphone Number</label>
+      <input type="text" name="cellphone" pattern="[0-9]{11}" placeholder="e.g. 09123456789" required>
+
+      <label class="required">Email</label>
+      <input type="email" name="email" required>
+
+      <!-- 🏠 Address -->
+      <h2>Home Address</h2>
+
+      <label class="required">Street</label>
+      <input type="text" name="street" required>
+
+      <label class="required">Barangay</label>
+      <input type="text" name="barangay" required>
+
+      <label class="required">City / Town</label>
+      <input type="text" name="city_town" required>
+
+      <label class="required">Province</label>
+      <input type="text" name="province" required>
+
+      <!-- 👨‍👩 Guardian Info -->
+      <h2>Parent / Guardian Information</h2>
+
+      <div class="guardian-group">
+        <label class="required">Guardian Name</label>
+        <input type="text" name="guardian_name" required>
+
+        <label class="required">Relationship to Child</label>
+        <input type="text" name="guardian_relation" placeholder="e.g. Mother, Father, Aunt" required>
+
+        <label class="required">Contact Number</label>
+        <input type="text" name="guardian_phone" pattern="[0-9]{11}" placeholder="e.g. 09123456789" required>
+      </div>
+
+      <!-- 🏫 Academic Info -->
+      <h2>Academic Information</h2>
+
+      <label>Grade Level:</label>
+      <select id="preschoolLevel" name="grade_level" required>
+        <option value="">-- Select --</option>
+      </select>
+
+      <label class="optional">Previous School (Optional)</label>
+      <input type="text" name="previous_school" placeholder="If applicable">
+
+      <label class="optional">School Address (Optional)</label>
+      <input type="text" name="previous_address" placeholder="If applicable">
+
+      <button type="submit">Submit Application</button>
+    </form>
+  </div>
+
+  <dialog id="successDialog">
+    <p>✅ Pre-school application submitted successfully!</p>
+    <button id="closeDialog">Close</button>
+  </dialog>
+
+  <script src="forms.js"></script>
+  <script>
+    // Populate preschool levels
+    populateSelect("preschoolLevel", ["Nursery", "Kinder 1", "Kinder 2"]);
+    
+    // Setup form submission with dialog
+    setupForm("preschoolForm", "successDialog", "closeDialog");
+  </script>
+
+</body>
+</html>

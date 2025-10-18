@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Junior High School Enrollment</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 750px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 30px 40px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #2c3e50;
+    }
+
+    h2 {
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 5px;
+      margin-top: 30px;
+      color: #2c3e50;
+      font-size: 1.2rem;
+    }
+
+    form label {
+      display: block;
+      font-weight: 600;
+      margin-top: 15px;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .required::after {
+      content: " *";
+      color: red;
+    }
+
+    .optional {
+      font-weight: normal;
+      color: #777;
+      font-size: 0.9em;
+    }
+
+    button {
+      margin-top: 25px;
+      background: #3498db;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #2980b9;
+    }
+
+    .guardian-group {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    dialog {
+      border: none;
+      border-radius: 10px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    dialog button {
+      width: auto;
+      background: #27ae60;
+    }
+
+    #grade7Options {
+      margin-top: 20px;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    #grade7Options label {
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #grade7Options input[type="checkbox"] {
+      width: auto;
+      cursor: pointer;
+    }
+
+    .achievement-title {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #444;
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Junior High School Enrollment Form</h1>
+
+    <form id="jhsForm">
+
+      <!-- 👨‍🎓 Student Information -->
+      <h2>Student Information</h2>
+
+      <label class="required">Last Name</label>
+      <input type="text" name="last_name" required>
+
+      <label class="required">First Name</label>
+      <input type="text" name="first_name" required>
+
+      <label class="required">Middle Name</label>
+      <input type="text" name="middle_name" required>
+
+      <label class="optional">Ext. Name (Optional)</label>
+      <input type="text" name="ext_name" placeholder="e.g. Jr., III">
+
+      <label class="required">Gender</label>
+      <select name="gender" required>
+        <option value="">-- Select --</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+
+      <label class="required">Age</label>
+    <input type="number" required>
+
+      <label class="required">Birthdate</label>
+      <input type="date" name="birthdate" required>
+
+      <label class="required">Email</label>
+      <input type="email" name="email" required>
+
+      <label class="required">Phone</label>
+      <input type="text" name="phone" pattern="[0-9]{11}" placeholder="e.g. 09123456789" required>
+
+      <!-- 🏠 Address -->
+      <h2>Contacts/Address</h2>
+
+      <label class="required">Street</label>
+      <input type="text" name="street" required>
+
+      <label class="required">Barangay</label>
+      <input type="text" name="barangay" required>
+
+      <label class="required">City / Town</label>
+      <input type="text" name="city" required>
+
+      <label class="required">Province</label>
+      <input type="text" name="province" required>
+
+      <!-- Profile Information -->
+      <h2>Profile</h2>
+
+      <label class="required">Program</label>
+      <select name="program" required>
+        <option value="">-- Select --</option>
+        <option value="Junior High School" selected>Junior High School</option>
+      </select>
+
+      <label class="optional">Date Graduated (Optional)</label>
+      <input type="date" name="date_graduated">
+
+      <label class="required">LRN</label>
+      <input type="text" name="lrn" required>
+
+      <label class="required">Citizenship</label>
+      <input type="text" name="citizenship" required>
+
+      <label class="required">Religion</label>
+      <input type="text" name="religion" required>
+
+      <!-- 👨‍👩 Family Information -->
+      <h2>Family Information</h2>
+
+      <div class="guardian-group">
+        <label class="required">Relation</label>
+        <select name="family_relation[]" required>
+          <option value="">-- Select --</option>
+          <option value="Mother">Mother</option>
+          <option value="Father">Father</option>
+          <option value="Guardian">Guardian</option>
+        </select>
+
+        <label class="required">Full Name</label>
+        <input type="text" name="family_name[]" required>
+
+        <label class="optional">Occupation (Optional)</label>
+        <input type="text" name="family_occupation[]">
+
+        <label class="required">Contact No.</label>
+        <input type="text" name="family_contact[]" pattern="[0-9]{11}" placeholder="e.g. 09123456789" required>
+
+        <label class="optional">Address (Optional)</label>
+        <input type="text" name="family_address[]">
+      </div>
+
+      <div class="guardian-group">
+        <label class="optional">Relation (Optional)</label>
+        <select name="family_relation[]">
+          <option value="">-- Select --</option>
+          <option value="Mother">Mother</option>
+          <option value="Father">Father</option>
+          <option value="Guardian">Guardian</option>
+        </select>
+
+        <label class="optional">Full Name (Optional)</label>
+        <input type="text" name="family_name[]">
+
+        <label class="optional">Occupation (Optional)</label>
+        <input type="text" name="family_occupation[]">
+
+        <label class="optional">Contact No. (Optional)</label>
+        <input type="text" name="family_contact[]" pattern="[0-9]{11}" placeholder="e.g. 09123456789">
+
+        <label class="optional">Address (Optional)</label>
+        <input type="text" name="family_address[]">
+      </div>
+
+      <!-- 🏫 Academic Information -->
+      <h2>Academic Information</h2>
+
+      <label class="required">Year Level</label>
+      <select id="jhsGrade" name="year_level" required>
+        <option value="">-- Select --</option>
+      </select>
+
+      <div id="grade7Options" style="display: none;">
+        <label class="achievement-title">Academic Achievement (Select one):</label>
+        <label>
+          <input type="checkbox" name="achievement" value="Valedictorian" onclick="handleAchievementSelection(this)">
+          Valedictorian
+        </label>
+        <label>
+          <input type="checkbox" name="achievement" value="Salutatorian" onclick="handleAchievementSelection(this)">
+          Salutatorian
+        </label>
+        <label>
+          <input type="checkbox" name="achievement" value="N/A" onclick="handleAchievementSelection(this)">
+          N/A
+        </label>
+      </div>
+
+      <label class="required">Admission Date</label>
+      <input type="date" name="admission_date" required>
+
+      <label class="required">School Year</label>
+      <input type="text" name="school_year" placeholder="e.g. 2024-2025" required>
+
+      <label class="required">Period</label>
+      <input type="text" name="period" placeholder="e.g. 1st Semester" required>
+
+      <label class="optional">Previous School (Optional)</label>
+      <input type="text" name="previous_school" placeholder="Enter if applicable">
+
+      <label class="optional">School Address (Optional)</label>
+      <input type="text" name="previous_address" placeholder="Enter if applicable">
+
+      <button type="submit">Submit Application</button>
+    </form>
+  </div>
+
+  <dialog id="successDialog">
+    <p>✅ Junior High School Application submitted successfully!</p>
+    <button id="closeDialog">Close</button>
+  </dialog>
+
+  <script src="forms.js"></script>
+  <script>
+    // Populate Grade 7–10
+    populateSelect("jhsGrade", { start: 7, end: 10 });
+
+    // Show/hide Grade 7 achievement options
+    document.getElementById('jhsGrade').addEventListener('change', function() {
+      const grade7Options = document.getElementById('grade7Options');
+      if (this.value === '7') {
+        grade7Options.style.display = 'block';
+      } else {
+        grade7Options.style.display = 'none';
+        // Clear all checkboxes when grade changes
+        document.querySelectorAll('input[name="achievement"]').forEach(cb => cb.checked = false);
+      }
+    });
+
+    // Handle checkbox selection - only one can be selected at a time
+    function handleAchievementSelection(selectedCheckbox) {
+      document.querySelectorAll('input[name="achievement"]').forEach(checkbox => {
+        if (checkbox !== selectedCheckbox) {
+          checkbox.checked = false;
+        }
+      });
+    }
+
+    // Setup form submission with dialog
+    setupForm("jhsForm", "successDialog", "closeDialog");
+  </script>
+
+</body>
+</html>

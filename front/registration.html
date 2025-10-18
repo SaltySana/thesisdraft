@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,11 +90,17 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            gap: 15px;
         }
 
-        .add-button {
-            background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
-            color: white;
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-tab {
+            background: #ebebeb 0%;
+            color: rgb(0, 0, 0);
             border: none;
             padding: 12px 28px;
             border-radius: 10px;
@@ -104,12 +111,23 @@
             font-size: 14px;
             font-weight: 600;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(11, 4, 4, 0.3);
+        }
+
+        .filter-tab.active {
+            background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
+            color: white;
+            border-color: #7d1414;
             box-shadow: 0 4px 12px rgba(125, 20, 20, 0.3);
         }
 
-        .add-button:hover {
+        .filter-tab:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(125, 20, 20, 0.4);
+        }
+
+        .filter-tab.active:hover {
+            background-color: #5d0f0f;
         }
 
         .search-box {
@@ -161,17 +179,64 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 5px 5px rgba(151, 151, 151, 0.4);
             transition: background-color 0.3s;
+            position: relative;
         }
 
         .student-item:hover {
             background-color: #c4c4c4;
         }
 
+        .student-item.pending {
+            border-left: 4px solid #ffc107;
+        }
+
+        .student-item.accepted {
+            border-left: 4px solid #28a745;
+        }
+
+        .student-item.rejected {
+            border-left: 4px solid #dc3545;
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
         .student-name {
             font-size: 15px;
             color: #333;
+            font-weight: 500;
+        }
+
+        .student-status {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.accepted {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.rejected {
+            background-color: #f8d7da;
+            color: #721c24;
         }
 
         .arrow {
@@ -260,6 +325,20 @@
             letter-spacing: -0.5px;
             z-index: 1;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .status-indicator {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .modal-body {
@@ -363,6 +442,12 @@
             transform: translateY(-1px);
         }
 
+        .form-group input:disabled,
+        .form-group select:disabled {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+
         .set-btn {
             padding: 10px 20px;
             background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
@@ -394,6 +479,23 @@
             margin-bottom: 20px;
         }
 
+        .year-level-group label {
+            font-size: 14px;
+            color: #495057;
+            font-weight: 500;
+        }
+
+        .year-level-group input {
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
         .form-group-full {
             grid-template-columns: 120px 1fr;
         }
@@ -407,6 +509,11 @@
             flex-shrink: 0;
             background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
             border-radius: 0 0 24px 24px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
         }
 
         .cancel-btn {
@@ -428,9 +535,9 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .save-btn {
+        .accept-btn {
             padding: 14px 32px;
-            background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             border: none;
             border-radius: 12px;
@@ -441,9 +548,27 @@
             box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
         }
 
-        .save-btn:hover {
+        .accept-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .reject-btn {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(220, 53, 69, 0.3);
+        }
+
+        .reject-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
         }
 
         .left-column {
@@ -503,7 +628,7 @@
         }
 
         .add-family-btn {
-            background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             border: none;
             padding: 14px 24px;
@@ -530,6 +655,228 @@
             max-height: none;
         }
 
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            opacity: 0.3;
+        }
+
+        /* CONFIRMATION MODAL - MODERNIZED */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .confirmation-modal.active {
+            display: flex;
+        }
+
+        .confirmation-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 24px;
+            width: 550px;
+            max-width: 90%;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .confirmation-header {
+            padding: 32px 36px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confirmation-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            pointer-events: none;
+        }
+
+        .confirmation-header.accept {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .confirmation-header.reject {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        .confirmation-icon {
+            font-size: 36px;
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .confirmation-header-text {
+            z-index: 1;
+        }
+
+        .confirmation-header-text h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .confirmation-header-text p {
+            font-size: 14px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .confirmation-body {
+            padding: 36px;
+        }
+
+        .student-info-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border-left: 4px solid #7d1414;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .student-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            font-size: 15px;
+        }
+
+        .student-info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .student-info-label {
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .student-info-value {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .confirmation-message {
+            font-size: 15px;
+            color: #495057;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .confirmation-message.accept {
+            color: #155724;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #28a745;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.1);
+        }
+
+        .confirmation-message.reject {
+            color: #721c24;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #dc3545;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.1);
+        }
+
+        .confirmation-footer {
+            padding: 24px 36px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            border-top: 2px solid #e8e8e8;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .confirm-cancel-btn {
+            padding: 12px 28px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .confirm-cancel-btn:hover {
+            background: #f8f9fa;
+            border-color: #adb5bd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .confirm-action-btn {
+            padding: 12px 28px;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .confirm-action-btn.accept {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
+        }
+
+        .confirm-action-btn.accept:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .confirm-action-btn.reject {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            box-shadow: 0 4px 16px rgba(220, 53, 69, 0.3);
+        }
+
+        .confirm-action-btn.reject:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+        }
+
+        /* Responsive Design */
         @media (max-width: 1024px) {
             .sidebar {
                 width: 200px;
@@ -578,27 +925,22 @@
                 align-items: stretch;
             }
 
+            .filter-tabs {
+                flex-wrap: wrap;
+            }
+
             .search-box {
                 width: 100%;
             }
 
             .modal-content {
                 width: 95%;
-                border-radius: 20px;
             }
 
             .modal-body {
                 grid-template-columns: 1fr;
-                padding: 24px;
-                gap: 20px;
-            }
-
-            .modal-header {
-                padding: 24px 28px;
-            }
-
-            .modal-title {
-                font-size: 22px;
+                padding: 20px;
+                gap: 15px;
             }
 
             .left-column,
@@ -607,16 +949,12 @@
             }
 
             .form-group {
-                grid-template-columns: 100px 1fr auto;
-                gap: 12px;
-            }
-
-            .form-group-full {
-                grid-template-columns: 100px 1fr;
+                grid-template-columns: 90px 1fr auto;
+                gap: 8px;
             }
 
             .year-level-group {
-                grid-template-columns: 100px 1fr 20px;
+                grid-template-columns: 90px 1fr 20px;
             }
 
             .modal-footer {
@@ -624,8 +962,14 @@
                 gap: 10px;
             }
 
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
             .cancel-btn,
-            .save-btn {
+            .accept-btn,
+            .reject-btn {
                 width: 100%;
             }
         }
@@ -678,11 +1022,11 @@
             <div class="menu-icon">◷</div>
             <span>Dashboard</span>
         </a>
-        <a href="registration.html" class="menu-item">
+        <a href="registration.html" class="menu-item active">
             <div class="menu-icon">◷</div>
             <span>Registration</span>
         </a>
-        <a href="sp.html" class="menu-item active">
+        <a href="sp.html" class="menu-item">
             <div class="menu-icon">◷</div>
             <span>Student Profile</span>
         </a>
@@ -693,12 +1037,15 @@
     </div>
 
     <div class="main-content">
-        <h1 class="page-title">Student Profile</h1>
+        <h1 class="page-title">Registration</h1>
         <div class="content-wrapper">
             <div class="header-section">
-                <button class="add-button" onclick="openModal()">
-                    <span>Add Student</span>
-                </button>
+                <div class="filter-tabs">
+                    <div class="filter-tab active" data-status="all" onclick="filterByStatus('all')">All</div>
+                    <div class="filter-tab" data-status="pending" onclick="filterByStatus('pending')">Pending</div>
+                    <div class="filter-tab" data-status="accepted" onclick="filterByStatus('accepted')">Accepted</div>
+                    <div class="filter-tab" data-status="rejected" onclick="filterByStatus('rejected')">Rejected</div>
+                </div>
                 <input type="text" class="search-box" placeholder="Search" id="searchBox" oninput="filterStudents()">
             </div>
 
@@ -710,8 +1057,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">Student Profile</h2>
+                <div class="status-indicator" id="statusIndicator"></div>
             </div>
-            <form onsubmit="addStudent(event)">
+            <form onsubmit="return false;" id="studentForm">
                 <div class="modal-body">
                     <!-- Left Column -->
                     <div class="left-column">
@@ -812,7 +1160,7 @@
 
                     <!-- Right Column -->
                     <div class="right-column">
-                        <div class="form-group form-group-full">
+                        <div class="year-level-group">
                             <label>Year Level</label>
                             <input type="text" id="yearLevel">
                             <span style="font-size: 20px; color: #666;">›</span>
@@ -879,29 +1227,142 @@
                     <div class="full-width">
                         <div class="section-title">Family Information</div>
                         <div id="familyMembersContainer"></div>
-                        <button type="button" class="add-family-btn" onclick="addFamilyMember()">Add Family Member</button>
+                        <button type="button" class="add-family-btn" onclick="addFamilyMember()">+ Add Family Member</button>
                     </div>
                 </div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="save-btn">Save</button>
+                    <div class="action-buttons" id="reviewActions" style="display: none;">
+                        <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+                        <button type="button" class="reject-btn" onclick="showConfirmationModal('rejected')">Reject</button>
+                        <button type="button" class="accept-btn" onclick="showConfirmationModal('accepted')">Accept</button>
+                    </div>
+                    <div class="action-buttons" id="viewOnlyActions" style="display: none;">
+                        <button type="button" class="cancel-btn" onclick="closeModal()">Close</button>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- Confirmation Modal -->
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="confirmation-content">
+<div class="confirmation-header" id="confirmHeader">
+    <div class="confirmation-icon" id="confirmIcon"></div>
+    <div class="confirmation-header-text">
+        <h3 id="confirmTitle"></h3>
+        <p id="confirmSubtitle"></p>
+    </div>
+</div>
+            <div class="confirmation-body">
+                <div class="student-info-card">
+                    <div class="student-info-row">
+                        <span class="student-info-label">Applicant Name:</span>
+                        <span class="student-info-value" id="confirmStudentName"></span>
+                    </div>
+                    <div class="student-info-row">
+                        <span class="student-info-label">Student Number:</span>
+                        <span class="student-info-value" id="confirmStudentNo"></span>
+                    </div>
+                    <div class="student-info-row">
+                        <span class="student-info-label">Program:</span>
+                        <span class="student-info-value" id="confirmProgram"></span>
+                    </div>
+                </div>
+                <div class="confirmation-message" id="confirmMessage"></div>
+            </div>
+            <div class="confirmation-footer">
+                <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Cancel</button>
+                <button type="button" class="confirm-action-btn" id="confirmActionBtn" onclick="confirmApplicationStatus()"></button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentStudentId = null;
+        let currentStudentStatus = null;
         let familyMemberCount = 0;
+        let currentFilter = 'all';
+        let pendingStatusAction = null;
 
-        function safeValue(val) {
-            return (val === undefined || val === null || val === 'null') ? '' : val;
+        function showConfirmationModal(action) {
+            pendingStatusAction = action;
+            const modal = document.getElementById('confirmationModal');
+            const header = document.getElementById('confirmHeader');
+            const icon = document.getElementById('confirmIcon');
+            const title = document.getElementById('confirmTitle');
+            const subtitle = document.getElementById('confirmSubtitle');
+            const message = document.getElementById('confirmMessage');
+            const actionBtn = document.getElementById('confirmActionBtn');
+            
+            const studentName = `${document.getElementById('firstName').value} ${document.getElementById('middleName').value} ${document.getElementById('lastName').value}`.trim();
+            const studentNo = document.getElementById('studentNo').value;
+            const program = document.getElementById('program').value;
+            
+            document.getElementById('confirmStudentName').textContent = studentName;
+            document.getElementById('confirmStudentNo').textContent = studentNo || 'N/A';
+            document.getElementById('confirmProgram').textContent = program;
+            
+            if (action === 'accepted') {
+                header.className = 'confirmation-header accept';
+                icon.textContent = '✓';
+                title.textContent = 'Accept Application';
+                subtitle.textContent = 'Approve this student for enrollment';
+                message.className = 'confirmation-message accept';
+                message.textContent = '✓ By accepting this application, the student will be enrolled in the system and can proceed with their registration. This action confirms that all requirements have been met.';
+                actionBtn.className = 'confirm-action-btn accept';
+                actionBtn.textContent = 'Confirm Accept';
+            } else {
+                header.className = 'confirmation-header reject';
+                icon.textContent = '✗';
+                title.textContent = 'Reject Application';
+                subtitle.textContent = 'Decline this student application';
+                message.className = 'confirmation-message reject';
+                message.textContent = '✗ By rejecting this application, the student will not be enrolled. This action indicates that the requirements were not met or the application contains issues. The applicant will be notified of this decision.';
+                actionBtn.className = 'confirm-action-btn reject';
+                actionBtn.textContent = 'Confirm Reject';
+            }
+            
+            modal.classList.add('active');
         }
+
+        function closeConfirmationModal() {
+            document.getElementById('confirmationModal').classList.remove('active');
+            pendingStatusAction = null;
+        }
+
+async function confirmApplicationStatus() {
+    if (!currentStudentId || !pendingStatusAction) return;
+
+    try {
+        const response = await fetch(`http://localhost:5001/api/admissions/${currentStudentId}/status`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: pendingStatusAction })
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log("Server response:", result);
+            closeConfirmationModal();
+            closeModal();
+            alert(`Application ${pendingStatusAction} successfully!`);
+            await loadStudents();
+        } else {
+            const error = await response.json();
+            console.error("Server error:", error);
+            alert(`Error updating application status: ${error.error || 'Unknown error'}`);
+        }
+    } catch (err) {
+        console.error("Error updating status:", err);
+        alert("Could not connect to server");
+    }
+}
 
         function addFamilyMember(memberData = null) {
             familyMemberCount++;
-            const memberId = `family-${Date.now()}-${familyMemberCount}`;
+            const memberId = memberData ? memberData.id : `family-${familyMemberCount}`;
             
             const container = document.getElementById('familyMembersContainer');
             const memberDiv = document.createElement('div');
@@ -926,17 +1387,22 @@
                 
                 <div class="form-group form-group-full">
                     <label>Full Name</label>
-                    <input type="text" class="family-name" value="${memberData ? safeValue(memberData.name) : ''}" required>
+                    <input type="text" class="family-name" value="${memberData ? memberData.name : ''}" required>
+                </div>
+                
+                <div class="form-group form-group-full">
+                    <label>Occupation</label>
+                    <input type="text" class="family-occupation" value="${memberData ? memberData.occupation : ''}">
                 </div>
                 
                 <div class="form-group form-group-full">
                     <label>Contact No.</label>
-                    <input type="text" class="family-contact" value="${memberData ? safeValue(memberData.contact) : ''}">
+                    <input type="text" class="family-contact" value="${memberData ? memberData.contact : ''}">
                 </div>
                 
                 <div class="form-group form-group-full">
                     <label>Address</label>
-                    <input type="text" class="family-address" value="${memberData ? safeValue(memberData.address) : ''}">
+                    <input type="text" class="family-address" value="${memberData ? memberData.address : ''}">
                 </div>
             `;
             
@@ -947,188 +1413,191 @@
             const member = document.getElementById(memberId);
             if (member) {
                 member.remove();
-                const members = document.querySelectorAll('.family-member');
-                familyMemberCount = members.length;
-                members.forEach((member, index) => {
-                    const header = member.querySelector('.family-member-header strong');
-                    if (header) {
-                        header.textContent = `Family Member ${index + 1}`;
-                    }
-                });
             }
         }
 
-        function collectFamilyData() {
-            const familyMembers = [];
-            const memberDivs = document.querySelectorAll('.family-member');
+        function updateStatusIndicator(status) {
+            const indicator = document.getElementById('statusIndicator');
+            const reviewActions = document.getElementById('reviewActions');
+            const viewOnlyActions = document.getElementById('viewOnlyActions');
             
-            memberDivs.forEach(div => {
-                const member = {
-                    relation: div.querySelector('.family-relation').value,
-                    name: div.querySelector('.family-name').value,
-                    contact: div.querySelector('.family-contact').value,
-                    address: div.querySelector('.family-address').value
-                };
-                familyMembers.push(member);
+            const formInputs = document.querySelectorAll('#studentForm input, #studentForm select');
+            formInputs.forEach(input => {
+                input.setAttribute('readonly', true);
+                input.style.pointerEvents = 'none';
             });
             
-            return familyMembers;
+            document.querySelectorAll('.remove-family-btn, .add-family-btn, .set-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            
+            if (status === 'pending') {
+                indicator.className = 'status-indicator status-badge pending';
+                indicator.textContent = 'Pending Review';
+                reviewActions.style.display = 'flex';
+                viewOnlyActions.style.display = 'none';
+            } else if (status === 'accepted') {
+                indicator.className = 'status-indicator status-badge accepted';
+                indicator.textContent = 'Accepted';
+                reviewActions.style.display = 'none';
+                viewOnlyActions.style.display = 'flex';
+            } else if (status === 'rejected') {
+                indicator.className = 'status-indicator status-badge rejected';
+                indicator.textContent = 'Rejected';
+                reviewActions.style.display = 'none';
+                viewOnlyActions.style.display = 'flex';
+            } else {
+                indicator.className = '';
+                indicator.textContent = '';
+                reviewActions.style.display = 'none';
+                viewOnlyActions.style.display = 'none';
+            }
         }
 
         function openModal(studentData = null) {
             const modal = document.getElementById('addStudentModal');
             const modalTitle = document.querySelector('.modal-title');
-            const form = modal.querySelector('form');
-
-            form.reset();
+            
             document.getElementById('familyMembersContainer').innerHTML = '';
             familyMemberCount = 0;
-
+            
             if (studentData) {
                 currentStudentId = studentData.id;
-                modalTitle.textContent = 'Edit Student Profile';
-
-                document.getElementById('studentNo').value = safeValue(studentData.student_no);
-                document.getElementById('firstName').value = safeValue(studentData.first_name);
-                document.getElementById('middleName').value = safeValue(studentData.middle_name);
-                document.getElementById('lastName').value = safeValue(studentData.last_name);
-                document.getElementById('extName').value = safeValue(studentData.ext_name);
-                document.getElementById('program').value = safeValue(studentData.program);
-                document.getElementById('curriculumCode').value = safeValue(studentData.curriculum_code);
-                document.getElementById('dateGraduated').value = safeValue(studentData.date_graduated);
-                document.getElementById('LRN').value = safeValue(studentData.lrn);
-                document.getElementById('citizenship').value = safeValue(studentData.citizenship);
-                document.getElementById('religion').value = safeValue(studentData.religion);
-                document.getElementById('email').value = safeValue(studentData.email);
-                document.getElementById('phone').value = safeValue(studentData.phone);
-                document.getElementById('street').value = safeValue(studentData.street);
-                document.getElementById('brgy').value = safeValue(studentData.barangay);
-                document.getElementById('city').value = safeValue(studentData.city);
-                document.getElementById('province').value = safeValue(studentData.province);
-                document.getElementById('yearLevel').value = safeValue(studentData.year_level);
-                document.getElementById('admissionDate').value = safeValue(studentData.admission_date);
-                document.getElementById('schoolYear').value = safeValue(studentData.school_year);
-                document.getElementById('period').value = safeValue(studentData.period);
-                document.getElementById('gender').value = safeValue(studentData.gender);
-                document.getElementById('age').value = safeValue(studentData.age);
-                document.getElementById('section').value = safeValue(studentData.section);
-
-                console.log("Family members from DB:", studentData.family_members);
-                if (studentData.family_members && Array.isArray(studentData.family_members) && studentData.family_members.length > 0) {
+                currentStudentStatus = studentData.status || 'pending';
+                modalTitle.textContent = 'Student Application';
+                
+                updateStatusIndicator(currentStudentStatus);
+                
+                document.getElementById('studentNo').value = studentData.student_no || '';
+                document.getElementById('firstName').value = studentData.first_name || '';
+                document.getElementById('middleName').value = studentData.middle_name || '';
+                document.getElementById('lastName').value = studentData.last_name || '';
+                document.getElementById('extName').value = studentData.ext_name || '';
+                document.getElementById('program').value = studentData.program || '';
+                document.getElementById('curriculumCode').value = studentData.curriculum_code || '';
+                document.getElementById('dateGraduated').value = studentData.date_graduated || '';
+                document.getElementById('LRN').value = studentData.lrn || '';
+                document.getElementById('citizenship').value = studentData.citizenship || '';
+                document.getElementById('religion').value = studentData.religion || '';
+                document.getElementById('email').value = studentData.email || '';
+                document.getElementById('phone').value = studentData.phone || '';
+                document.getElementById('street').value = studentData.street || '';
+                document.getElementById('brgy').value = studentData.barangay || '';
+                document.getElementById('city').value = studentData.city || '';
+                document.getElementById('province').value = studentData.province || '';
+                document.getElementById('yearLevel').value = studentData.year_level || '';
+                document.getElementById('admissionDate').value = studentData.admission_date || '';
+                document.getElementById('schoolYear').value = studentData.school_year || '';
+                document.getElementById('period').value = studentData.period || '';
+                document.getElementById('gender').value = studentData.gender || '';
+                document.getElementById('age').value = studentData.age || '';
+                document.getElementById('section').value = studentData.section || '';
+                
+                if (studentData.family_members && studentData.family_members.length > 0) {
                     studentData.family_members.forEach(member => {
                         addFamilyMember(member);
                     });
                 }
             } else {
                 currentStudentId = null;
-                modalTitle.textContent = 'Student Profile';
+                currentStudentStatus = null;
+                modalTitle.textContent = 'New Student';
+                updateStatusIndicator(null);
+                document.querySelector('form').reset();
             }
-
+            
             modal.classList.add('active');
         }
 
         function closeModal() {
-            const modal = document.getElementById('addStudentModal');
-            const form = modal.querySelector('form');
-            modal.classList.remove('active');
-            form.reset();
+            document.getElementById('addStudentModal').classList.remove('active');
+            document.querySelector('form').reset();
             document.getElementById('familyMembersContainer').innerHTML = '';
             familyMemberCount = 0;
             currentStudentId = null;
+            currentStudentStatus = null;
         }
 
-        async function addStudent(e) {
-            e.preventDefault();
-
-            const student = {
-                student_no: document.getElementById('studentNo').value,
-                first_name: document.getElementById('firstName').value,
-                middle_name: document.getElementById('middleName').value,
-                last_name: document.getElementById('lastName').value,
-                ext_name: document.getElementById('extName').value,
-                program: document.getElementById('program').value,
-                curriculum_code: document.getElementById('curriculumCode').value,
-                date_graduated: document.getElementById('dateGraduated').value,
-                lrn: document.getElementById('LRN').value,
-                citizenship: document.getElementById('citizenship').value,
-                religion: document.getElementById('religion').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                street: document.getElementById('street').value,
-                barangay: document.getElementById('brgy').value,
-                city: document.getElementById('city').value,
-                province: document.getElementById('province').value,
-                year_level: document.getElementById('yearLevel').value,
-                admission_date: document.getElementById('admissionDate').value,
-                school_year: document.getElementById('schoolYear').value,
-                period: document.getElementById('period').value,
-                gender: document.getElementById('gender').value,
-                age: document.getElementById('age').value,
-                section: document.getElementById('section').value,
-                family_members: collectFamilyData()
-            };
-
-            try {
-                const url = currentStudentId
-                    ? `http://localhost:5000/api/students/${currentStudentId}`
-                    : "http://localhost:5000/api/students";
-                const method = currentStudentId ? "PUT" : "POST";
-
-                const response = await fetch(url, {
-                    method: method,
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(student)
-                });
-
-                if (response.ok) {
-                    await loadStudents();
-                    closeModal();
-                    alert(currentStudentId ? "Student updated successfully!" : "Student added successfully!");
-                } else {
-                    alert("Error saving student");
-                }
-            } catch (err) {
-                console.error("Error saving student:", err);
-                alert("Could not connect to server");
+        document.getElementById('confirmationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeConfirmationModal();
             }
-        }
+        });
 
         async function loadStudents() {
             try {
-                const response = await fetch("http://localhost:5000/api/students");
+                const response = await fetch("http://localhost:5001/api/admissions");
                 const students = await response.json();
-
-                console.log("Fetched students:", students);
 
                 const studentList = document.getElementById("studentList");
                 studentList.innerHTML = "";
 
-                students.forEach(student => {
+                const filteredStudents = currentFilter === 'all' 
+                    ? students 
+                    : students.filter(s => (s.status || 'pending') === currentFilter);
+
+                if (filteredStudents.length === 0) {
+                    studentList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <p>No ${currentFilter === 'all' ? '' : currentFilter} applications found</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                filteredStudents.forEach(student => {
+                    const status = student.status || 'pending';
                     const fullName = `${student.first_name} ${student.middle_name ? student.middle_name + " " : ""}${student.last_name}`;
                     
                     const studentItem = document.createElement("div");
-                    studentItem.className = "student-item";
+                    studentItem.className = `student-item ${status}`;
                     studentItem.onclick = () => viewStudent(student.id);
                     studentItem.innerHTML = `
-                        <span class="student-name">${fullName}</span>
+                        <div class="student-info">
+                            <div class="student-name">${fullName}</div>
+                            <div class="student-status">
+                                <span class="status-badge ${status}">${status}</span>
+                            </div>
+                        </div>
                         <span class="arrow">›</span>
                     `;
                     studentList.appendChild(studentItem);
                 });
             } catch (err) {
                 console.error("Error loading students:", err);
+                const studentList = document.getElementById("studentList");
+                studentList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⚠️</div>
+                        <p>Error loading applications. Please try again.</p>
+                    </div>
+                `;
             }
         }
 
+        document.addEventListener("DOMContentLoaded", loadStudents);
+
         async function viewStudent(id) {
-            console.log("Requesting student with id:", id);
             try {
-                const response = await fetch(`http://localhost:5000/api/students/${id}`);
-                console.log("Response status:", response.status);
+                const response = await fetch(`http://localhost:5001/api/admissions/${id}`);
                 if (response.ok) {
                     const studentData = await response.json();
-                    console.log("Student data received:", studentData);
-                    openModal(studentData);
+                    
+                    if (studentData.status === 'pending' || !studentData.status) {
+                        currentStudentId = studentData.id;
+                        currentStudentStatus = studentData.status || 'pending';
+                        
+                        document.getElementById('studentNo').value = studentData.student_no || '';
+                        document.getElementById('firstName').value = studentData.first_name || '';
+                        document.getElementById('middleName').value = studentData.middle_name || '';
+                        document.getElementById('lastName').value = studentData.last_name || '';
+                        document.getElementById('program').value = studentData.program || '';
+                        
+                        showDecisionPrompt(studentData);
+                    } else {
+                        openModal(studentData);
+                    }
                 } else {
                     alert('Error loading student details');
                 }
@@ -1136,6 +1605,73 @@
                 console.error("Error fetching student:", err);
                 alert('Could not connect to server');
             }
+        }
+
+        function showDecisionPrompt(studentData) {
+            const modal = document.getElementById('confirmationModal');
+            const header = document.getElementById('confirmHeader');
+            const icon = document.getElementById('confirmIcon');
+            const title = document.getElementById('confirmTitle');
+            const subtitle = document.getElementById('confirmSubtitle');
+            const message = document.getElementById('confirmMessage');
+            const footer = document.querySelector('.confirmation-footer');
+            
+            const fullName = `${studentData.first_name} ${studentData.middle_name ? studentData.middle_name + ' ' : ''}${studentData.last_name}`;
+            const studentNo = studentData.student_no || 'N/A';
+            const program = studentData.program || 'N/A';
+            
+            document.getElementById('confirmStudentName').textContent = fullName;
+            document.getElementById('confirmStudentNo').textContent = studentNo;
+            document.getElementById('confirmProgram').textContent = program;
+            
+            header.className = 'confirmation-header';
+            header.style.background = 'linear-gradient(135deg, rgb(154, 50, 50) 0%, rgb(69, 11, 11) 100%)';
+            header.style.color = 'white';
+            title.textContent = 'Review Application';
+            message.className = 'confirmation-message';
+            message.style.background = '#f8f9fa';
+            message.style.color = '#333';
+            message.style.border = 'none';
+            message.innerHTML = `
+                <strong>Application Review</strong><br><br>
+                Please review this application and decide whether to accept or reject the applicant. 
+                You can also view the full details before making a decision.
+            `;
+            
+            footer.innerHTML = `
+                <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Close</button>
+                <button type="button" class="confirm-cancel-btn" onclick="viewFullDetails()">View Full Details</button>
+                <button type="button" class="confirm-action-btn reject" onclick="showConfirmationModal('rejected')">Reject</button>
+                <button type="button" class="confirm-action-btn accept" onclick="showConfirmationModal('accepted')">Accept</button>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        function viewFullDetails() {
+            closeConfirmationModal();
+            if (currentStudentId) {
+                fetch(`http://localhost:5001/api/admissions/${currentStudentId}`)
+                    .then(response => response.json())
+                    .then(studentData => {
+                        openModal(studentData);
+                    })
+                    .catch(err => {
+                        console.error("Error fetching student:", err);
+                        alert('Could not load student details');
+                    });
+            }
+        }
+
+        function filterByStatus(status) {
+            currentFilter = status;
+            
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-status="${status}"]`).classList.add('active');
+            
+            loadStudents();
         }
 
         function filterStudents() {
@@ -1152,20 +1688,10 @@
             });
         }
 
-        function showPage(page) {
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => item.classList.remove('active'));
-            event.target.closest('.menu-item').classList.add('active');
-        }
-
         document.getElementById('addStudentModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
             }
-        });
-
-        document.addEventListener("DOMContentLoaded", function() {
-            loadStudents();
         });
     </script>
 </body>

@@ -140,7 +140,54 @@ app.put("/api/students/:id", (req, res) => {
         res.json({ id: studentId, ...s });
     });
 });
+// Get all archived (rejected) applications
+app.get("/api/archive", (req, res) => {
+    console.log("\n=== FETCHING ALL ARCHIVED APPLICATIONS ===");
+    const sql = "SELECT id, first_name, middle_name, last_name, 'rejected' as status FROM archive";
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error("❌ Error fetching archive:", err);
+            return res.status(500).json({ error: err.message });
+        }
+        console.log("✅ All archived applications fetched:", results.length);
+        res.json(results);
+    });
+});
 
+// Get a single archived application by ID
+app.get("/api/archive/:id", (req, res) => {
+    const archiveId = req.params.id;
+    console.log("\n=== FETCHING ARCHIVED APPLICATION ===");
+    console.log("Archive ID requested:", archiveId);
+    
+    const sql = "SELECT * FROM archive WHERE id = ?";
+    db.query(sql, [archiveId], (err, results) => {
+        if (err) {
+            console.error("❌ Database error:", err);
+            return res.status(500).json({ error: err.message });
+        }
+        
+        if (results.length === 0) {
+            return res.status(404).json({ error: "Archived application not found" });
+        }
+        
+        let archive = results[0];
+        archive.status = 'rejected';
+        
+        if (archive.family_members && typeof archive.family_members === "string") {
+            try {
+                archive.family_members = JSON.parse(archive.family_members);
+            } catch (parseError) {
+                archive.family_members = [];
+            }
+        } else {
+            archive.family_members = [];
+        }
+        
+        console.log("✅ Archived application fetched");
+        res.json(archive);
+    });
+});
 // ========== ADMISSIONS ROUTES ========== //
 
 // Get all admissions (summary) - NOW INCLUDES STATUS

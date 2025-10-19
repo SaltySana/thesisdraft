@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -876,6 +875,177 @@
             box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
         }
 
+        /* SUCCESS/ERROR TOAST NOTIFICATION */
+        .toast-notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            min-width: 350px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+            display: none;
+            z-index: 3000;
+            overflow: hidden;
+            animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+
+        .toast-notification.show {
+            display: block;
+        }
+
+        .toast-notification.hide {
+            animation: slideOutRight 0.3s ease-out forwards;
+        }
+
+        .toast-header {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .toast-header.success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        }
+
+        .toast-header.error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        }
+
+        .toast-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .toast-icon.success {
+            background: #28a745;
+            color: white;
+        }
+
+        .toast-icon.error {
+            background: #dc3545;
+            color: white;
+        }
+
+        .toast-header-text {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .toast-title.success {
+            color: #155724;
+        }
+
+        .toast-title.error {
+            color: #721c24;
+        }
+
+        .toast-subtitle {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .toast-subtitle.success {
+            color: #155724;
+        }
+
+        .toast-subtitle.error {
+            color: #721c24;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+            opacity: 0.6;
+        }
+
+        .toast-close:hover {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .toast-body {
+            padding: 20px 24px;
+        }
+
+        .toast-message {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #495057;
+        }
+
+        .toast-progress {
+            height: 4px;
+            background: rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toast-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+            width: 100%;
+            animation: progressBar 3s linear forwards;
+        }
+
+        .toast-progress-bar.error {
+            background: linear-gradient(90deg, #dc3545 0%, #c82333 100%);
+        }
+
+        @keyframes progressBar {
+            from {
+                width: 100%;
+            }
+            to {
+                width: 0%;
+            }
+        }
+
         /* Responsive Design */
         @media (max-width: 1024px) {
             .sidebar {
@@ -1248,13 +1418,13 @@
     <!-- Confirmation Modal -->
     <div class="confirmation-modal" id="confirmationModal">
         <div class="confirmation-content">
-<div class="confirmation-header" id="confirmHeader">
-    <div class="confirmation-icon" id="confirmIcon"></div>
-    <div class="confirmation-header-text">
-        <h3 id="confirmTitle"></h3>
-        <p id="confirmSubtitle"></p>
-    </div>
-</div>
+            <div class="confirmation-header" id="confirmHeader">
+                <div class="confirmation-icon" id="confirmIcon"></div>
+                <div class="confirmation-header-text">
+                    <h3 id="confirmTitle"></h3>
+                    <p id="confirmSubtitle"></p>
+                </div>
+            </div>
             <div class="confirmation-body">
                 <div class="student-info-card">
                     <div class="student-info-row">
@@ -1279,14 +1449,87 @@
         </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+        <div class="toast-header" id="toastHeader">
+            <div class="toast-icon" id="toastIcon"></div>
+            <div class="toast-header-text">
+                <div class="toast-title" id="toastTitle"></div>
+                <div class="toast-subtitle" id="toastSubtitle"></div>
+            </div>
+            <button class="toast-close" onclick="hideToast()">×</button>
+        </div>
+        <div class="toast-body">
+            <div class="toast-message" id="toastMessage"></div>
+        </div>
+        <div class="toast-progress">
+            <div class="toast-progress-bar" id="toastProgressBar"></div>
+        </div>
+    </div>
+
     <script>
         let currentStudentId = null;
         let currentStudentStatus = null;
         let familyMemberCount = 0;
         let currentFilter = 'all';
         let pendingStatusAction = null;
+        let toastTimeout = null;
+
+        function showToast(type, title, subtitle, message) {
+            const toast = document.getElementById('toastNotification');
+            const toastHeader = document.getElementById('toastHeader');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastSubtitle = document.getElementById('toastSubtitle');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastProgressBar = document.getElementById('toastProgressBar');
+
+            // Clear any existing timeout
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+            }
+
+            // Reset classes
+            toastHeader.className = `toast-header ${type}`;
+            toastIcon.className = `toast-icon ${type}`;
+            toastTitle.className = `toast-title ${type}`;
+            toastSubtitle.className = `toast-subtitle ${type}`;
+            toastProgressBar.className = `toast-progress-bar ${type}`;
+
+            // Set content
+            toastIcon.textContent = type === 'success' ? '✓' : '✗';
+            toastTitle.textContent = title;
+            toastSubtitle.textContent = subtitle;
+            toastMessage.textContent = message;
+
+            // Show toast
+            toast.classList.remove('hide');
+            toast.classList.add('show');
+
+            // Reset progress bar animation
+            toastProgressBar.style.animation = 'none';
+            setTimeout(() => {
+                toastProgressBar.style.animation = 'progressBar 3s linear forwards';
+            }, 10);
+
+            // Auto hide after 3 seconds
+            toastTimeout = setTimeout(() => {
+                hideToast();
+            }, 3000);
+        }
+
+        function hideToast() {
+            const toast = document.getElementById('toastNotification');
+            toast.classList.add('hide');
+            
+            setTimeout(() => {
+                toast.classList.remove('show', 'hide');
+            }, 300);
+        }
 
         function showConfirmationModal(action) {
+            console.log("=== showConfirmationModal called with action:", action);
+            
             pendingStatusAction = action;
             const modal = document.getElementById('confirmationModal');
             const header = document.getElementById('confirmHeader');
@@ -1294,7 +1537,13 @@
             const title = document.getElementById('confirmTitle');
             const subtitle = document.getElementById('confirmSubtitle');
             const message = document.getElementById('confirmMessage');
-            const actionBtn = document.getElementById('confirmActionBtn');
+            const footer = document.querySelector('.confirmation-footer');
+            
+            if (!header || !icon || !title || !subtitle || !message || !footer) {
+                console.error("ERROR: Essential modal elements are missing!");
+                alert("Error: Modal elements not found. Please refresh the page.");
+                return;
+            }
             
             const studentName = `${document.getElementById('firstName').value} ${document.getElementById('middleName').value} ${document.getElementById('lastName').value}`.trim();
             const studentNo = document.getElementById('studentNo').value;
@@ -1311,8 +1560,11 @@
                 subtitle.textContent = 'Approve this student for enrollment';
                 message.className = 'confirmation-message accept';
                 message.textContent = '✓ By accepting this application, the student will be enrolled in the system and can proceed with their registration. This action confirms that all requirements have been met.';
-                actionBtn.className = 'confirm-action-btn accept';
-                actionBtn.textContent = 'Confirm Accept';
+                
+                footer.innerHTML = `
+                    <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Cancel</button>
+                    <button type="button" class="confirm-action-btn accept" onclick="confirmApplicationStatus()">Confirm Accept</button>
+                `;
             } else {
                 header.className = 'confirmation-header reject';
                 icon.textContent = '✗';
@@ -1320,45 +1572,71 @@
                 subtitle.textContent = 'Decline this student application';
                 message.className = 'confirmation-message reject';
                 message.textContent = '✗ By rejecting this application, the student will not be enrolled. This action indicates that the requirements were not met or the application contains issues. The applicant will be notified of this decision.';
-                actionBtn.className = 'confirm-action-btn reject';
-                actionBtn.textContent = 'Confirm Reject';
+                
+                footer.innerHTML = `
+                    <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Cancel</button>
+                    <button type="button" class="confirm-action-btn reject" onclick="confirmApplicationStatus()">Confirm Reject</button>
+                `;
             }
             
             modal.classList.add('active');
         }
 
-        function closeConfirmationModal() {
-            document.getElementById('confirmationModal').classList.remove('active');
-            pendingStatusAction = null;
+        async function confirmApplicationStatus() {
+            if (!currentStudentId || !pendingStatusAction) return;
+
+            try {
+                const response = await fetch(`http://localhost:5001/api/admissions/${currentStudentId}/status`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status: pendingStatusAction })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log("Server response:", result);
+                    closeConfirmationModal();
+                    closeModal();
+                    
+                    // Show success toast
+                    const studentName = `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`.trim();
+                    if (pendingStatusAction === 'accepted') {
+                        showToast(
+                            'success',
+                            'Application Accepted!',
+                            'Student enrolled successfully',
+                            `${studentName} has been successfully accepted and enrolled in the system.`
+                        );
+                    } else {
+                        showToast(
+                            'error',
+                            'Application Rejected',
+                            'Student application declined',
+                            `${studentName}'s application has been rejected.`
+                        );
+                    }
+                    
+                    await loadStudents();
+                } else {
+                    const error = await response.json();
+                    console.error("Server error:", error);
+                    showToast(
+                        'error',
+                        'Error',
+                        'Failed to update status',
+                        `Could not update application status: ${error.error || 'Unknown error'}`
+                    );
+                }
+            } catch (err) {
+                console.error("Error updating status:", err);
+                showToast(
+                    'error',
+                    'Connection Error',
+                    'Could not connect to server',
+                    'Please check your internet connection and try again.'
+                );
+            }
         }
-
-async function confirmApplicationStatus() {
-    if (!currentStudentId || !pendingStatusAction) return;
-
-    try {
-        const response = await fetch(`http://localhost:5001/api/admissions/${currentStudentId}/status`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status: pendingStatusAction })
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log("Server response:", result);
-            closeConfirmationModal();
-            closeModal();
-            alert(`Application ${pendingStatusAction} successfully!`);
-            await loadStudents();
-        } else {
-            const error = await response.json();
-            console.error("Server error:", error);
-            alert(`Error updating application status: ${error.error || 'Unknown error'}`);
-        }
-    } catch (err) {
-        console.error("Error updating status:", err);
-        alert("Could not connect to server");
-    }
-}
 
         function addFamilyMember(memberData = null) {
             familyMemberCount++;
@@ -1518,6 +1796,12 @@ async function confirmApplicationStatus() {
             currentStudentStatus = null;
         }
 
+        function closeConfirmationModal() {
+            const modal = document.getElementById('confirmationModal');
+            modal.classList.remove('active');
+            pendingStatusAction = null;
+        }
+
         document.getElementById('confirmationModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeConfirmationModal();
@@ -1584,7 +1868,7 @@ async function confirmApplicationStatus() {
                 if (response.ok) {
                     const studentData = await response.json();
                     
-                    if (studentData.status === 'pending' || !studentData.status) {
+                    if (currentFilter === 'pending' && (studentData.status === 'pending' || !studentData.status)) {
                         currentStudentId = studentData.id;
                         currentStudentStatus = studentData.status || 'pending';
                         
@@ -1599,11 +1883,11 @@ async function confirmApplicationStatus() {
                         openModal(studentData);
                     }
                 } else {
-                    alert('Error loading student details');
+                    showToast('error', 'Error', 'Failed to load student', 'Could not retrieve student details from server.');
                 }
             } catch (err) {
                 console.error("Error fetching student:", err);
-                alert('Could not connect to server');
+                showToast('error', 'Connection Error', 'Could not connect to server', 'Please check your internet connection and try again.');
             }
         }
 
@@ -1627,7 +1911,9 @@ async function confirmApplicationStatus() {
             header.className = 'confirmation-header';
             header.style.background = 'linear-gradient(135deg, rgb(154, 50, 50) 0%, rgb(69, 11, 11) 100%)';
             header.style.color = 'white';
+            icon.textContent = '📋';
             title.textContent = 'Review Application';
+            subtitle.textContent = 'Make a decision on this application';
             message.className = 'confirmation-message';
             message.style.background = '#f8f9fa';
             message.style.color = '#333';
@@ -1658,7 +1944,7 @@ async function confirmApplicationStatus() {
                     })
                     .catch(err => {
                         console.error("Error fetching student:", err);
-                        alert('Could not load student details');
+                        showToast('error', 'Error', 'Failed to load details', 'Could not load student details from server.');
                     });
             }
         }

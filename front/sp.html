@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <title>Registration Dashboard</title>
+    <title>Student Profile Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -149,10 +149,6 @@
             border-radius: 4px;
         }
 
-        .student-list::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
         .student-item {
             background-color: #d4d4d4;
             padding: 18px 20px;
@@ -179,7 +175,6 @@
             font-size: 18px;
         }
 
-        /* MODERN MODAL STYLES */
         .modal {
             display: none;
             position: fixed;
@@ -192,12 +187,6 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .modal.active {
@@ -208,64 +197,31 @@
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             padding: 0;
             border-radius: 24px;
-            width: 900px;
+            width: 1100px;
             max-width: 95%;
             max-height: 90vh;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
-                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            transform-origin: center;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
         }
 
         .modal-header {
             background: linear-gradient(135deg, rgba(154, 50, 50, 0.95) 0%, rgba(69, 11, 11, 0.95) 100%);
             padding: 32px 40px;
             border-radius: 24px 24px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .modal-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            pointer-events: none;
         }
 
         .modal-title {
             font-size: 28px;
             color: white;
             font-weight: 600;
-            letter-spacing: -0.5px;
-            z-index: 1;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .modal-body {
             padding: 40px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 300px;
             gap: 32px;
             overflow-y: auto;
             flex: 1;
@@ -294,18 +250,6 @@
             margin-top: 24px;
             padding-bottom: 12px;
             border-bottom: 2px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            letter-spacing: -0.3px;
-        }
-
-        .section-title::before {
-            content: '';
-            width: 4px;
-            height: 24px;
-            background: linear-gradient(180deg, #7d1414 0%, #5d0f0f 100%);
-            border-radius: 2px;
         }
 
         .fieldset {
@@ -314,8 +258,6 @@
             padding: 24px;
             margin-top: 16px;
             background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .fieldset legend {
@@ -323,7 +265,6 @@
             color: #7d1414;
             padding: 0 12px;
             font-weight: 600;
-            letter-spacing: 0.3px;
         }
 
         .form-group {
@@ -339,7 +280,6 @@
             color: #495057;
             text-align: left;
             font-weight: 500;
-            letter-spacing: 0.2px;
         }
 
         .form-group input,
@@ -350,9 +290,7 @@
             font-size: 14px;
             background: white;
             width: 100%;
-            box-sizing: border-box;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         }
 
         .form-group input:focus,
@@ -360,7 +298,6 @@
             outline: none;
             border-color: #7d1414;
             box-shadow: 0 0 0 4px rgba(125, 20, 20, 0.1);
-            transform: translateY(-1px);
         }
 
         .set-btn {
@@ -371,27 +308,7 @@
             border-radius: 10px;
             font-size: 13px;
             cursor: pointer;
-            white-space: nowrap;
             font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(125, 20, 20, 0.3);
-        }
-
-        .set-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(125, 20, 20, 0.4);
-        }
-
-        .set-btn:active {
-            transform: translateY(0);
-        }
-
-        .year-level-group {
-            display: grid;
-            grid-template-columns: 120px 1fr 20px;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
         }
 
         .form-group-full {
@@ -417,15 +334,6 @@
             font-size: 15px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .cancel-btn:hover {
-            background: #f8f9fa;
-            border-color: #adb5bd;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .save-btn {
@@ -437,21 +345,6 @@
             font-size: 15px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
-        }
-
-        .save-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-        }
-
-        .left-column {
-            grid-column: 1;
-        }
-
-        .right-column {
-            grid-column: 2;
         }
 
         .family-member {
@@ -460,13 +353,6 @@
             padding: 24px;
             margin-bottom: 20px;
             background: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s ease;
-        }
-
-        .family-member:hover {
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            transform: translateY(-2px);
         }
 
         .family-member-header {
@@ -478,12 +364,6 @@
             border-bottom: 2px solid #f0f0f0;
         }
 
-        .family-member-header strong {
-            color: #2c3e50;
-            font-size: 16px;
-            letter-spacing: -0.2px;
-        }
-
         .remove-family-btn {
             background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             color: white;
@@ -493,13 +373,6 @@
             font-size: 13px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
-        }
-
-        .remove-family-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
         }
 
         .add-family-btn {
@@ -513,161 +386,123 @@
             margin-top: 16px;
             width: 100%;
             font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.2);
         }
 
-        .add-family-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+        .subjects-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 20px;
         }
 
-        .full-width {
-            grid-column: 1 / -1;
+        .subjects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e0e0e0;
         }
 
-        #familyMembersContainer {
-            max-height: none;
+        .subjects-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 200px;
-                padding: 15px 10px;
-            }
-
-            .menu-item {
-                font-size: 14px;
-                padding: 12px 8px;
-            }
-
-            .modal-content {
-                width: 90%;
-            }
+        .subjects-title {
+            font-size: 18px;
+            color: #2c3e50;
+            font-weight: 700;
         }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 180px;
-                padding: 15px 8px;
-            }
-
-            .menu-item {
-                font-size: 13px;
-                padding: 10px 6px;
-                gap: 8px;
-            }
-
-            .menu-icon {
-                width: 18px;
-                height: 18px;
-                font-size: 12px;
-            }
-
-            .main-content {
-                padding: 15px;
-            }
-
-            .content-wrapper {
-                padding: 20px;
-            }
-
-            .header-section {
-                flex-direction: column;
-                gap: 15px;
-                align-items: stretch;
-            }
-
-            .search-box {
-                width: 100%;
-            }
-
-            .modal-content {
-                width: 95%;
-                border-radius: 20px;
-            }
-
-            .modal-body {
-                grid-template-columns: 1fr;
-                padding: 24px;
-                gap: 20px;
-            }
-
-            .modal-header {
-                padding: 24px 28px;
-            }
-
-            .modal-title {
-                font-size: 22px;
-            }
-
-            .left-column,
-            .right-column {
-                grid-column: 1;
-            }
-
-            .form-group {
-                grid-template-columns: 100px 1fr auto;
-                gap: 12px;
-            }
-
-            .form-group-full {
-                grid-template-columns: 100px 1fr;
-            }
-
-            .year-level-group {
-                grid-template-columns: 100px 1fr 20px;
-            }
-
-            .modal-footer {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .cancel-btn,
-            .save-btn {
-                width: 100%;
-            }
+        .subject-count {
+            background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
         }
 
-        @media (max-width: 480px) {
-            .sidebar {
-                width: 150px;
-                padding: 10px 5px;
-            }
+        .edit-subjects-btn {
+            background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 600;
+        }
 
-            .menu-item span {
-                font-size: 12px;
-            }
+        .subjects-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
 
-            .form-group {
-                grid-template-columns: 1fr;
-                gap: 5px;
-            }
+        .subjects-list::-webkit-scrollbar {
+            width: 6px;
+        }
 
-            .form-group label {
-                text-align: left;
-            }
+        .subjects-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #7d1414 0%, #5d0f0f 100%);
+            border-radius: 10px;
+        }
 
-            .year-level-group {
-                grid-template-columns: 1fr;
-            }
+        .subject-item {
+            padding: 12px 16px;
+            background: linear-gradient(to right, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #333;
+            border-left: 3px solid #7d1414;
+        }
 
-            .year-level-group span {
-                display: none;
-            }
+        .subject-checkbox-item {
+            padding: 12px 16px;
+            background: linear-gradient(to right, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border-left: 3px solid #7d1414;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
 
-            .set-btn {
-                width: 100%;
-            }
+        .subject-checkbox-item input {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            accent-color: #7d1414;
+        }
 
-            .student-item {
-                padding: 15px;
-            }
+        .select-all-subjects {
+            padding: 10px 16px;
+            background: #e8f4f8;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
 
-            .page-title {
-                font-size: 20px;
-            }
+        .select-all-subjects input {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .empty-subjects {
+            padding: 40px 20px;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -701,7 +536,6 @@
                 </button>
                 <input type="text" class="search-box" placeholder="Search" id="searchBox" oninput="filterStudents()">
             </div>
-
             <div class="student-list" id="studentList"></div>
         </div>
     </div>
@@ -713,36 +547,29 @@
             </div>
             <form onsubmit="addStudent(event)">
                 <div class="modal-body">
-                    <!-- Left Column -->
                     <div class="left-column">
                         <div class="form-group">
                             <label>Student No.</label>
                             <input type="text" id="studentNo" required>
                             <button type="button" class="set-btn">Set</button>
                         </div>
-                        
                         <div class="form-group form-group-full">
                             <label>Last Name</label>
                             <input type="text" id="lastName" required>
                         </div>
-                        
                         <div class="form-group form-group-full">
                             <label>First Name</label>
                             <input type="text" id="firstName" required>
                         </div>
-                        
                         <div class="form-group form-group-full">
                             <label>Middle Name</label>
                             <input type="text" id="middleName">
                         </div>
-                        
                         <div class="form-group form-group-full">
                             <label>Ext. Name</label>
                             <input type="text" id="extName">
                         </div>
-                        
                         <div class="section-title">Profile</div>
-                        
                         <div class="form-group form-group-full">
                             <label>Program</label>
                             <select id="program">
@@ -751,92 +578,65 @@
                                 <option value="College">College</option>
                             </select>
                         </div>
-                        
-                        <div class="form-group form-group-full">
-                            <label>Curriculum Code</label>
-                            <input type="text" id="curriculumCode">
-                        </div>
-                        
-                        <div class="form-group form-group-full">
-                            <label>Date Graduated</label>
-                            <input type="date" id="dateGraduated">
-                        </div>
-                        
                         <div class="form-group form-group-full">
                             <label>LRN</label>
                             <input type="text" id="LRN">
                         </div>
-                        
                         <div class="form-group form-group-full">
                             <label>Citizenship</label>
                             <input type="text" id="citizenship">
                         </div>
-                        
                         <div class="form-group form-group-full">
                             <label>Religion</label>
                             <input type="text" id="religion">
                         </div>
-                        
                         <div class="section-title">Contacts/Address</div>
-
                         <div class="form-group form-group-full">
                             <label>Email</label>
                             <input type="email" id="email">
                         </div>
-
                         <div class="form-group form-group-full">
                             <label>Phone</label>
                             <input type="text" id="phone">
                         </div>
-
                         <div class="form-group form-group-full">
                             <label>Street</label>
                             <input type="text" id="street">
                         </div>
-
                         <div class="form-group form-group-full">
                             <label>Barangay</label>
                             <input type="text" id="brgy">
                         </div>
-
                         <div class="form-group form-group-full">
                             <label>City/Town</label>
                             <input type="text" id="city">
                         </div>
-
                         <div class="form-group form-group-full">
                             <label>Province</label>
                             <input type="text" id="province">
                         </div>
                     </div>
 
-                    <!-- Right Column -->
-                    <div class="right-column">
+                    <div class="middle-column">
                         <div class="form-group form-group-full">
                             <label>Year Level</label>
-                            <input type="text" id="yearLevel">
-                            <span style="font-size: 20px; color: #666;">›</span>
+                            <input type="text" id="yearLevel" onchange="loadStudentSubjects()">
                         </div>
-                        
                         <fieldset class="fieldset">
                             <legend>Admission</legend>
-                            
                             <div class="form-group form-group-full">
                                 <label>Date</label>
                                 <input type="date" id="admissionDate">
                             </div>
-                            
                             <div class="form-group form-group-full">
                                 <label>School Year</label>
                                 <input type="text" id="schoolYear">
                             </div>
-                            
                             <div class="form-group form-group-full">
                                 <label>Period</label>
                                 <input type="text" id="period">
                             </div>
                         </fieldset>
-                        
                         <div style="margin-top: 25px;">
                             <div class="form-group form-group-full">
                                 <label>Gender</label>
@@ -846,7 +646,6 @@
                                     <option value="Female">Female</option>
                                 </select>
                             </div>
-                            
                             <div class="form-group form-group-full">
                                 <label>Age</label>
                                 <select id="age">
@@ -867,19 +666,31 @@
                                     <option value="18">18</option>
                                 </select>
                             </div>
-                            
                             <div class="form-group form-group-full">
                                 <label>Section</label>
                                 <input type="text" id="section">
                             </div>
                         </div>
+                        <div style="margin-top: 30px;">
+                            <div class="section-title">Family Information</div>
+                            <div id="familyMembersContainer"></div>
+                            <button type="button" class="add-family-btn" onclick="addFamilyMember()">Add Family Member</button>
+                        </div>
                     </div>
 
-                    <!-- Family Section - Full Width -->
-                    <div class="full-width">
-                        <div class="section-title">Family Information</div>
-                        <div id="familyMembersContainer"></div>
-                        <button type="button" class="add-family-btn" onclick="addFamilyMember()">Add Family Member</button>
+                    <div class="right-column">
+                        <div class="subjects-panel">
+                            <div class="subjects-header">
+                                <div class="subjects-title-group">
+                                    <span class="subjects-title">Subjects</span>
+                                    <span class="subject-count" id="subjectCount">0</span>
+                                </div>
+                                <button type="button" class="edit-subjects-btn" id="editSubjectsBtn" onclick="toggleEditSubjects()">Edit</button>
+                            </div>
+                            <div class="subjects-list" id="subjectsList">
+                                <div class="empty-subjects">Enter a year level to view subjects</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -892,8 +703,12 @@
     </div>
 
     <script>
+        const API_URL = "http://localhost:5001";
         let currentStudentId = null;
         let familyMemberCount = 0;
+        let isEditingSubjects = false;
+        let allAvailableSubjects = [];
+        let studentSubjects = [];
 
         function safeValue(val) {
             return (val === undefined || val === null || val === 'null') ? '' : val;
@@ -902,7 +717,6 @@
         function addFamilyMember(memberData = null) {
             familyMemberCount++;
             const memberId = `family-${Date.now()}-${familyMemberCount}`;
-            
             const container = document.getElementById('familyMembersContainer');
             const memberDiv = document.createElement('div');
             memberDiv.className = 'family-member';
@@ -913,7 +727,6 @@
                     <strong>Family Member ${familyMemberCount}</strong>
                     <button type="button" class="remove-family-btn" onclick="removeFamilyMember('${memberId}')">Remove</button>
                 </div>
-                
                 <div class="form-group form-group-full">
                     <label>Relation</label>
                     <select class="family-relation" required>
@@ -923,56 +736,170 @@
                         <option value="Guardian" ${memberData && memberData.relation === 'Guardian' ? 'selected' : ''}>Guardian</option>
                     </select>
                 </div>
-                
                 <div class="form-group form-group-full">
                     <label>Full Name</label>
                     <input type="text" class="family-name" value="${memberData ? safeValue(memberData.name) : ''}" required>
                 </div>
-                
                 <div class="form-group form-group-full">
                     <label>Contact No.</label>
                     <input type="text" class="family-contact" value="${memberData ? safeValue(memberData.contact) : ''}">
                 </div>
-                
                 <div class="form-group form-group-full">
                     <label>Address</label>
                     <input type="text" class="family-address" value="${memberData ? safeValue(memberData.address) : ''}">
                 </div>
             `;
-            
             container.appendChild(memberDiv);
         }
 
         function removeFamilyMember(memberId) {
             const member = document.getElementById(memberId);
-            if (member) {
-                member.remove();
-                const members = document.querySelectorAll('.family-member');
-                familyMemberCount = members.length;
-                members.forEach((member, index) => {
-                    const header = member.querySelector('.family-member-header strong');
-                    if (header) {
-                        header.textContent = `Family Member ${index + 1}`;
-                    }
-                });
-            }
+            if (member) member.remove();
         }
 
         function collectFamilyData() {
             const familyMembers = [];
             const memberDivs = document.querySelectorAll('.family-member');
-            
             memberDivs.forEach(div => {
-                const member = {
+                familyMembers.push({
                     relation: div.querySelector('.family-relation').value,
                     name: div.querySelector('.family-name').value,
                     contact: div.querySelector('.family-contact').value,
                     address: div.querySelector('.family-address').value
-                };
-                familyMembers.push(member);
+                });
             });
-            
             return familyMembers;
+        }
+
+        function toggleEditSubjects() {
+            isEditingSubjects = !isEditingSubjects;
+            const editBtn = document.getElementById('editSubjectsBtn');
+            
+            if (isEditingSubjects) {
+                editBtn.textContent = 'Done';
+                editBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #218838 100%)';
+                displaySubjectsAsCheckboxes();
+            } else {
+                editBtn.textContent = 'Edit';
+                editBtn.style.background = 'linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%)';
+                collectSelectedSubjects();
+                displaySubjects(allAvailableSubjects, true);
+            }
+        }
+
+        function collectSelectedSubjects() {
+            const checkboxes = document.querySelectorAll('#subjectsList input[type="checkbox"]:checked');
+            studentSubjects = Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        function toggleSelectAllSubjects() {
+            const selectAll = document.getElementById('selectAllSubjects');
+            const checkboxes = document.querySelectorAll('#subjectsList .subject-checkbox-item input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = selectAll.checked);
+        }
+
+        async function loadStudentSubjects() {
+            const yearLevel = document.getElementById('yearLevel').value;
+            const subjectsList = document.getElementById('subjectsList');
+            const subjectCount = document.getElementById('subjectCount');
+            
+            if (!yearLevel) {
+                subjectsList.innerHTML = '<div class="empty-subjects">Enter a year level to view subjects</div>';
+                subjectCount.textContent = '0';
+                allAvailableSubjects = [];
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/subjects/${yearLevel}`);
+                if (response.ok) {
+                    const subjects = await response.json();
+                    allAvailableSubjects = subjects;
+                    if (!isEditingSubjects && studentSubjects.length === 0) {
+                        studentSubjects = subjects.map(s => s.subjects);
+                    }
+                    displaySubjects(subjects, false);
+                } else {
+                    subjectsList.innerHTML = '<div class="empty-subjects">Error loading subjects</div>';
+                    subjectCount.textContent = '0';
+                }
+            } catch (err) {
+                console.error("Error loading subjects:", err);
+                subjectsList.innerHTML = '<div class="empty-subjects">Could not load subjects</div>';
+                subjectCount.textContent = '0';
+            }
+        }
+
+        function displaySubjectsAsCheckboxes() {
+            const subjectsList = document.getElementById('subjectsList');
+            const subjectCount = document.getElementById('subjectCount');
+            
+            if (allAvailableSubjects.length === 0) {
+                subjectsList.innerHTML = '<div class="empty-subjects">No subjects available</div>';
+                subjectCount.textContent = '0';
+                return;
+            }
+
+            subjectCount.textContent = studentSubjects.length;
+            subjectsList.innerHTML = '';
+
+            const selectAllDiv = document.createElement('div');
+            selectAllDiv.className = 'select-all-subjects';
+            selectAllDiv.onclick = (e) => {
+                if (e.target.tagName !== 'INPUT') {
+                    const checkbox = selectAllDiv.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                    toggleSelectAllSubjects();
+                }
+            };
+            selectAllDiv.innerHTML = `
+                <input type="checkbox" id="selectAllSubjects" onclick="event.stopPropagation(); toggleSelectAllSubjects();">
+                <label for="selectAllSubjects">Select All</label>
+            `;
+            subjectsList.appendChild(selectAllDiv);
+
+            allAvailableSubjects.forEach((subject, index) => {
+                const isChecked = studentSubjects.includes(subject.subjects);
+                const item = document.createElement('div');
+                item.className = 'subject-checkbox-item';
+                item.onclick = (e) => {
+                    if (e.target.tagName !== 'INPUT') {
+                        const checkbox = item.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                    }
+                };
+                item.innerHTML = `
+                    <input type="checkbox" id="subject_${index}" value="${subject.subjects}" ${isChecked ? 'checked' : ''} onclick="event.stopPropagation();">
+                    <label for="subject_${index}">${subject.subjects}</label>
+                `;
+                subjectsList.appendChild(item);
+            });
+        }
+
+        function displaySubjects(subjects, showOnlySelected = false) {
+            const subjectsList = document.getElementById('subjectsList');
+            const subjectCount = document.getElementById('subjectCount');
+            
+            let displaySubjects = subjects;
+            if (showOnlySelected && studentSubjects.length > 0) {
+                displaySubjects = subjects.filter(s => studentSubjects.includes(s.subjects));
+            }
+            
+            if (displaySubjects.length === 0) {
+                subjectsList.innerHTML = '<div class="empty-subjects">No subjects selected</div>';
+                subjectCount.textContent = '0';
+                return;
+            }
+
+            subjectCount.textContent = displaySubjects.length;
+            subjectsList.innerHTML = '';
+
+            displaySubjects.forEach(subject => {
+                const item = document.createElement('div');
+                item.className = 'subject-item';
+                item.textContent = subject.subjects;
+                subjectsList.appendChild(item);
+            });
         }
 
         function openModal(studentData = null) {
@@ -983,6 +910,14 @@
             form.reset();
             document.getElementById('familyMembersContainer').innerHTML = '';
             familyMemberCount = 0;
+            isEditingSubjects = false;
+            studentSubjects = [];
+            allAvailableSubjects = [];
+
+            document.getElementById('subjectsList').innerHTML = '<div class="empty-subjects">Enter a year level to view subjects</div>';
+            document.getElementById('subjectCount').textContent = '0';
+            document.getElementById('editSubjectsBtn').textContent = 'Edit';
+            document.getElementById('editSubjectsBtn').style.background = 'linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%)';
 
             if (studentData) {
                 currentStudentId = studentData.id;
@@ -994,8 +929,6 @@
                 document.getElementById('lastName').value = safeValue(studentData.last_name);
                 document.getElementById('extName').value = safeValue(studentData.ext_name);
                 document.getElementById('program').value = safeValue(studentData.program);
-                document.getElementById('curriculumCode').value = safeValue(studentData.curriculum_code);
-                document.getElementById('dateGraduated').value = safeValue(studentData.date_graduated);
                 document.getElementById('LRN').value = safeValue(studentData.lrn);
                 document.getElementById('citizenship').value = safeValue(studentData.citizenship);
                 document.getElementById('religion').value = safeValue(studentData.religion);
@@ -1013,7 +946,14 @@
                 document.getElementById('age').value = safeValue(studentData.age);
                 document.getElementById('section').value = safeValue(studentData.section);
 
-                console.log("Family members from DB:", studentData.family_members);
+                if (studentData.student_subjects && Array.isArray(studentData.student_subjects)) {
+                    studentSubjects = studentData.student_subjects;
+                }
+
+                if (studentData.year_level) {
+                    loadStudentSubjects();
+                }
+
                 if (studentData.family_members && Array.isArray(studentData.family_members) && studentData.family_members.length > 0) {
                     studentData.family_members.forEach(member => {
                         addFamilyMember(member);
@@ -1029,16 +969,22 @@
 
         function closeModal() {
             const modal = document.getElementById('addStudentModal');
-            const form = modal.querySelector('form');
             modal.classList.remove('active');
-            form.reset();
+            document.querySelector('form').reset();
             document.getElementById('familyMembersContainer').innerHTML = '';
             familyMemberCount = 0;
             currentStudentId = null;
+            isEditingSubjects = false;
+            studentSubjects = [];
+            allAvailableSubjects = [];
         }
 
         async function addStudent(e) {
             e.preventDefault();
+
+            if (isEditingSubjects) {
+                collectSelectedSubjects();
+            }
 
             const student = {
                 student_no: document.getElementById('studentNo').value,
@@ -1047,8 +993,8 @@
                 last_name: document.getElementById('lastName').value,
                 ext_name: document.getElementById('extName').value,
                 program: document.getElementById('program').value,
-                curriculum_code: document.getElementById('curriculumCode').value,
-                date_graduated: document.getElementById('dateGraduated').value,
+                curriculum_code: '',
+                date_graduated: '',
                 lrn: document.getElementById('LRN').value,
                 citizenship: document.getElementById('citizenship').value,
                 religion: document.getElementById('religion').value,
@@ -1065,13 +1011,14 @@
                 gender: document.getElementById('gender').value,
                 age: document.getElementById('age').value,
                 section: document.getElementById('section').value,
-                family_members: collectFamilyData()
+                family_members: collectFamilyData(),
+                student_subjects: studentSubjects
             };
 
             try {
                 const url = currentStudentId
-                    ? `http://localhost:5000/api/students/${currentStudentId}`
-                    : "http://localhost:5000/api/students";
+                    ? `${API_URL}/api/students/${currentStudentId}`
+                    : `${API_URL}/api/students`;
                 const method = currentStudentId ? "PUT" : "POST";
 
                 const response = await fetch(url, {
@@ -1095,10 +1042,8 @@
 
         async function loadStudents() {
             try {
-                const response = await fetch("http://localhost:5000/api/students");
+                const response = await fetch(`${API_URL}/api/students`);
                 const students = await response.json();
-
-                console.log("Fetched students:", students);
 
                 const studentList = document.getElementById("studentList");
                 studentList.innerHTML = "";
@@ -1121,13 +1066,10 @@
         }
 
         async function viewStudent(id) {
-            console.log("Requesting student with id:", id);
             try {
-                const response = await fetch(`http://localhost:5000/api/students/${id}`);
-                console.log("Response status:", response.status);
+                const response = await fetch(`${API_URL}/api/students/${id}`);
                 if (response.ok) {
                     const studentData = await response.json();
-                    console.log("Student data received:", studentData);
                     openModal(studentData);
                 } else {
                     alert('Error loading student details');
@@ -1150,12 +1092,6 @@
                     student.style.display = 'none';
                 }
             });
-        }
-
-        function showPage(page) {
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => item.classList.remove('active'));
-            event.target.closest('.menu-item').classList.add('active');
         }
 
         document.getElementById('addStudentModal').addEventListener('click', function(e) {

@@ -1468,517 +1468,566 @@
     </div>
 
     <script>
-        let currentStudentId = null;
-        let currentStudentStatus = null;
-        let familyMemberCount = 0;
-        let currentFilter = 'all';
-        let pendingStatusAction = null;
-        let toastTimeout = null;
+let currentStudentId = null;
+let currentStudentStatus = null;
+let familyMemberCount = 0;
+let currentFilter = 'all';
+let pendingStatusAction = null;
+let toastTimeout = null;
 
-        function showToast(type, title, subtitle, message) {
-            const toast = document.getElementById('toastNotification');
-            const toastHeader = document.getElementById('toastHeader');
-            const toastIcon = document.getElementById('toastIcon');
-            const toastTitle = document.getElementById('toastTitle');
-            const toastSubtitle = document.getElementById('toastSubtitle');
-            const toastMessage = document.getElementById('toastMessage');
-            const toastProgressBar = document.getElementById('toastProgressBar');
+function showToast(type, title, subtitle, message) {
+    console.log("=== SHOW TOAST CALLED ===");
+    console.log("Type:", type);
+    console.log("Title:", title);
+    console.log("Subtitle:", subtitle);
+    console.log("Message:", message);
+    
+    const toast = document.getElementById('toastNotification');
+    const toastHeader = document.getElementById('toastHeader');
+    const toastIcon = document.getElementById('toastIcon');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastSubtitle = document.getElementById('toastSubtitle');
+    const toastMessage = document.getElementById('toastMessage');
+    const toastProgressBar = document.getElementById('toastProgressBar');
 
-            // Clear any existing timeout
-            if (toastTimeout) {
-                clearTimeout(toastTimeout);
-            }
+    console.log("Toast element:", toast);
+    console.log("Toast header:", toastHeader);
+    
+    if (!toast) {
+        console.error("❌ TOAST ELEMENT NOT FOUND!");
+        alert("Toast element not found in the HTML!");
+        return;
+    }
 
-            // Reset classes
-            toastHeader.className = `toast-header ${type}`;
-            toastIcon.className = `toast-icon ${type}`;
-            toastTitle.className = `toast-title ${type}`;
-            toastSubtitle.className = `toast-subtitle ${type}`;
-            toastProgressBar.className = `toast-progress-bar ${type}`;
+    // Clear any existing timeout
+    if (toastTimeout) {
+        clearTimeout(toastTimeout);
+    }
 
-            // Set content
-            toastIcon.textContent = type === 'success' ? '✓' : '✗';
-            toastTitle.textContent = title;
-            toastSubtitle.textContent = subtitle;
-            toastMessage.textContent = message;
+    // Reset classes
+    toastHeader.className = `toast-header ${type}`;
+    toastIcon.className = `toast-icon ${type}`;
+    toastTitle.className = `toast-title ${type}`;
+    toastSubtitle.className = `toast-subtitle ${type}`;
+    toastProgressBar.className = `toast-progress-bar ${type}`;
 
-            // Show toast
-            toast.classList.remove('hide');
-            toast.classList.add('show');
+    // Set content
+    toastIcon.textContent = type === 'success' ? '✓' : '✗';
+    toastTitle.textContent = title;
+    toastSubtitle.textContent = subtitle;
+    toastMessage.textContent = message;
 
-            // Reset progress bar animation
-            toastProgressBar.style.animation = 'none';
-            setTimeout(() => {
-                toastProgressBar.style.animation = 'progressBar 3s linear forwards';
-            }, 10);
+    // Show toast with explicit display style
+    toast.style.display = 'block';
+    toast.classList.remove('hide');
+    toast.classList.add('show');
+    
+    console.log("✅ Toast should now be visible!");
+    console.log("Toast classes:", toast.className);
+    console.log("Toast display:", toast.style.display);
 
-            // Auto hide after 3 seconds
-            toastTimeout = setTimeout(() => {
-                hideToast();
-            }, 3000);
-        }
+    // Reset progress bar animation
+    toastProgressBar.style.animation = 'none';
+    setTimeout(() => {
+        toastProgressBar.style.animation = 'progressBar 3s linear forwards';
+    }, 10);
 
-        function hideToast() {
-            const toast = document.getElementById('toastNotification');
-            toast.classList.add('hide');
+    // Auto hide after 3 seconds
+    toastTimeout = setTimeout(() => {
+        console.log("Auto-hiding toast...");
+        hideToast();
+    }, 3000);
+}
+
+function hideToast() {
+    const toast = document.getElementById('toastNotification');
+    toast.classList.add('hide');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 300);
+}
+
+function showConfirmationModal(action) {
+    console.log("=== showConfirmationModal called with action:", action);
+    
+    pendingStatusAction = action;
+    const modal = document.getElementById('confirmationModal');
+    const header = document.getElementById('confirmHeader');
+    const icon = document.getElementById('confirmIcon');
+    const title = document.getElementById('confirmTitle');
+    const subtitle = document.getElementById('confirmSubtitle');
+    const message = document.getElementById('confirmMessage');
+    const footer = document.querySelector('.confirmation-footer');
+    
+    if (!header || !icon || !title || !subtitle || !message || !footer) {
+        console.error("ERROR: Essential modal elements are missing!");
+        alert("Error: Modal elements not found. Please refresh the page.");
+        return;
+    }
+    
+    const studentName = `${document.getElementById('firstName').value} ${document.getElementById('middleName').value} ${document.getElementById('lastName').value}`.trim();
+    const studentNo = document.getElementById('studentNo').value;
+    const program = document.getElementById('program').value;
+    
+    document.getElementById('confirmStudentName').textContent = studentName;
+    document.getElementById('confirmStudentNo').textContent = studentNo || 'N/A';
+    document.getElementById('confirmProgram').textContent = program;
+    
+    if (action === 'accepted') {
+        header.className = 'confirmation-header accept';
+        icon.textContent = '✓';
+        title.textContent = 'Accept Application';
+        subtitle.textContent = 'Approve this student for enrollment';
+        message.className = 'confirmation-message accept';
+        message.textContent = '✓ By accepting this application, the student will be enrolled in the system and can proceed with their registration. This action confirms that all requirements have been met.';
+        
+        footer.innerHTML = `
+            <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Cancel</button>
+            <button type="button" class="confirm-action-btn accept" onclick="confirmApplicationStatus()">Confirm Accept</button>
+        `;
+    } else {
+        header.className = 'confirmation-header reject';
+        icon.textContent = '✗';
+        title.textContent = 'Reject Application';
+        subtitle.textContent = 'Decline this student application';
+        message.className = 'confirmation-message reject';
+        message.textContent = '✗ By rejecting this application, the student will not be enrolled. This action indicates that the requirements were not met or the application contains issues. The applicant will be notified of this decision.';
+        
+        footer.innerHTML = `
+            <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Cancel</button>
+            <button type="button" class="confirm-action-btn reject" onclick="confirmApplicationStatus()">Confirm Reject</button>
+        `;
+    }
+    
+    modal.classList.add('active');
+}
+
+async function confirmApplicationStatus() {
+    console.log("=== confirmApplicationStatus called ===");
+    console.log("Current Student ID:", currentStudentId);
+    console.log("Pending Action:", pendingStatusAction);
+    
+    if (!currentStudentId || !pendingStatusAction) {
+        console.error("Missing student ID or action!");
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:5001/api/admissions/${currentStudentId}/status`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: pendingStatusAction })
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log("Server response:", result);
+            closeConfirmationModal();
+            closeModal();
+
+            // console.log(pendingStatusAction);
+            // const myStatus = result?.message
+            // let test= myStatus.slice(12, 20)
+            // console.log(test);
+
+            const myStatus = result?.message;
+            let test = myStatus.includes('accepted') ? 'accepted' : 'rejected'
+
+            // Show success toast based on the action
+            const studentName = `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`.trim();
             
-            setTimeout(() => {
-                toast.classList.remove('show', 'hide');
-            }, 300);
-        }
+            if (test == 'accepted') {
+                // ✅ ACCEPTED - Show SUCCESS toast (green)
+                console.log(`show toast accept`);
+                showToast(
+                    'success',
+                    'Application Accepted!',
+                    'Student enrolled successfully',
+                    `${studentName} has been successfully accepted and enrolled in the system.`
+                );
 
-        function showConfirmationModal(action) {
-            console.log("=== showConfirmationModal called with action:", action);
-            
-            pendingStatusAction = action;
-            const modal = document.getElementById('confirmationModal');
-            const header = document.getElementById('confirmHeader');
-            const icon = document.getElementById('confirmIcon');
-            const title = document.getElementById('confirmTitle');
-            const subtitle = document.getElementById('confirmSubtitle');
-            const message = document.getElementById('confirmMessage');
-            const footer = document.querySelector('.confirmation-footer');
-            
-            if (!header || !icon || !title || !subtitle || !message || !footer) {
-                console.error("ERROR: Essential modal elements are missing!");
-                alert("Error: Modal elements not found. Please refresh the page.");
-                return;
-            }
-            
-            const studentName = `${document.getElementById('firstName').value} ${document.getElementById('middleName').value} ${document.getElementById('lastName').value}`.trim();
-            const studentNo = document.getElementById('studentNo').value;
-            const program = document.getElementById('program').value;
-            
-            document.getElementById('confirmStudentName').textContent = studentName;
-            document.getElementById('confirmStudentNo').textContent = studentNo || 'N/A';
-            document.getElementById('confirmProgram').textContent = program;
-            
-            if (action === 'accepted') {
-                header.className = 'confirmation-header accept';
-                icon.textContent = '✓';
-                title.textContent = 'Accept Application';
-                subtitle.textContent = 'Approve this student for enrollment';
-                message.className = 'confirmation-message accept';
-                message.textContent = '✓ By accepting this application, the student will be enrolled in the system and can proceed with their registration. This action confirms that all requirements have been met.';
-                
-                footer.innerHTML = `
-                    <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Cancel</button>
-                    <button type="button" class="confirm-action-btn accept" onclick="confirmApplicationStatus()">Confirm Accept</button>
-                `;
-            } else {
-                header.className = 'confirmation-header reject';
-                icon.textContent = '✗';
-                title.textContent = 'Reject Application';
-                subtitle.textContent = 'Decline this student application';
-                message.className = 'confirmation-message reject';
-                message.textContent = '✗ By rejecting this application, the student will not be enrolled. This action indicates that the requirements were not met or the application contains issues. The applicant will be notified of this decision.';
-                
-                footer.innerHTML = `
-                    <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Cancel</button>
-                    <button type="button" class="confirm-action-btn reject" onclick="confirmApplicationStatus()">Confirm Reject</button>
-                `;
-            }
-            
-            modal.classList.add('active');
-        }
-
-        async function confirmApplicationStatus() {
-            if (!currentStudentId || !pendingStatusAction) return;
-
-            try {
-                const response = await fetch(`http://localhost:5001/api/admissions/${currentStudentId}/status`, {
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ status: pendingStatusAction })
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log("Server response:", result);
-                    closeConfirmationModal();
-                    closeModal();
-                    
-                    // Show success toast
-                    const studentName = `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`.trim();
-                    if (pendingStatusAction === 'accepted') {
-                        showToast(
-                            'success',
-                            'Application Accepted!',
-                            'Student enrolled successfully',
-                            `${studentName} has been successfully accepted and enrolled in the system.`
-                        );
-                    } else {
-                        showToast(
-                            'error',
-                            'Application Rejected',
-                            'Student application declined',
-                            `${studentName}'s application has been rejected.`
-                        );
-                    }
-                    
-                    await loadStudents();
-                } else {
-                    const error = await response.json();
-                    console.error("Server error:", error);
-                    showToast(
-                        'error',
-                        'Error',
-                        'Failed to update status',
-                        `Could not update application status: ${error.error || 'Unknown error'}`
-                    );
-                }
-            } catch (err) {
-                console.error("Error updating status:", err);
+                test = null
+            } else if (test == 'rejected') {
+                // ❌ REJECTED - Show ERROR toast (red)
+                console.log(`show toast reject`);
                 showToast(
                     'error',
-                    'Connection Error',
-                    'Could not connect to server',
-                    'Please check your internet connection and try again.'
+                    'Application Rejected',
+                    'Student application declined',
+                    `${studentName}'s application has been rejected and moved to archive.`
                 );
-            }
-        }
 
-        function addFamilyMember(memberData = null) {
-            familyMemberCount++;
-            const memberId = memberData ? memberData.id : `family-${familyMemberCount}`;
+                test = null
+            }
             
-            const container = document.getElementById('familyMembersContainer');
-            const memberDiv = document.createElement('div');
-            memberDiv.className = 'family-member';
-            memberDiv.id = memberId;
-            
-            memberDiv.innerHTML = `
-                <div class="family-member-header">
-                    <strong>Family Member ${familyMemberCount}</strong>
-                    <button type="button" class="remove-family-btn" onclick="removeFamilyMember('${memberId}')">Remove</button>
-                </div>
-                
-                <div class="form-group form-group-full">
-                    <label>Relation</label>
-                    <select class="family-relation" required>
-                        <option value="">Select Relation</option>
-                        <option value="Mother" ${memberData && memberData.relation === 'Mother' ? 'selected' : ''}>Mother</option>
-                        <option value="Father" ${memberData && memberData.relation === 'Father' ? 'selected' : ''}>Father</option>
-                        <option value="Guardian" ${memberData && memberData.relation === 'Guardian' ? 'selected' : ''}>Guardian</option>
-                    </select>
-                </div>
-                
-                <div class="form-group form-group-full">
-                    <label>Full Name</label>
-                    <input type="text" class="family-name" value="${memberData ? memberData.name : ''}" required>
-                </div>
-                
-                <div class="form-group form-group-full">
-                    <label>Occupation</label>
-                    <input type="text" class="family-occupation" value="${memberData ? memberData.occupation : ''}">
-                </div>
-                
-                <div class="form-group form-group-full">
-                    <label>Contact No.</label>
-                    <input type="text" class="family-contact" value="${memberData ? memberData.contact : ''}">
-                </div>
-                
-                <div class="form-group form-group-full">
-                    <label>Address</label>
-                    <input type="text" class="family-address" value="${memberData ? memberData.address : ''}">
+            await loadStudents();
+        } else {
+            const error = await response.json();
+            console.error("Server error:", error);
+            showToast(
+                'error',
+                'Error',
+                'Failed to update status',
+                `Could not update application status: ${error.error || 'Unknown error'}`
+            );
+        }
+    } catch (err) {
+        console.error("Error updating status:", err);
+        showToast(
+            'error',
+            'Connection Error',
+            'Could not connect to server',
+            'Please check your internet connection and try again.'
+        );
+    }
+}
+
+function addFamilyMember(memberData = null) {
+    familyMemberCount++;
+    const memberId = memberData ? memberData.id : `family-${familyMemberCount}`;
+    
+    const container = document.getElementById('familyMembersContainer');
+    const memberDiv = document.createElement('div');
+    memberDiv.className = 'family-member';
+    memberDiv.id = memberId;
+    
+    memberDiv.innerHTML = `
+        <div class="family-member-header">
+            <strong>Family Member ${familyMemberCount}</strong>
+            <button type="button" class="remove-family-btn" onclick="removeFamilyMember('${memberId}')">Remove</button>
+        </div>
+        
+        <div class="form-group form-group-full">
+            <label>Relation</label>
+            <select class="family-relation" required>
+                <option value="">Select Relation</option>
+                <option value="Mother" ${memberData && memberData.relation === 'Mother' ? 'selected' : ''}>Mother</option>
+                <option value="Father" ${memberData && memberData.relation === 'Father' ? 'selected' : ''}>Father</option>
+                <option value="Guardian" ${memberData && memberData.relation === 'Guardian' ? 'selected' : ''}>Guardian</option>
+            </select>
+        </div>
+        
+        <div class="form-group form-group-full">
+            <label>Full Name</label>
+            <input type="text" class="family-name" value="${memberData ? memberData.name : ''}" required>
+        </div>
+        
+        <div class="form-group form-group-full">
+            <label>Occupation</label>
+            <input type="text" class="family-occupation" value="${memberData ? memberData.occupation : ''}">
+        </div>
+        
+        <div class="form-group form-group-full">
+            <label>Contact No.</label>
+            <input type="text" class="family-contact" value="${memberData ? memberData.contact : ''}">
+        </div>
+        
+        <div class="form-group form-group-full">
+            <label>Address</label>
+            <input type="text" class="family-address" value="${memberData ? memberData.address : ''}">
+        </div>
+    `;
+    
+    container.appendChild(memberDiv);
+}
+
+function removeFamilyMember(memberId) {
+    const member = document.getElementById(memberId);
+    if (member) {
+        member.remove();
+    }
+}
+
+function updateStatusIndicator(status) {
+    const indicator = document.getElementById('statusIndicator');
+    const reviewActions = document.getElementById('reviewActions');
+    const viewOnlyActions = document.getElementById('viewOnlyActions');
+    
+    const formInputs = document.querySelectorAll('#studentForm input, #studentForm select');
+    formInputs.forEach(input => {
+        input.setAttribute('readonly', true);
+        input.style.pointerEvents = 'none';
+    });
+    
+    document.querySelectorAll('.remove-family-btn, .add-family-btn, .set-btn').forEach(btn => {
+        btn.style.display = 'none';
+    });
+    
+    if (status === 'pending') {
+        indicator.className = 'status-indicator status-badge pending';
+        indicator.textContent = 'Pending Review';
+        reviewActions.style.display = 'flex';
+        viewOnlyActions.style.display = 'none';
+    } else if (status === 'accepted') {
+        indicator.className = 'status-indicator status-badge accepted';
+        indicator.textContent = 'Accepted';
+        reviewActions.style.display = 'none';
+        viewOnlyActions.style.display = 'flex';
+    } else if (status === 'rejected') {
+        indicator.className = 'status-indicator status-badge rejected';
+        indicator.textContent = 'Rejected';
+        reviewActions.style.display = 'none';
+        viewOnlyActions.style.display = 'flex';
+    } else {
+        indicator.className = '';
+        indicator.textContent = '';
+        reviewActions.style.display = 'none';
+        viewOnlyActions.style.display = 'none';
+    }
+}
+
+function openModal(studentData = null) {
+    const modal = document.getElementById('addStudentModal');
+    const modalTitle = document.querySelector('.modal-title');
+    
+    document.getElementById('familyMembersContainer').innerHTML = '';
+    familyMemberCount = 0;
+    
+    if (studentData) {
+        currentStudentId = studentData.id;
+        currentStudentStatus = studentData.status || 'pending';
+        modalTitle.textContent = 'Student Application';
+        
+        updateStatusIndicator(currentStudentStatus);
+        
+        document.getElementById('studentNo').value = studentData.student_no || '';
+        document.getElementById('firstName').value = studentData.first_name || '';
+        document.getElementById('middleName').value = studentData.middle_name || '';
+        document.getElementById('lastName').value = studentData.last_name || '';
+        document.getElementById('extName').value = studentData.ext_name || '';
+        document.getElementById('program').value = studentData.program || '';
+        document.getElementById('curriculumCode').value = studentData.curriculum_code || '';
+        document.getElementById('dateGraduated').value = studentData.date_graduated || '';
+        document.getElementById('LRN').value = studentData.lrn || '';
+        document.getElementById('citizenship').value = studentData.citizenship || '';
+        document.getElementById('religion').value = studentData.religion || '';
+        document.getElementById('email').value = studentData.email || '';
+        document.getElementById('phone').value = studentData.phone || '';
+        document.getElementById('street').value = studentData.street || '';
+        document.getElementById('brgy').value = studentData.barangay || '';
+        document.getElementById('city').value = studentData.city || '';
+        document.getElementById('province').value = studentData.province || '';
+        document.getElementById('yearLevel').value = studentData.year_level || '';
+        document.getElementById('admissionDate').value = studentData.admission_date || '';
+        document.getElementById('schoolYear').value = studentData.school_year || '';
+        document.getElementById('period').value = studentData.period || '';
+        document.getElementById('gender').value = studentData.gender || '';
+        document.getElementById('age').value = studentData.age || '';
+        document.getElementById('section').value = studentData.section || '';
+        
+        if (studentData.family_members && studentData.family_members.length > 0) {
+            studentData.family_members.forEach(member => {
+                addFamilyMember(member);
+            });
+        }
+    } else {
+        currentStudentId = null;
+        currentStudentStatus = null;
+        modalTitle.textContent = 'New Student';
+        updateStatusIndicator(null);
+        document.querySelector('form').reset();
+    }
+    
+    modal.classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('addStudentModal').classList.remove('active');
+    document.querySelector('form').reset();
+    document.getElementById('familyMembersContainer').innerHTML = '';
+    familyMemberCount = 0;
+    currentStudentId = null;
+    currentStudentStatus = null;
+}
+
+function closeConfirmationModal() {
+    const modal = document.getElementById('confirmationModal');
+    modal.classList.remove('active');
+    pendingStatusAction = null;
+}
+
+async function loadStudents() {
+    try {
+        // Use the new endpoint that fetches from all tables
+        const response = await fetch("http://localhost:5001/api/admissions/all");
+        const students = await response.json();
+
+        const studentList = document.getElementById("studentList");
+        studentList.innerHTML = "";
+
+        const filteredStudents = currentFilter === 'all' 
+            ? students 
+            : students.filter(s => s.status === currentFilter);
+
+        if (filteredStudents.length === 0) {
+            studentList.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">📋</div>
+                    <p>No ${currentFilter === 'all' ? '' : currentFilter} applications found</p>
                 </div>
             `;
-            
-            container.appendChild(memberDiv);
+            return;
         }
 
-        function removeFamilyMember(memberId) {
-            const member = document.getElementById(memberId);
-            if (member) {
-                member.remove();
-            }
-        }
+        filteredStudents.forEach(student => {
+            const status = student.status;
+            const fullName = `${student.first_name} ${student.middle_name ? student.middle_name + " " : ""}${student.last_name}`;
+            
+            const studentItem = document.createElement("div");
+            studentItem.className = `student-item ${status}`;
+            // Pass both status and id to viewStudent
+            studentItem.onclick = () => viewStudent(student.status, student.id);
+            studentItem.innerHTML = `
+                <div class="student-info">
+                    <div class="student-name">${fullName}</div>
+                    <div class="student-status">
+                        <span class="status-badge ${status}">${status}</span>
+                    </div>
+                </div>
+                <span class="arrow">›</span>
+            `;
+            studentList.appendChild(studentItem);
+        });
+    } catch (err) {
+        console.error("Error loading students:", err);
+        const studentList = document.getElementById("studentList");
+        studentList.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">⚠️</div>
+                <p>Error loading applications. Please try again.</p>
+            </div>
+        `;
+    }
+}
 
-        function updateStatusIndicator(status) {
-            const indicator = document.getElementById('statusIndicator');
-            const reviewActions = document.getElementById('reviewActions');
-            const viewOnlyActions = document.getElementById('viewOnlyActions');
+async function viewStudent(status, id) {
+    try {
+        // Use the new endpoint that fetches from the correct table based on status
+        const response = await fetch(`http://localhost:5001/api/registrations/${status}/${id}`);
+        if (response.ok) {
+            const studentData = await response.json();
             
-            const formInputs = document.querySelectorAll('#studentForm input, #studentForm select');
-            formInputs.forEach(input => {
-                input.setAttribute('readonly', true);
-                input.style.pointerEvents = 'none';
-            });
-            
-            document.querySelectorAll('.remove-family-btn, .add-family-btn, .set-btn').forEach(btn => {
-                btn.style.display = 'none';
-            });
-            
-            if (status === 'pending') {
-                indicator.className = 'status-indicator status-badge pending';
-                indicator.textContent = 'Pending Review';
-                reviewActions.style.display = 'flex';
-                viewOnlyActions.style.display = 'none';
-            } else if (status === 'accepted') {
-                indicator.className = 'status-indicator status-badge accepted';
-                indicator.textContent = 'Accepted';
-                reviewActions.style.display = 'none';
-                viewOnlyActions.style.display = 'flex';
-            } else if (status === 'rejected') {
-                indicator.className = 'status-indicator status-badge rejected';
-                indicator.textContent = 'Rejected';
-                reviewActions.style.display = 'none';
-                viewOnlyActions.style.display = 'flex';
-            } else {
-                indicator.className = '';
-                indicator.textContent = '';
-                reviewActions.style.display = 'none';
-                viewOnlyActions.style.display = 'none';
-            }
-        }
-
-        function openModal(studentData = null) {
-            const modal = document.getElementById('addStudentModal');
-            const modalTitle = document.querySelector('.modal-title');
-            
-            document.getElementById('familyMembersContainer').innerHTML = '';
-            familyMemberCount = 0;
-            
-            if (studentData) {
+            if (currentFilter === 'pending' && studentData.status === 'pending') {
                 currentStudentId = studentData.id;
-                currentStudentStatus = studentData.status || 'pending';
-                modalTitle.textContent = 'Student Application';
-                
-                updateStatusIndicator(currentStudentStatus);
+                currentStudentStatus = studentData.status;
                 
                 document.getElementById('studentNo').value = studentData.student_no || '';
                 document.getElementById('firstName').value = studentData.first_name || '';
                 document.getElementById('middleName').value = studentData.middle_name || '';
                 document.getElementById('lastName').value = studentData.last_name || '';
-                document.getElementById('extName').value = studentData.ext_name || '';
                 document.getElementById('program').value = studentData.program || '';
-                document.getElementById('curriculumCode').value = studentData.curriculum_code || '';
-                document.getElementById('dateGraduated').value = studentData.date_graduated || '';
-                document.getElementById('LRN').value = studentData.lrn || '';
-                document.getElementById('citizenship').value = studentData.citizenship || '';
-                document.getElementById('religion').value = studentData.religion || '';
-                document.getElementById('email').value = studentData.email || '';
-                document.getElementById('phone').value = studentData.phone || '';
-                document.getElementById('street').value = studentData.street || '';
-                document.getElementById('brgy').value = studentData.barangay || '';
-                document.getElementById('city').value = studentData.city || '';
-                document.getElementById('province').value = studentData.province || '';
-                document.getElementById('yearLevel').value = studentData.year_level || '';
-                document.getElementById('admissionDate').value = studentData.admission_date || '';
-                document.getElementById('schoolYear').value = studentData.school_year || '';
-                document.getElementById('period').value = studentData.period || '';
-                document.getElementById('gender').value = studentData.gender || '';
-                document.getElementById('age').value = studentData.age || '';
-                document.getElementById('section').value = studentData.section || '';
                 
-                if (studentData.family_members && studentData.family_members.length > 0) {
-                    studentData.family_members.forEach(member => {
-                        addFamilyMember(member);
-                    });
-                }
+                showDecisionPrompt(studentData);
             } else {
-                currentStudentId = null;
-                currentStudentStatus = null;
-                modalTitle.textContent = 'New Student';
-                updateStatusIndicator(null);
-                document.querySelector('form').reset();
+                openModal(studentData);
             }
-            
-            modal.classList.add('active');
+        } else {
+            showToast('error', 'Error', 'Failed to load student', 'Could not retrieve student details from server.');
         }
+    } catch (err) {
+        console.error("Error fetching student:", err);
+        showToast('error', 'Connection Error', 'Could not connect to server', 'Please check your internet connection and try again.');
+    }
+}
 
-        function closeModal() {
-            document.getElementById('addStudentModal').classList.remove('active');
-            document.querySelector('form').reset();
-            document.getElementById('familyMembersContainer').innerHTML = '';
-            familyMemberCount = 0;
-            currentStudentId = null;
-            currentStudentStatus = null;
-        }
+function showDecisionPrompt(studentData) {
+    const modal = document.getElementById('confirmationModal');
+    const header = document.getElementById('confirmHeader');
+    const icon = document.getElementById('confirmIcon');
+    const title = document.getElementById('confirmTitle');
+    const subtitle = document.getElementById('confirmSubtitle');
+    const message = document.getElementById('confirmMessage');
+    const footer = document.querySelector('.confirmation-footer');
+    
+    const fullName = `${studentData.first_name} ${studentData.middle_name ? studentData.middle_name + ' ' : ''}${studentData.last_name}`;
+    const studentNo = studentData.student_no || 'N/A';
+    const program = studentData.program || 'N/A';
+    
+    document.getElementById('confirmStudentName').textContent = fullName;
+    document.getElementById('confirmStudentNo').textContent = studentNo;
+    document.getElementById('confirmProgram').textContent = program;
+    
+    header.className = 'confirmation-header';
+    header.style.background = 'linear-gradient(135deg, rgb(154, 50, 50) 0%, rgb(69, 11, 11) 100%)';
+    header.style.color = 'white';
+    icon.textContent = '📋';
+    title.textContent = 'Review Application';
+    subtitle.textContent = 'Make a decision on this application';
+    message.className = 'confirmation-message';
+    message.style.background = '#f8f9fa';
+    message.style.color = '#333';
+    message.style.border = 'none';
+    message.innerHTML = `
+        <strong>Application Review</strong><br><br>
+        Please review this application and decide whether to accept or reject the applicant. 
+        You can also view the full details before making a decision.
+    `;
+    
+    footer.innerHTML = `
+        <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Close</button>
+        <button type="button" class="confirm-cancel-btn" onclick="viewFullDetails()">View Full Details</button>
+        <button type="button" class="confirm-action-btn reject" onclick="showConfirmationModal('rejected')">Reject</button>
+        <button type="button" class="confirm-action-btn accept" onclick="showConfirmationModal('accepted')">Accept</button>
+    `;
+    
+    modal.classList.add('active');
+}
 
-        function closeConfirmationModal() {
-            const modal = document.getElementById('confirmationModal');
-            modal.classList.remove('active');
-            pendingStatusAction = null;
-        }
-
-        document.getElementById('confirmationModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeConfirmationModal();
-            }
-        });
-
-        async function loadStudents() {
-            try {
-                const response = await fetch("http://localhost:5001/api/admissions");
-                const students = await response.json();
-
-                const studentList = document.getElementById("studentList");
-                studentList.innerHTML = "";
-
-                const filteredStudents = currentFilter === 'all' 
-                    ? students 
-                    : students.filter(s => (s.status || 'pending') === currentFilter);
-
-                if (filteredStudents.length === 0) {
-                    studentList.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-state-icon">📋</div>
-                            <p>No ${currentFilter === 'all' ? '' : currentFilter} applications found</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                filteredStudents.forEach(student => {
-                    const status = student.status || 'pending';
-                    const fullName = `${student.first_name} ${student.middle_name ? student.middle_name + " " : ""}${student.last_name}`;
-                    
-                    const studentItem = document.createElement("div");
-                    studentItem.className = `student-item ${status}`;
-                    studentItem.onclick = () => viewStudent(student.id);
-                    studentItem.innerHTML = `
-                        <div class="student-info">
-                            <div class="student-name">${fullName}</div>
-                            <div class="student-status">
-                                <span class="status-badge ${status}">${status}</span>
-                            </div>
-                        </div>
-                        <span class="arrow">›</span>
-                    `;
-                    studentList.appendChild(studentItem);
-                });
-            } catch (err) {
-                console.error("Error loading students:", err);
-                const studentList = document.getElementById("studentList");
-                studentList.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">⚠️</div>
-                        <p>Error loading applications. Please try again.</p>
-                    </div>
-                `;
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", loadStudents);
-
-        async function viewStudent(id) {
-            try {
-                const response = await fetch(`http://localhost:5001/api/admissions/${id}`);
-                if (response.ok) {
-                    const studentData = await response.json();
-                    
-                    if (currentFilter === 'pending' && (studentData.status === 'pending' || !studentData.status)) {
-                        currentStudentId = studentData.id;
-                        currentStudentStatus = studentData.status || 'pending';
-                        
-                        document.getElementById('studentNo').value = studentData.student_no || '';
-                        document.getElementById('firstName').value = studentData.first_name || '';
-                        document.getElementById('middleName').value = studentData.middle_name || '';
-                        document.getElementById('lastName').value = studentData.last_name || '';
-                        document.getElementById('program').value = studentData.program || '';
-                        
-                        showDecisionPrompt(studentData);
-                    } else {
-                        openModal(studentData);
-                    }
-                } else {
-                    showToast('error', 'Error', 'Failed to load student', 'Could not retrieve student details from server.');
-                }
-            } catch (err) {
+function viewFullDetails() {
+    closeConfirmationModal();
+    if (currentStudentId && currentStudentStatus) {
+        fetch(`http://localhost:5001/api/registrations/${currentStudentStatus}/${currentStudentId}`)
+            .then(response => response.json())
+            .then(studentData => {
+                openModal(studentData);
+            })
+            .catch(err => {
                 console.error("Error fetching student:", err);
-                showToast('error', 'Connection Error', 'Could not connect to server', 'Please check your internet connection and try again.');
-            }
-        }
-
-        function showDecisionPrompt(studentData) {
-            const modal = document.getElementById('confirmationModal');
-            const header = document.getElementById('confirmHeader');
-            const icon = document.getElementById('confirmIcon');
-            const title = document.getElementById('confirmTitle');
-            const subtitle = document.getElementById('confirmSubtitle');
-            const message = document.getElementById('confirmMessage');
-            const footer = document.querySelector('.confirmation-footer');
-            
-            const fullName = `${studentData.first_name} ${studentData.middle_name ? studentData.middle_name + ' ' : ''}${studentData.last_name}`;
-            const studentNo = studentData.student_no || 'N/A';
-            const program = studentData.program || 'N/A';
-            
-            document.getElementById('confirmStudentName').textContent = fullName;
-            document.getElementById('confirmStudentNo').textContent = studentNo;
-            document.getElementById('confirmProgram').textContent = program;
-            
-            header.className = 'confirmation-header';
-            header.style.background = 'linear-gradient(135deg, rgb(154, 50, 50) 0%, rgb(69, 11, 11) 100%)';
-            header.style.color = 'white';
-            icon.textContent = '📋';
-            title.textContent = 'Review Application';
-            subtitle.textContent = 'Make a decision on this application';
-            message.className = 'confirmation-message';
-            message.style.background = '#f8f9fa';
-            message.style.color = '#333';
-            message.style.border = 'none';
-            message.innerHTML = `
-                <strong>Application Review</strong><br><br>
-                Please review this application and decide whether to accept or reject the applicant. 
-                You can also view the full details before making a decision.
-            `;
-            
-            footer.innerHTML = `
-                <button type="button" class="confirm-cancel-btn" onclick="closeConfirmationModal()">Close</button>
-                <button type="button" class="confirm-cancel-btn" onclick="viewFullDetails()">View Full Details</button>
-                <button type="button" class="confirm-action-btn reject" onclick="showConfirmationModal('rejected')">Reject</button>
-                <button type="button" class="confirm-action-btn accept" onclick="showConfirmationModal('accepted')">Accept</button>
-            `;
-            
-            modal.classList.add('active');
-        }
-
-        function viewFullDetails() {
-            closeConfirmationModal();
-            if (currentStudentId) {
-                fetch(`http://localhost:5001/api/admissions/${currentStudentId}`)
-                    .then(response => response.json())
-                    .then(studentData => {
-                        openModal(studentData);
-                    })
-                    .catch(err => {
-                        console.error("Error fetching student:", err);
-                        showToast('error', 'Error', 'Failed to load details', 'Could not load student details from server.');
-                    });
-            }
-        }
-
-        function filterByStatus(status) {
-            currentFilter = status;
-            
-            document.querySelectorAll('.filter-tab').forEach(tab => {
-                tab.classList.remove('active');
+                showToast('error', 'Error', 'Failed to load details', 'Could not load student details from server.');
             });
-            document.querySelector(`[data-status="${status}"]`).classList.add('active');
-            
-            loadStudents();
-        }
+    }
+}
 
-        function filterStudents() {
-            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
-            const students = document.querySelectorAll('.student-item');
-            
-            students.forEach(student => {
-                const name = student.querySelector('.student-name').textContent.toLowerCase();
-                if (name.includes(searchTerm)) {
-                    student.style.display = 'flex';
-                } else {
-                    student.style.display = 'none';
-                }
-            });
-        }
+function filterByStatus(status) {
+    currentFilter = status;
+    
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelector(`[data-status="${status}"]`).classList.add('active');
+    
+    loadStudents();
+}
 
-        document.getElementById('addStudentModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
+function filterStudents() {
+    const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+    const students = document.querySelectorAll('.student-item');
+    
+    students.forEach(student => {
+        const name = student.querySelector('.student-name').textContent.toLowerCase();
+        if (name.includes(searchTerm)) {
+            student.style.display = 'flex';
+        } else {
+            student.style.display = 'none';
+        }
+    });
+}
+
+// Event Listeners
+document.addEventListener("DOMContentLoaded", loadStudents);
+
+document.getElementById('confirmationModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeConfirmationModal();
+    }
+});
+
+document.getElementById('addStudentModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
     </script>
 </body>
 </html>

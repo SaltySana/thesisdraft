@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,7 +89,12 @@
             margin-bottom: 20px;
         }
 
-        .add-button {
+        .header-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .add-button, .succession-button {
             background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
             color: white;
             border: none;
@@ -106,9 +110,17 @@
             box-shadow: 0 4px 12px rgba(125, 20, 20, 0.3);
         }
 
-        .add-button:hover {
+        .succession-button {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+        }
+
+        .add-button:hover, .succession-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(125, 20, 20, 0.4);
+        }
+
+        .succession-button:hover {
+            box-shadow: 0 6px 16px rgba(23, 162, 184, 0.4);
         }
 
         .search-box {
@@ -148,10 +160,6 @@
             border-radius: 4px;
         }
 
-        .section-list::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
         .section-item {
             background-color: #d4d4d4;
             padding: 18px 20px;
@@ -167,8 +175,27 @@
             background-color: #c4c4c4;
         }
 
+        .view-enrolled-btn {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(23, 162, 184, 0.3);
+            margin-right: 12px;
+        }
+
+        .view-enrolled-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(23, 162, 184, 0.4);
+        }
+
         .section-info {
-            flex: 0 0 250px;
+            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 4px;
@@ -185,12 +212,24 @@
             color: #666;
         }
 
+        .succession-badge {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 4px;
+            display: inline-block;
+            max-width: fit-content;
+        }
+
         .arrow {
             color: #666;
             font-size: 18px;
         }
 
-        /* MODERN MODAL STYLES */
+        /* MODAL STYLES */
         .modal {
             display: none;
             position: fixed;
@@ -219,11 +258,10 @@
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
             padding: 0;
             border-radius: 24px;
-            width: 1200px;
+            width: 1400px;
             max-width: 95%;
             max-height: 90vh;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
-                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -271,21 +309,29 @@
         }
 
         .modal-body {
-            display: flex;
-            gap: 32px;
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 24px;
             padding: 40px;
             overflow: hidden;
         }
 
         .left-side {
-            flex: 0 0 320px;
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
+        .middle-side {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
         .right-side {
-            flex: 1 1 auto;
             display: flex;
             flex-direction: column;
             background: white;
@@ -350,12 +396,6 @@
             transition: all 0.3s ease;
         }
 
-        .section-title-container #studentSearch:focus {
-            outline: none;
-            border-color: #7d1414;
-            box-shadow: 0 0 0 3px rgba(125, 20, 20, 0.1);
-        }
-
         .filter-button {
             padding: 10px 18px;
             background: white;
@@ -368,28 +408,24 @@
             gap: 6px;
             transition: all 0.3s ease;
             font-weight: 600;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         }
 
         .filter-button:hover {
             background: #f8f9fa;
             border-color: #adb5bd;
             transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .filter-button.active {
             background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
             color: white;
             border-color: #7d1414;
-            box-shadow: 0 4px 12px rgba(125, 20, 20, 0.3);
         }
 
         .section-title {
             font-size: 18px;
             color: #2c3e50;
             font-weight: 700;
-            letter-spacing: -0.3px;
         }
 
         .students-list {
@@ -399,16 +435,10 @@
             border: 2px solid #e8e8e8;
             border-radius: 12px;
             background: white;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
         }
 
         .students-list::-webkit-scrollbar {
             width: 10px;
-        }
-
-        .students-list::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 10px;
         }
 
         .students-list::-webkit-scrollbar-thumb {
@@ -423,10 +453,6 @@
             border-bottom: 1px solid #f0f0f0;
             cursor: pointer;
             transition: all 0.2s ease;
-        }
-
-        .student-checkbox-item:last-child {
-            border-bottom: none;
         }
 
         .student-checkbox-item:hover {
@@ -479,7 +505,74 @@
             color: #333;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+        }
+
+        .subjects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .subjects-title {
+            font-size: 18px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .subjects-list {
+            flex: 1;
+            overflow-y: auto;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            background: white;
+            max-height: 400px;
+        }
+
+        .subjects-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .subjects-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #7d1414 0%, #5d0f0f 100%);
+            border-radius: 10px;
+        }
+
+        .subject-checkbox-item {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .subject-checkbox-item:hover {
+            background: linear-gradient(to right, #fff5f5 0%, #ffffff 100%);
+            padding-left: 20px;
+        }
+
+        .subject-checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #7d1414;
+        }
+
+        .subject-checkbox-label {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .empty-subjects {
+            padding: 40px 20px;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
         }
 
         .modal-footer {
@@ -502,14 +595,12 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .cancel-btn:hover {
             background: #f8f9fa;
             border-color: #adb5bd;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .save-btn {
@@ -522,12 +613,11 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
         }
 
         .save-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+            box-shadow: 0 6px 20px rgba(125, 20, 20, 0.4);
         }
 
         .empty-state {
@@ -580,20 +670,6 @@
             overflow-y: auto;
         }
 
-        .filter-modal-body::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .filter-modal-body::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 10px;
-        }
-
-        .filter-modal-body::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #7d1414 0%, #5d0f0f 100%);
-            border-radius: 10px;
-        }
-
         .filter-option {
             margin-bottom: 24px;
             background: white;
@@ -602,17 +678,12 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         }
 
-        .filter-option:last-child {
-            margin-bottom: 0;
-        }
-
         .filter-option-label {
             display: block;
             font-size: 13px;
             color: #495057;
             margin-bottom: 12px;
             font-weight: 700;
-            letter-spacing: 0.3px;
         }
 
         .filter-radio-group {
@@ -657,7 +728,6 @@
             gap: 12px;
             border-top: 2px solid #e8e8e8;
             background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 0 0 24px 24px;
         }
 
         .clear-filter-btn {
@@ -676,7 +746,6 @@
             background: #fff5f5;
             border-color: #7d1414;
             color: #7d1414;
-            transform: translateY(-1px);
         }
 
         .apply-filter-btn {
@@ -689,49 +758,380 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
         }
 
-        .apply-filter-btn:hover {
+        /* Student List Modal */
+        .student-list-modal-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 24px;
+            width: 800px;
+            max-width: 90%;
+            max-height: 80vh;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .student-list-modal-header {
+            background: linear-gradient(135deg, rgba(154, 50, 50, 0.95) 0%, rgba(69, 11, 11, 0.95) 100%);
+            padding: 28px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-list-modal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            pointer-events: none;
+        }
+
+        .student-list-modal-title {
+            font-size: 22px;
+            color: white;
+            font-weight: 600;
+            position: relative;
+            letter-spacing: -0.3px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .student-list-modal-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 8px;
+            position: relative;
+        }
+
+        .student-list-modal-body {
+            padding: 32px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .student-list-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .student-list-modal-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #7d1414 0%, #5d0f0f 100%);
+            border-radius: 10px;
+        }
+
+        .enrolled-student-item {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            border-left: 4px solid #7d1414;
+        }
+
+        .enrolled-student-item:hover {
+            transform: translateX(4px);
+        }
+
+        .enrolled-student-info {
+            flex: 1;
+        }
+
+        .enrolled-student-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .enrolled-student-details {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .enrolled-student-number {
+            background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .no-students-enrolled {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .no-students-enrolled-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .student-list-modal-footer {
+            padding: 20px 32px;
+            border-top: 2px solid #e8e8e8;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 0 0 24px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .student-count-badge {
+            background: linear-gradient(135deg, #7d1414 0%, #5d0f0f 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .close-student-list-btn {
+            padding: 10px 24px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .close-student-list-btn:hover {
+            background: #f8f9fa;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
         }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 180px;
-                padding: 15px 8px;
-            }
+        /* Succession Modal */
+        .succession-modal-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 24px;
+            width: 900px;
+            max-width: 95%;
+            max-height: 85vh;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+        }
 
-            .modal-content {
-                max-height: 80vh;
-            }
+        .succession-modal-header {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.95) 0%, rgba(19, 132, 150, 0.95) 100%);
+            padding: 28px 32px;
+            position: relative;
+            overflow: hidden;
+        }
 
-            .modal-body {
-                padding: 24px;
-                flex-direction: column;
-            }
+        .succession-modal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            pointer-events: none;
+        }
 
-            .left-side {
-                flex: 1;
-            }
+        .succession-modal-title {
+            font-size: 22px;
+            color: white;
+            font-weight: 600;
+            position: relative;
+            letter-spacing: -0.3px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
 
-            .students-list {
-                max-height: 250px;
-            }
+        .succession-modal-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 8px;
+            position: relative;
+        }
 
-            .modal-footer {
-                flex-direction: column;
-            }
+        .succession-modal-body {
+            padding: 32px;
+            overflow-y: auto;
+            flex: 1;
+        }
 
-            .cancel-btn,
-            .save-btn {
-                width: 100%;
-            }
+        .succession-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .succession-modal-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #17a2b8 0%, #138496 100%);
+            border-radius: 10px;
+        }
+
+        .succession-section {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            border-left: 4px solid #17a2b8;
+        }
+
+        .succession-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .succession-section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .succession-section-info {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .succession-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 16px;
+            align-items: end;
+        }
+
+        .succession-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .succession-form-group label {
+            font-size: 13px;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        .succession-form-group select {
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .succession-form-group select:focus {
+            outline: none;
+            border-color: #17a2b8;
+            box-shadow: 0 0 0 4px rgba(23, 162, 184, 0.1);
+        }
+
+        .succession-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .save-succession-btn, .clear-succession-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .save-succession-btn {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+        }
+
+        .save-succession-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(23, 162, 184, 0.4);
+        }
+
+        .clear-succession-btn {
+            background: white;
+            border: 2px solid #dee2e6;
+            color: #666;
+        }
+
+        .clear-succession-btn:hover {
+            background: #f8f9fa;
+            border-color: #adb5bd;
+        }
+
+        .succession-modal-footer {
+            padding: 20px 32px;
+            border-top: 2px solid #e8e8e8;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 0 0 24px 24px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .close-succession-btn {
+            padding: 12px 28px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .close-succession-btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .succession-path {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: linear-gradient(to right, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+
+        .succession-node {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #17a2b8;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #17a2b8;
+        }
+
+        .succession-arrow {
+            color: #17a2b8;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .no-succession {
+            color: #999;
+            font-style: italic;
+            font-size: 13px;
         }
     </style>
 </head>
-
 <body>
     <div class="sidebar">
         <img class="image" src="euC (1).png" alt="Logo" style="width: 50%; margin-bottom: 20px; align-self: center;">
@@ -757,9 +1157,15 @@
         <h1 class="page-title">Section List</h1>
         <div class="content-wrapper">
             <div class="header-section">
-                <button class="add-button" onclick="openModal()">
-                    <span>Add Section</span>
-                </button>
+                <div class="header-buttons">
+                    <button class="add-button" onclick="openModal()">
+                        <span>Add Section</span>
+                    </button>
+                    <button class="succession-button" onclick="openSuccessionModal()">
+                        <span>🔄</span>
+                        <span>Manage Succession</span>
+                    </button>
+                </div>
                 <input type="text" class="search-box" placeholder="Search" id="searchBox" oninput="filterSections()">
             </div>
 
@@ -769,6 +1175,7 @@
         </div>
     </div>
 
+    <!-- Add Section Modal -->
     <div class="modal" id="addSectionModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -779,17 +1186,17 @@
                     <div class="left-side">
                         <div class="form-group">
                             <label>Section Name *</label>
-                            <input type="text" id="sectionName" required placeholder="e.g., Grade 7 - Diamond">
+                            <input type="text" id="sectionName" required placeholder="e.g., Diamond">
                         </div>
 
                         <div class="form-group">
                             <label>Grade/Year Level *</label>
-                            <select id="gradeLevel" required>
+                            <select id="gradeLevel" required onchange="loadSubjectsForGrade()">
                                 <option value="">Select Grade Level</option>
-                                <option value="Grade 7">Grade 7</option>
-                                <option value="Grade 8">Grade 8</option>
-                                <option value="Grade 9">Grade 9</option>
-                                <option value="Grade 10">Grade 10</option>
+                                <option value="7">Grade 7</option>
+                                <option value="8">Grade 8</option>
+                                <option value="9">Grade 9</option>
+                                <option value="10">Grade 10</option>
                             </select>
                         </div>
 
@@ -804,7 +1211,7 @@
                         </div>
                     </div>
 
-                    <div class="right-side">
+                    <div class="middle-side">
                         <div class="section-title-container">
                             <div class="section-title">Assign Students</div>
                             <div class="search-filter-wrapper">
@@ -827,10 +1234,21 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="right-side">
+                        <div class="subjects-header">
+                            <div class="subjects-title">Subjects</div>
+                        </div>
+
+                        <div class="subjects-list" id="subjectsList">
+                            <div class="empty-subjects">Select a grade level to view subjects</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="view-enrolled-btn" id="viewEnrolledBtn" onclick="showEnrolledStudentsInModal()">View Enrolled Students</button>
                     <button type="submit" class="save-btn">Save Section</button>
                 </div>
             </form>
@@ -859,20 +1277,6 @@
                 </div>
 
                 <div class="filter-option">
-                    <label class="filter-option-label">Sort by General Average</label>
-                    <div class="filter-radio-group">
-                        <div class="filter-radio-item">
-                            <input type="radio" id="gradeHighest" name="gradeSort" value="desc">
-                            <label class="filter-radio-label" for="gradeHighest">Highest to Lowest</label>
-                        </div>
-                        <div class="filter-radio-item">
-                            <input type="radio" id="gradeLowest" name="gradeSort" value="asc">
-                            <label class="filter-radio-label" for="gradeLowest">Lowest to Highest</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="filter-option">
                     <label class="filter-option-label">Filter by Grade Level</label>
                     <div class="filter-radio-group">
                         <div class="filter-radio-item">
@@ -880,20 +1284,20 @@
                             <label class="filter-radio-label" for="gradeAll">All Grades</label>
                         </div>
                         <div class="filter-radio-item">
-                            <input type="radio" id="grade7" name="gradeFilter" value="Grade 7">
-                            <label class="filter-radio-label" for="grade7">Grade 7</label>
+                            <input type="radio" id="grade7Filter" name="gradeFilter" value="7">
+                            <label class="filter-radio-label" for="grade7Filter">Grade 7</label>
                         </div>
                         <div class="filter-radio-item">
-                            <input type="radio" id="grade8" name="gradeFilter" value="Grade 8">
-                            <label class="filter-radio-label" for="grade8">Grade 8</label>
+                            <input type="radio" id="grade8Filter" name="gradeFilter" value="8">
+                            <label class="filter-radio-label" for="grade8Filter">Grade 8</label>
                         </div>
                         <div class="filter-radio-item">
-                            <input type="radio" id="grade9" name="gradeFilter" value="Grade 9">
-                            <label class="filter-radio-label" for="grade9">Grade 9</label>
+                            <input type="radio" id="grade9Filter" name="gradeFilter" value="9">
+                            <label class="filter-radio-label" for="grade9Filter">Grade 9</label>
                         </div>
                         <div class="filter-radio-item">
-                            <input type="radio" id="grade10" name="gradeFilter" value="Grade 10">
-                            <label class="filter-radio-label" for="grade10">Grade 10</label>
+                            <input type="radio" id="grade10Filter" name="gradeFilter" value="10">
+                            <label class="filter-radio-label" for="grade10Filter">Grade 10</label>
                         </div>
                     </div>
                 </div>
@@ -905,22 +1309,60 @@
         </div>
     </div>
 
+    <!-- Student List Modal -->
+    <div class="modal" id="studentListModal">
+        <div class="student-list-modal-content">
+            <div class="student-list-modal-header">
+                <h3 class="student-list-modal-title" id="studentListTitle">Enrolled Students</h3>
+                <div class="student-list-modal-subtitle" id="studentListSubtitle"></div>
+            </div>
+            <div class="student-list-modal-body" id="studentListBody">
+                <!-- Student list will be populated here -->
+            </div>
+            <div class="student-list-modal-footer">
+                <div class="student-count-badge" id="enrolledCountBadge">0 Students</div>
+                <button type="button" class="close-student-list-btn" onclick="closeStudentListModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Succession Management Modal -->
+    <div class="modal" id="successionModal">
+        <div class="succession-modal-content">
+            <div class="succession-modal-header">
+                <h3 class="succession-modal-title">Section Succession Management</h3>
+                <div class="succession-modal-subtitle">Define which section each section will transition to in the next school year</div>
+            </div>
+            <div class="succession-modal-body" id="successionModalBody">
+                <!-- Succession mappings will be loaded here -->
+            </div>
+            <div class="succession-modal-footer">
+                <button type="button" class="close-succession-btn" onclick="closeSuccessionModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        const API_URL = "http://localhost:5001";
+        
         let allStudents = [];
         let filteredStudents = [];
         let currentSectionId = null;
+        let availableSubjects = [];
+        let allSectionsData = [];
         let activeFilters = {
             nameSort: null,
-            gradeSort: null,
             gradeFilter: null
         };
 
+        // Load all students from database
         async function loadStudents() {
             try {
-                const response = await fetch("http://localhost:5000/api/students");
+                const response = await fetch(`${API_URL}/api/students`);
                 if (response.ok) {
                     allStudents = await response.json();
                     filteredStudents = [...allStudents];
+                    console.log("✅ Students loaded:", allStudents.length);
                 } else {
                     console.error("Error loading students");
                 }
@@ -929,21 +1371,24 @@
             }
         }
 
+        // Load all sections from database
         async function loadSections() {
             try {
-                const response = await fetch("http://localhost:5000/api/sections");
+                const response = await fetch(`${API_URL}/api/sections/successions/all`);
                 if (response.ok) {
-                    const sections = await response.json();
-                    displaySections(sections);
+                    allSectionsData = await response.json();
+                    displaySections(allSectionsData);
                 } else {
                     console.error("Error loading sections");
+                    document.getElementById('sectionList').innerHTML = '<div class="empty-state">Error loading sections.</div>';
                 }
             } catch (err) {
                 console.error("Error loading sections:", err);
-                document.getElementById('sectionList').innerHTML = '<div class="empty-state">No sections found. Click "Add Section" to create one.</div>';
+                document.getElementById('sectionList').innerHTML = '<div class="empty-state">No sections found.</div>';
             }
         }
 
+        // Display sections in the list
         function displaySections(sections) {
             const sectionList = document.getElementById("sectionList");
 
@@ -955,15 +1400,22 @@
             sectionList.innerHTML = "";
 
             sections.forEach(section => {
-                const studentCount = section.students ? section.students.length : 0;
+                const displayGrade = `Grade ${section.grade_level}`;
+                const displayYear = section.school_year || 'N/A';
+                
+                let successionInfo = '';
+                if (section.next_grade_level && section.next_section_name) {
+                    successionInfo = `<div class="succession-badge">→ Grade ${section.next_grade_level} ${section.next_section_name}</div>`;
+                }
 
                 const sectionItem = document.createElement("div");
                 sectionItem.className = "section-item";
-                sectionItem.onclick = () => viewSection(section.id);
+                sectionItem.onclick = () => viewSection(`${section.grade_level}-${section.name}`);
                 sectionItem.innerHTML = `
                     <div class="section-info">
-                        <span class="section-name">${section.section_name}</span>
-                        <span class="section-details">${section.grade_level} • ${section.school_year} • ${studentCount} students</span>
+                        <span class="section-name">${section.name}</span>
+                        <span class="section-details">${displayGrade} • ${displayYear}</span>
+                        ${successionInfo}
                     </div>
                     <span class="arrow">›</span>
                 `;
@@ -971,6 +1423,180 @@
             });
         }
 
+        // Show enrolled students from within the modal
+        async function showEnrolledStudentsInModal() {
+            if (!currentSectionId) {
+                alert('Please save the section first before viewing enrolled students.');
+                return;
+            }
+
+            const sectionName = document.getElementById('sectionName').value;
+            const gradeLevel = document.getElementById('gradeLevel').value;
+            const displayGrade = `Grade ${gradeLevel}`;
+
+            await viewEnrolledStudents(currentSectionId, sectionName, displayGrade);
+        }
+
+        // View enrolled students in a section
+        async function viewEnrolledStudents(sectionId, sectionName, gradeLevel) {
+            const modal = document.getElementById('studentListModal');
+            const title = document.getElementById('studentListTitle');
+            const subtitle = document.getElementById('studentListSubtitle');
+            const body = document.getElementById('studentListBody');
+            const countBadge = document.getElementById('enrolledCountBadge');
+
+            title.textContent = `${sectionName}`;
+            subtitle.textContent = `${gradeLevel} - Enrolled Students`;
+            body.innerHTML = '<div style="text-align: center; padding: 40px;"><div style="font-size: 24px;">⏳</div><div style="margin-top: 10px;">Loading students...</div></div>';
+
+            modal.classList.add('active');
+
+            try {
+                const sectionResponse = await fetch(`${API_URL}/api/sections/${sectionId}`);
+                if (!sectionResponse.ok) {
+                    throw new Error('Failed to fetch section');
+                }
+                
+                const sectionData = await sectionResponse.json();
+                const studentIds = sectionData.students || [];
+
+                if (studentIds.length === 0) {
+                    body.innerHTML = `
+                        <div class="no-students-enrolled">
+                            <div class="no-students-enrolled-icon">📚</div>
+                            <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">No Students Enrolled</div>
+                            <div style="font-size: 14px; color: #666;">This section doesn't have any enrolled students yet.</div>
+                        </div>
+                    `;
+                    countBadge.textContent = '0 Students';
+                    return;
+                }
+
+                const studentPromises = studentIds.map(id => 
+                    fetch(`${API_URL}/api/students/${id}`).then(res => res.ok ? res.json() : null)
+                );
+                
+                const students = await Promise.all(studentPromises);
+                const validStudents = students.filter(s => s !== null);
+
+                if (validStudents.length === 0) {
+                    body.innerHTML = `
+                        <div class="no-students-enrolled">
+                            <div class="no-students-enrolled-icon">⚠️</div>
+                            <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Error Loading Students</div>
+                            <div style="font-size: 14px; color: #666;">Could not load student information.</div>
+                        </div>
+                    `;
+                    countBadge.textContent = '0 Students';
+                    return;
+                }
+
+                validStudents.sort((a, b) => {
+                    const nameA = a.last_name.toLowerCase();
+                    const nameB = b.last_name.toLowerCase();
+                    return nameA.localeCompare(nameB);
+                });
+
+                body.innerHTML = '';
+                validStudents.forEach(student => {
+                    const fullName = `${student.first_name} ${student.middle_name ? student.middle_name + ' ' : ''}${student.last_name}`;
+                    const studentNo = student.student_no || 'N/A';
+                    const email = student.email || 'No email';
+                    const subjectCount = student.student_subjects ? (Array.isArray(student.student_subjects) ? student.student_subjects.length : 0) : 0;
+
+                    const item = document.createElement('div');
+                    item.className = 'enrolled-student-item';
+                    item.innerHTML = `
+                        <div class="enrolled-student-info">
+                            <div class="enrolled-student-name">${fullName}</div>
+                            <div class="enrolled-student-details">
+                                📧 ${email} • 📚 ${subjectCount} subjects
+                            </div>
+                        </div>
+                        <div class="enrolled-student-number">${studentNo}</div>
+                    `;
+                    body.appendChild(item);
+                });
+
+                countBadge.textContent = `${validStudents.length} Student${validStudents.length !== 1 ? 's' : ''}`;
+
+            } catch (err) {
+                console.error("Error loading enrolled students:", err);
+                body.innerHTML = `
+                    <div class="no-students-enrolled">
+                        <div class="no-students-enrolled-icon">❌</div>
+                        <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Error</div>
+                        <div style="font-size: 14px; color: #666;">Could not load student list. Please try again.</div>
+                    </div>
+                `;
+                countBadge.textContent = '0 Students';
+            }
+        }
+
+        // Close student list modal
+        function closeStudentListModal() {
+            document.getElementById('studentListModal').classList.remove('active');
+        }
+
+        // Load subjects for selected grade level
+        async function loadSubjectsForGrade() {
+            const gradeLevel = document.getElementById('gradeLevel').value;
+            const subjectsList = document.getElementById('subjectsList');
+            
+            if (!gradeLevel) {
+                subjectsList.innerHTML = '<div class="empty-subjects">Select a grade level to view subjects</div>';
+                availableSubjects = [];
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/subjects/${gradeLevel}`);
+                if (response.ok) {
+                    const subjects = await response.json();
+                    availableSubjects = subjects;
+                    displaySubjectsAsCheckboxes();
+                    console.log("✅ Subjects loaded for grade", gradeLevel, ":", subjects.length);
+                } else {
+                    console.error("Error loading subjects");
+                    subjectsList.innerHTML = '<div class="empty-subjects">Error loading subjects</div>';
+                }
+            } catch (err) {
+                console.error("Error loading subjects:", err);
+                subjectsList.innerHTML = '<div class="empty-subjects">Error loading subjects</div>';
+            }
+        }
+
+        // Display subjects as checkboxes
+        function displaySubjectsAsCheckboxes() {
+            const subjectsList = document.getElementById('subjectsList');
+            
+            if (availableSubjects.length === 0) {
+                subjectsList.innerHTML = '<div class="empty-subjects">No subjects available for this grade level</div>';
+                return;
+            }
+
+            subjectsList.innerHTML = '';
+
+            availableSubjects.forEach((subject, index) => {
+                const item = document.createElement('div');
+                item.className = 'subject-checkbox-item';
+                item.onclick = (e) => {
+                    if (e.target.tagName !== 'INPUT') {
+                        const checkbox = item.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                    }
+                };
+
+                item.innerHTML = `
+                    <input type="checkbox" id="subject_${index}" value="${subject.subjects}" checked onclick="event.stopPropagation();">
+                    <label class="subject-checkbox-label" for="subject_${index}">${subject.subjects}</label>
+                `;
+
+                subjectsList.appendChild(item);
+            });
+        }
+
+        // Populate student checkboxes
         function populateStudentCheckboxes() {
             const checkboxList = document.getElementById('studentCheckboxList');
             checkboxList.innerHTML = '';
@@ -982,6 +1608,7 @@
 
             filteredStudents.forEach(student => {
                 const fullName = `${student.first_name} ${student.middle_name ? student.middle_name + ' ' : ''}${student.last_name}`;
+                const yearLevel = student.year_level ? ` (Grade ${student.year_level})` : '';
 
                 const item = document.createElement('div');
                 item.className = 'student-checkbox-item';
@@ -995,13 +1622,14 @@
 
                 item.innerHTML = `
                     <input type="checkbox" id="student_${student.id}" value="${student.id}" onclick="event.stopPropagation(); updateSelectAllState();">
-                    <label class="student-checkbox-label" for="student_${student.id}">${fullName}</label>
+                    <label class="student-checkbox-label" for="student_${student.id}">${fullName}${yearLevel}</label>
                 `;
 
                 checkboxList.appendChild(item);
             });
         }
 
+        // Toggle select all students
         function toggleSelectAll() {
             const selectAllCheckbox = document.getElementById('selectAll');
             const studentCheckboxes = document.querySelectorAll('#studentCheckboxList input[type="checkbox"]');
@@ -1011,6 +1639,7 @@
             });
         }
 
+        // Update select all state
         function updateSelectAllState() {
             const selectAllCheckbox = document.getElementById('selectAll');
             const studentCheckboxes = document.querySelectorAll('#studentCheckboxList input[type="checkbox"]');
@@ -1019,9 +1648,11 @@
             selectAllCheckbox.checked = checkedCount === studentCheckboxes.length && studentCheckboxes.length > 0;
         }
 
+        // Open modal for creating or editing section
         async function openModal(sectionData = null) {
             const modal = document.getElementById('addSectionModal');
             const modalTitle = document.querySelector('.modal-title');
+            const viewEnrolledBtn = document.getElementById('viewEnrolledBtn');
 
             if (allStudents.length === 0) {
                 await loadStudents();
@@ -1032,53 +1663,83 @@
             if (sectionData) {
                 currentSectionId = sectionData.id;
                 modalTitle.textContent = 'Edit Section';
+                viewEnrolledBtn.style.display = 'inline-block';
 
                 document.getElementById('sectionName').value = sectionData.section_name || '';
                 document.getElementById('gradeLevel').value = sectionData.grade_level || '';
                 document.getElementById('schoolYear').value = sectionData.school_year || '';
                 document.getElementById('adviser').value = sectionData.adviser || '';
 
-                if (sectionData.students) {
+                await loadSubjectsForGrade();
+
+                if (sectionData.students && sectionData.students.length > 0) {
                     sectionData.students.forEach(studentId => {
                         const checkbox = document.getElementById(`student_${studentId}`);
                         if (checkbox) checkbox.checked = true;
                     });
                     updateSelectAllState();
                 }
+
+                if (sectionData.subjects && sectionData.subjects.length > 0) {
+                    const subjectNames = sectionData.subjects.map(s => s.name);
+                    document.querySelectorAll('#subjectsList input[type="checkbox"]').forEach(checkbox => {
+                        if (subjectNames.includes(checkbox.value)) {
+                            checkbox.checked = true;
+                        }
+                    });
+                }
             } else {
                 currentSectionId = null;
                 modalTitle.textContent = 'Create New Section';
+                viewEnrolledBtn.style.display = 'none';
                 document.querySelector('form').reset();
                 document.getElementById('selectAll').checked = false;
+                document.getElementById('subjectsList').innerHTML = '<div class="empty-subjects">Select a grade level to view subjects</div>';
+                availableSubjects = [];
             }
 
             modal.classList.add('active');
         }
 
+        // Close modal
         function closeModal() {
             document.getElementById('addSectionModal').classList.remove('active');
             document.querySelector('form').reset();
             currentSectionId = null;
+            availableSubjects = [];
         }
 
+        // Save section to database
         async function saveSection(e) {
             e.preventDefault();
 
             const selectedStudents = Array.from(document.querySelectorAll('#studentCheckboxList input[type="checkbox"]:checked'))
                 .map(checkbox => parseInt(checkbox.value));
 
+            const selectedSubjects = Array.from(document.querySelectorAll('#subjectsList input[type="checkbox"]:checked'))
+                .map(checkbox => ({
+                    name: checkbox.value,
+                    teacher: ''
+                }));
+
+            const gradeLevel = document.getElementById('gradeLevel').value;
+            const gradeLevelDisplay = `Grade ${gradeLevel}`;
+
             const sectionData = {
                 section_name: document.getElementById('sectionName').value,
-                grade_level: document.getElementById('gradeLevel').value,
+                grade_level: gradeLevelDisplay,
                 school_year: document.getElementById('schoolYear').value,
                 adviser: document.getElementById('adviser').value,
-                students: selectedStudents
+                students: selectedStudents,
+                subjects: selectedSubjects
             };
+
+            console.log("Saving section:", sectionData);
 
             try {
                 const url = currentSectionId
-                    ? `http://localhost:5000/api/sections/${currentSectionId}`
-                    : "http://localhost:5000/api/sections";
+                    ? `${API_URL}/api/sections/${currentSectionId}`
+                    : `${API_URL}/api/sections`;
 
                 const method = currentSectionId ? "PUT" : "POST";
 
@@ -1093,17 +1754,19 @@
                     closeModal();
                     alert(currentSectionId ? 'Section updated successfully!' : 'Section created successfully!');
                 } else {
-                    alert("Error saving section");
+                    const error = await response.json();
+                    alert("Error saving section: " + (error.error || "Unknown error"));
                 }
             } catch (err) {
                 console.error("Error saving section:", err);
-                alert("Could not connect to server");
+                alert("Could not connect to server. Please make sure the backend is running.");
             }
         }
 
+        // View section details
         async function viewSection(sectionId) {
             try {
-                const response = await fetch(`http://localhost:5000/api/sections/${sectionId}`);
+                const response = await fetch(`${API_URL}/api/sections/${sectionId}`);
                 if (response.ok) {
                     const sectionData = await response.json();
                     openModal(sectionData);
@@ -1116,6 +1779,7 @@
             }
         }
 
+        // Filter sections in the list
         function filterSections() {
             const searchTerm = document.getElementById('searchBox').value.toLowerCase();
             const sections = document.querySelectorAll('.section-item');
@@ -1131,6 +1795,7 @@
             });
         }
 
+        // Handle student search
         async function handleStudentSearch(e) {
             const query = e.target.value.trim();
 
@@ -1142,7 +1807,7 @@
             }
 
             try {
-                const response = await fetch(`http://localhost:5000/api/students/search?q=${encodeURIComponent(query)}`);
+                const response = await fetch(`${API_URL}/api/students/search?q=${encodeURIComponent(query)}`);
                 if (response.ok) {
                     allStudents = await response.json();
                     applyCurrentFilters();
@@ -1155,34 +1820,35 @@
             }
         }
 
+        // Open filter modal
         function openFilterModal() {
             document.getElementById('filterModal').classList.add('active');
         }
 
+        // Close filter modal
         function closeFilterModal() {
             document.getElementById('filterModal').classList.remove('active');
         }
 
+        // Clear all filters
         function clearFilters() {
             document.querySelectorAll('input[name="nameSort"]').forEach(input => input.checked = false);
-            document.querySelectorAll('input[name="gradeSort"]').forEach(input => input.checked = false);
             document.getElementById('gradeAll').checked = true;
             
             activeFilters = {
                 nameSort: null,
-                gradeSort: null,
                 gradeFilter: null
             };
             
             document.getElementById('filterBtn').classList.remove('active');
         }
 
+        // Apply filters
         function applyFilters() {
             activeFilters.nameSort = document.querySelector('input[name="nameSort"]:checked')?.value || null;
-            activeFilters.gradeSort = document.querySelector('input[name="gradeSort"]:checked')?.value || null;
             activeFilters.gradeFilter = document.querySelector('input[name="gradeFilter"]:checked')?.value || null;
 
-            const hasActiveFilters = activeFilters.nameSort || activeFilters.gradeSort || (activeFilters.gradeFilter && activeFilters.gradeFilter !== '');
+            const hasActiveFilters = activeFilters.nameSort || (activeFilters.gradeFilter && activeFilters.gradeFilter !== '');
             
             if (hasActiveFilters) {
                 document.getElementById('filterBtn').classList.add('active');
@@ -1195,12 +1861,13 @@
             closeFilterModal();
         }
 
+        // Apply current filters to student list
         function applyCurrentFilters() {
             filteredStudents = [...allStudents];
 
             if (activeFilters.gradeFilter) {
                 filteredStudents = filteredStudents.filter(student => 
-                    student.grade_level === activeFilters.gradeFilter
+                    student.year_level == activeFilters.gradeFilter
                 );
             }
 
@@ -1216,21 +1883,231 @@
                     }
                 });
             }
+        }
 
-            if (activeFilters.gradeSort) {
-                filteredStudents.sort((a, b) => {
-                    const gradeA = parseFloat(a.general_average) || 0;
-                    const gradeB = parseFloat(b.general_average) || 0;
-                    
-                    if (activeFilters.gradeSort === 'desc') {
-                        return gradeB - gradeA;
-                    } else {
-                        return gradeA - gradeB;
+        // ========== SUCCESSION MANAGEMENT FUNCTIONS ========== //
+
+        // Open succession management modal
+        async function openSuccessionModal() {
+            const modal = document.getElementById('successionModal');
+            const body = document.getElementById('successionModalBody');
+            
+            body.innerHTML = '<div style="text-align: center; padding: 40px;"><div style="font-size: 24px;">⏳</div><div style="margin-top: 10px;">Loading sections...</div></div>';
+            modal.classList.add('active');
+
+            try {
+                const response = await fetch(`${API_URL}/api/sections/successions/all`);
+                if (!response.ok) throw new Error('Failed to fetch sections');
+                
+                const sections = await response.json();
+                
+                // Group by grade level
+                const gradeGroups = {};
+                sections.forEach(section => {
+                    if (!gradeGroups[section.grade_level]) {
+                        gradeGroups[section.grade_level] = [];
                     }
+                    gradeGroups[section.grade_level].push(section);
                 });
+
+                body.innerHTML = '';
+
+                // Create sections for each grade
+                Object.keys(gradeGroups).sort((a, b) => a - b).forEach(grade => {
+                    const gradeDiv = document.createElement('div');
+                    gradeDiv.innerHTML = `<h3 style="font-size: 20px; color: #2c3e50; margin-bottom: 16px; margin-top: 8px;">Grade ${grade} Sections</h3>`;
+                    body.appendChild(gradeDiv);
+
+                    gradeGroups[grade].forEach(section => {
+                        const sectionDiv = createSuccessionSection(section);
+                        body.appendChild(sectionDiv);
+                    });
+                });
+
+            } catch (err) {
+                console.error("Error loading succession data:", err);
+                body.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">Error loading sections</div>';
             }
         }
 
+        // Create succession section element
+        function createSuccessionSection(section) {
+            const div = document.createElement('div');
+            div.className = 'succession-section';
+            
+            const currentPath = getSuccessionPath(section);
+            const pathHTML = currentPath.length > 0 
+                ? `<div class="succession-path">${currentPath}</div>` 
+                : '<div class="no-succession">No succession path defined</div>';
+
+            div.innerHTML = `
+                <div class="succession-section-header">
+                    <div>
+                        <div class="succession-section-title">Grade ${section.grade_level} - ${section.name}</div>
+                        <div class="succession-section-info">School Year: ${section.school_year || 'N/A'} • Adviser: ${section.adviser || 'N/A'}</div>
+                    </div>
+                </div>
+                ${pathHTML}
+                <div class="succession-form">
+                    <div class="succession-form-group">
+                        <label>Next Grade Level</label>
+                        <select id="nextGrade_${section.grade_level}_${section.name}" onchange="loadNextSections(${section.grade_level}, '${section.name}')">
+                            <option value="">Select grade...</option>
+                            ${generateGradeOptions(section.grade_level, section.next_grade_level)}
+                        </select>
+                    </div>
+                    <div class="succession-form-group">
+                        <label>Next Section</label>
+                        <select id="nextSection_${section.grade_level}_${section.name}">
+                            <option value="">Select section...</option>
+                        </select>
+                    </div>
+                    <div class="succession-actions">
+                        <button class="save-succession-btn" onclick="saveSuccession(${section.grade_level}, '${section.name}')">
+                            Save
+                        </button>
+                        <button class="clear-succession-btn" onclick="clearSuccession(${section.grade_level}, '${section.name}')">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Load initial next sections if succession exists
+            if (section.next_grade_level) {
+                setTimeout(() => {
+                    loadNextSections(section.grade_level, section.name, section.next_section_name);
+                }, 100);
+            }
+
+            return div;
+        }
+
+        // Generate grade options
+        function generateGradeOptions(currentGrade, selectedGrade) {
+            const options = [];
+            const nextGrade = parseInt(currentGrade) + 1;
+            
+            if (nextGrade <= 10) {
+                const selected = selectedGrade == nextGrade ? 'selected' : '';
+                options.push(`<option value="${nextGrade}" ${selected}>Grade ${nextGrade}</option>`);
+            }
+            
+            return options.join('');
+        }
+
+        // Get succession path display
+        function getSuccessionPath(section) {
+            const path = [];
+            
+            path.push(`<div class="succession-node">Grade ${section.grade_level} ${section.name}</div>`);
+            
+            if (section.next_grade_level && section.next_section_name) {
+                path.push('<div class="succession-arrow">→</div>');
+                path.push(`<div class="succession-node">Grade ${section.next_grade_level} ${section.next_section_name}</div>`);
+            }
+            
+            return path.join('');
+        }
+
+        // Load available sections for next grade
+        async function loadNextSections(currentGrade, currentSection, preselectedSection = null) {
+            const gradeSelect = document.getElementById(`nextGrade_${currentGrade}_${currentSection}`);
+            const sectionSelect = document.getElementById(`nextSection_${currentGrade}_${currentSection}`);
+            
+            const nextGrade = gradeSelect.value;
+            
+            if (!nextGrade) {
+                sectionSelect.innerHTML = '<option value="">Select grade first...</option>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/sections/grade/${nextGrade}/available`);
+                if (!response.ok) throw new Error('Failed to fetch sections');
+                
+                const sections = await response.json();
+                
+                sectionSelect.innerHTML = '<option value="">Select section...</option>';
+                sections.forEach(section => {
+                    const selected = preselectedSection === section.name ? 'selected' : '';
+                    sectionSelect.innerHTML += `<option value="${section.name}" ${selected}>${section.name}</option>`;
+                });
+
+            } catch (err) {
+                console.error("Error loading next sections:", err);
+                sectionSelect.innerHTML = '<option value="">Error loading sections</option>';
+            }
+        }
+
+        // Save succession mapping
+        async function saveSuccession(currentGrade, currentSection) {
+            const gradeSelect = document.getElementById(`nextGrade_${currentGrade}_${currentSection}`);
+            const sectionSelect = document.getElementById(`nextSection_${currentGrade}_${currentSection}`);
+            
+            const nextGrade = gradeSelect.value;
+            const nextSection = sectionSelect.value;
+
+            if (!nextGrade || !nextSection) {
+                alert('Please select both next grade level and section');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/sections/${currentGrade}/${currentSection}/succession`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        next_grade_level: nextGrade,
+                        next_section_name: nextSection
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Succession mapping saved successfully!');
+                    await loadSections();
+                    await openSuccessionModal(); // Refresh the modal
+                } else {
+                    const error = await response.json();
+                    alert('Error saving succession: ' + (error.error || 'Unknown error'));
+                }
+            } catch (err) {
+                console.error("Error saving succession:", err);
+                alert('Could not connect to server');
+            }
+        }
+
+        // Clear succession mapping
+        async function clearSuccession(currentGrade, currentSection) {
+            if (!confirm(`Are you sure you want to clear the succession mapping for Grade ${currentGrade} ${currentSection}?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/sections/${currentGrade}/${currentSection}/succession`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('Succession mapping cleared successfully!');
+                    await loadSections();
+                    await openSuccessionModal(); // Refresh the modal
+                } else {
+                    const error = await response.json();
+                    alert('Error clearing succession: ' + (error.error || 'Unknown error'));
+                }
+            } catch (err) {
+                console.error("Error clearing succession:", err);
+                alert('Could not connect to server');
+            }
+        }
+
+        // Close succession modal
+        function closeSuccessionModal() {
+            document.getElementById('successionModal').classList.remove('active');
+        }
+
+        // Close modals when clicking outside
         document.getElementById('addSectionModal').addEventListener('click', function (e) {
             if (e.target === this) {
                 closeModal();
@@ -1243,7 +2120,21 @@
             }
         });
 
+        document.getElementById('studentListModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeStudentListModal();
+            }
+        });
+
+        document.getElementById('successionModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeSuccessionModal();
+            }
+        });
+
+        // Initialize page
         document.addEventListener("DOMContentLoaded", () => {
+            console.log("🚀 Initializing Section Page with Succession...");
             loadStudents();
             loadSections();
 
@@ -1254,5 +2145,4 @@
         });
     </script>
 </body>
-
 </html>

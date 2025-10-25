@@ -955,7 +955,271 @@ app.delete("/api/sections/:gradeLevel/:sectionName/succession", (req, res) => {
     });
 });
 
-// Add these routes to the server startup log
+app.post("/api/school-year/end-process", async (req, res) => {
+    const { current_school_year, next_school_year } = req.body;
+    
+    console.log("\n=== 🎓 END OF SCHOOL YEAR PROCESS ===");
+    console.log("Current Year:", current_school_year);
+    console.log("Next Year:", next_school_year);
+    
+    try {
+        // Get all sections with succession mappings
+        const getSectionsSql = `
+            SELECT grade_level, name, next_grade_level, next_section_name
+            FROM section
+            WHERE next_grade_level IS NOT NULL AND next_section_name IS NOT NULL
+        `;
+        
+        db.query(getSectionsSql, async (err, sections) => {
+            if (err) {
+                console.error("❌ Error fetching sections:", err);
+                return res.status(500).json({ error: err.message });
+            }
+            
+            console.log("📋 Found", sections.length, "sections with succession mappings");
+            
+            let totalStudentsMoved = 0;
+            let errors = [];
+            
+            // Process each section
+            for (const section of sections) {
+                const { grade_level, name, next_grade_level, next_section_name } = section;
+                
+                console.log(`\n📌 Processing: Grade ${grade_level} ${name} → Grade ${next_grade_level} ${next_section_name}`);
+                
+                // Get all students in this section
+                const getStudentsSql = `
+                    SELECT id, first_name, last_name, student_no, year_level
+                    FROM students
+                    WHERE section = ? AND year_level = ?
+                `;
+                
+                try {
+                    const students = await new Promise((resolve, reject) => {
+                        db.query(getStudentsSql, [name, grade_level], (err, results) => {
+                            if (err) reject(err);
+                            else resolve(results);
+                        });
+                    });
+                    
+                    console.log(`   Found ${students.length} students to move`);
+                    
+                    // Move each student
+                    for (const student of students) {
+                        // Update student: new year level, new section, mark for re-enrollment
+                        const updateStudentSql = `
+                            UPDATE students
+                            SET year_level = ?,
+                                section = ?,
+                                school_year = ?,
+                                reenrollment_status = 'pending',
+                                previous_section = ?
+                            WHERE id = ?
+                        `;
+                        
+                        await new Promise((resolve, reject) => {
+                            db.query(updateStudentSql, [
+                                next_grade_level,
+                                next_section_name,
+                                next_school_year,
+                                name,
+                                student.id
+                            ], (err, result) => {
+                                if (err) reject(err);
+                                else resolve(result);
+                            });
+                        });
+                        
+                        totalStudentsMoved++;
+                        console.log(`   ✅ Moved: ${student.first_name} ${student.last_name} (${student.student_no})`);
+                    }
+                } catch (error) {
+                    console.error(`   ❌ Error processing section:`, error);
+                    errors.push({
+                        section: `Grade ${grade_level} ${name}`,
+                        error: error.message
+                    });
+                }
+            }
+            
+            console.log("\n✅ END OF YEAR PROCESS COMPLETE");
+            console.log(`📊 Total students moved: ${totalStudentsMoved}`);
+            
+            res.json({
+                success: true,
+                message: "End of school year process completed",
+                students_moved: totalStudentsMoved,
+                sections_processed: sections.length,
+                errors: errors.length > 0 ? errors : null
+            });
+        });
+        
+    } catch (err) {
+        console.error("❌ Error in end of year process:", err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/**
+ * CHECK FOR RE-ENROLLMENT
+ * When processing a new admission, check if the student is returning
+ */
+app.post("/api/admissions/check-reenrollment", (req, res) => {
+    const { lrn, first_name, last_name, email } = req.body;
+    
+    console.log("\n=== 🔍 CHECKING FOR RE-ENROLLMENT ===");
+    console.log("LRN:", lrn);
+    console.log("Name:", first_name, last_name);
+    
+    // Search for existing student by LRN, email, or name match
+    const searchSql = `
+        SELECT 
+            id, student_no, first_name, middle_name, last_name, 
+            year_level, section, reenrollment_status, previous_section
+        FROM students
+        WHERE (lrn = ? OR email = ? OR (first_name = ? AND last_name = ?))
+        AND reenrollment_status = 'pending'
+        LIMIT 1
+    `;
+    
+    db.query(searchSql, [lrn, email, first_name, last_name], (err, results) => {
+        if (err) {
+            console.error("❌ Error checking re-enrollment:", err);
+            return res.status(500).json({ error: err.message });
+        }
+        
+        if (results.length > 0) {
+            const student = results[0];
+            console.log("✅ RETURNING STUDENT FOUND!");
+            console.log(`   Student No: ${student.student_no}`);
+            console.log(`   Current Section: Grade ${student.year_level} ${student.section}`);
+            console.log(`   Previous Section: ${student.previous_section || 'N/A'}`);
+            
+            res.json({
+                is_returning_student: true,
+                student_info: {
+                    id: student.id,
+                    student_no: student.student_no,
+                    full_name: `${student.first_name} ${student.middle_name || ''} ${student.last_name}`.trim(),
+                    current_year_level: student.year_level,
+                    assigned_section: student.section,
+                    previous_section: student.previous_section,
+                    status: student.reenrollment_status
+                }
+            });
+        } else {
+            console.log("ℹ️ New student (not found in database)");
+            res.json({
+                is_returning_student: false,
+                message: "New student - proceed with regular enrollment"
+            });
+        }
+    });
+});
+
+/**
+ * PROCESS RE-ENROLLMENT
+ * Update returning student with new information and mark as re-enrolled
+ */
+app.post("/api/admissions/process-reenrollment", (req, res) => {
+    const { student_id, updated_info } = req.body;
+    
+    console.log("\n=== 🔄 PROCESSING RE-ENROLLMENT ===");
+    console.log("Student ID:", student_id);
+    
+    const updateSql = `
+        UPDATE students
+        SET 
+            email = COALESCE(?, email),
+            phone = COALESCE(?, phone),
+            street = COALESCE(?, street),
+            barangay = COALESCE(?, barangay),
+            city = COALESCE(?, city),
+            province = COALESCE(?, province),
+            admission_date = ?,
+            reenrollment_status = 'completed',
+            reenrollment_date = CURDATE()
+        WHERE id = ?
+    `;
+    
+    db.query(updateSql, [
+        updated_info.email,
+        updated_info.phone,
+        updated_info.street,
+        updated_info.barangay,
+        updated_info.city,
+        updated_info.province,
+        updated_info.admission_date || new Date().toISOString().split('T')[0],
+        student_id
+    ], (err, result) => {
+        if (err) {
+            console.error("❌ Error processing re-enrollment:", err);
+            return res.status(500).json({ error: err.message });
+        }
+        
+        console.log("✅ Re-enrollment completed successfully");
+        
+        res.json({
+            success: true,
+            message: "Student re-enrolled successfully",
+            student_id: student_id
+        });
+    });
+});
+
+/**
+ * GET STUDENTS PENDING RE-ENROLLMENT
+ */
+app.get("/api/students/pending-reenrollment", (req, res) => {
+    console.log("\n=== 📋 FETCHING PENDING RE-ENROLLMENTS ===");
+    
+    const sql = `
+        SELECT 
+            id, student_no, first_name, middle_name, last_name,
+            year_level, section, previous_section, email, phone
+        FROM students
+        WHERE reenrollment_status = 'pending'
+        ORDER BY year_level, last_name
+    `;
+    
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error("❌ Error fetching pending re-enrollments:", err);
+            return res.status(500).json({ error: err.message });
+        }
+        
+        console.log(`✅ Found ${results.length} students pending re-enrollment`);
+        res.json(results);
+    });
+});
+
+/**
+ * GET RE-ENROLLMENT STATISTICS
+ */
+app.get("/api/reenrollment/statistics", (req, res) => {
+    console.log("\n=== 📊 FETCHING RE-ENROLLMENT STATISTICS ===");
+    
+    const sql = `
+        SELECT 
+            reenrollment_status,
+            year_level,
+            COUNT(*) as count
+        FROM students
+        WHERE reenrollment_status IN ('pending', 'completed')
+        GROUP BY reenrollment_status, year_level
+        ORDER BY year_level
+    `;
+    
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error("❌ Error fetching statistics:", err);
+            return res.status(500).json({ error: err.message });
+        }
+        
+        console.log("✅ Statistics fetched successfully");
+        res.json(results);
+    });
+});
 
 // ========== LOGIN ROUTE ========== //
 

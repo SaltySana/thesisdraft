@@ -31,6 +31,119 @@
             overflow-y: auto;
         }
 
+                .profile-section {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 8px;
+        }
+
+        .profile-trigger:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .profile-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            line-height: 1.3;
+            word-wrap: break-word;
+        }
+
+        .profile-popup {
+            position: absolute;
+            bottom: 100%;
+            left: 10px;
+            right: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .profile-popup.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .popup-header {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .popup-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .popup-role {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .popup-menu {
+            padding: 8px;
+        }
+
+        .popup-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 6px;
+            color: #2c3e50;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .popup-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .popup-item.logout {
+            color: #dc3545;
+        }
+
+        .popup-item.logout:hover {
+            background-color: #fff5f5;
+        }
         .menu-item {
             display: flex;
             align-items: center;
@@ -1134,23 +1247,48 @@
 </head>
 <body>
     <div class="sidebar">
-        <img class="image" src="euC (1).png" alt="Logo" style="width: 50%; margin-bottom: 20px; align-self: center;">
-        <a href="dashboard.html" class="menu-item">
-            <div class="menu-icon">◷</div>
-            <span>Dashboard</span>
-        </a>
-        <a href="registration.html" class="menu-item">
-            <div class="menu-icon">◷</div>
-            <span>Registration</span>
-        </a>
-        <a href="sp.html" class="menu-item">
-            <div class="menu-icon">◷</div>
-            <span>Student Profile</span>
-        </a>
-        <a href="section.html" class="menu-item active">
-            <div class="menu-icon">◷</div>
-            <span>Section List</span>
-        </a>
+        <div class="sidebar-menu">
+            <img class="image" src="euC (1).png" alt="Logo" style="width: 50%; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto;">
+            <a href="dashboard.html" class="menu-item">
+            <i data-lucide="layout-dashboard"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="registration.html" class="menu-item">
+            <i data-lucide="arrow-right-from-line"></i>
+                <span>Registration</span>
+            </a>
+            <a href="sp.html" class="menu-item">
+            <i data-lucide="user-round"></i>
+                <span>Student Profile</span>
+            </a>
+            <a href="section.html" class="menu-item active">
+            <i data-lucide="logs"></i>
+                <span>Section List</span>
+            </a>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <div class="profile-trigger" onclick="toggleProfilePopup()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-user-round-icon lucide-circle-user-round"><path d="M18 20a6 6 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/><circle cx="12" cy="12" r="10"/></svg>
+                <div class="profile-info">
+                    <div class="profile-label" id="userDisplayName">Junior High School Registrar</div>
+                </div>
+            </div>
+            
+            <!-- Profile Popup -->
+            <div class="profile-popup" id="profilePopup">
+                <div class="popup-header">
+                    <div class="popup-name" id="popupUsername">Registrar Account</div>
+                    <div class="popup-role">Junior High School</div>
+                </div>
+                <div class="popup-menu">
+                    <div class="popup-item logout" onclick="handleLogout()">
+                        <span>Log Out</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="main-content">
@@ -1162,7 +1300,6 @@
                         <span>Add Section</span>
                     </button>
                     <button class="succession-button" onclick="openSuccessionModal()">
-                        <span>🔄</span>
                         <span>Manage Succession</span>
                     </button>
                 </div>
@@ -1343,7 +1480,49 @@
     </div>
 
     <script>
-        const API_URL = "http://localhost:5001";
+       const API_URL = "http://localhost:5001";
+
+        // Check authentication on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+            loadReenrollmentStats();
+        });
+
+                function checkAuthentication() {
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+            const username = sessionStorage.getItem('username');
+
+            if (isLoggedIn !== 'true') {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            if (username) {
+                document.getElementById('popupUsername').textContent = username;
+                document.getElementById('userDisplayName').textContent = username;
+            }
+        }
+        function toggleProfilePopup() {
+            const popup = document.getElementById('profilePopup');
+            popup.classList.toggle('show');
+        }
+
+        document.addEventListener('click', function(event) {
+            const profileSection = document.querySelector('.profile-section');
+            const popup = document.getElementById('profilePopup');
+            
+            if (!profileSection.contains(event.target) && popup.classList.contains('show')) {
+                popup.classList.remove('show');
+            }
+        });
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to log out?')) {
+                sessionStorage.removeItem('isLoggedIn');
+                sessionStorage.removeItem('username');
+                window.location.href = 'login.html';
+            }
+        }
         
         let allStudents = [];
         let filteredStudents = [];
@@ -2143,6 +2322,11 @@
                 searchInput.addEventListener("input", handleStudentSearch);
             }
         });
+    </script>
+
+        <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      lucide.createIcons();
     </script>
 </body>
 

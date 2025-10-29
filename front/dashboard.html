@@ -729,19 +729,19 @@
         <div class="sidebar-menu">
             <img class="image" src="euC (1).png" alt="Logo" style="width: 50%; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto;">
             <a href="dashboard.html" class="menu-item active">
-                <div class="menu-icon">◷</div>
+            <i data-lucide="layout-dashboard"></i>
                 <span>Dashboard</span>
             </a>
             <a href="registration.html" class="menu-item">
-                <div class="menu-icon">◷</div>
+            <i data-lucide="arrow-right-from-line"></i>
                 <span>Registration</span>
             </a>
             <a href="sp.html" class="menu-item">
-                <div class="menu-icon">◷</div>
+            <i data-lucide="user-round"></i>
                 <span>Student Profile</span>
             </a>
             <a href="section.html" class="menu-item">
-                <div class="menu-icon">◷</div>
+            <i data-lucide="logs"></i>
                 <span>Section List</span>
             </a>
         </div>
@@ -749,7 +749,7 @@
         <!-- Profile Section -->
         <div class="profile-section">
             <div class="profile-trigger" onclick="toggleProfilePopup()">
-                <div class="profile-icon">👤</div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-user-round-icon lucide-circle-user-round"><path d="M18 20a6 6 0 0 0-12 0"/><circle cx="12" cy="10" r="4"/><circle cx="12" cy="12" r="10"/></svg>
                 <div class="profile-info">
                     <div class="profile-label" id="userDisplayName">Junior High School Registrar</div>
                 </div>
@@ -1303,6 +1303,11 @@
         }
 
         initializeTrendChart();
+    </script>
+
+        <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      lucide.createIcons();
     </script>
 </body>
 </html>

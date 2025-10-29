@@ -36,6 +36,89 @@
       font-size: 1.2rem;
     }
 
+    .enrollment-type-selector {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .enrollment-type-selector h2 {
+      color: white;
+      border: none;
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+
+    .enrollment-type-selector p {
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 25px;
+      font-size: 1rem;
+    }
+
+    .type-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .type-button {
+      flex: 1;
+      min-width: 200px;
+      padding: 20px;
+      background: white;
+      border: 3px solid transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .type-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      border-color: #3498db;
+    }
+
+    .type-button.selected {
+      border-color: #27ae60;
+      background: #e8f8f5;
+    }
+
+    .type-button h3 {
+      margin: 0 0 10px 0;
+      color: #2c3e50;
+      font-size: 1.2rem;
+    }
+
+    .type-button p {
+      margin: 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .type-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     form label {
       display: block;
       font-weight: 600;
@@ -87,6 +170,15 @@
       background: #2980b9;
     }
 
+    .back-button {
+      background: #95a5a6;
+      margin-bottom: 15px;
+    }
+
+    .back-button:hover {
+      background: #7f8c8d;
+    }
+
     .guardian-group {
       background-color: #f9f9f9;
       padding: 15px;
@@ -135,6 +227,16 @@
       color: #444;
       margin-top: 0;
     }
+
+    .info-badge {
+      display: inline-block;
+      background: #3498db;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      margin-left: 10px;
+    }
   </style>
 </head>
 <body>
@@ -142,164 +244,350 @@
   <div class="container">
     <h1>Junior High School Enrollment Form</h1>
 
-    <form id="jhsForm">
+    <!-- Enrollment Type Selection -->
+    <div id="typeSelector" class="enrollment-type-selector">
+      <h2>Select Enrollment Type</h2>
+      <p>Please choose whether you are a new student or returning student</p>
+      
+      <div class="type-buttons">
+        <div class="type-button" id="newStudentBtn">
+          <div class="type-icon">🎓</div>
+          <h3>New Student</h3>
+          <p>First time enrolling in our school</p>
+        </div>
+        
+        <div class="type-button" id="returningStudentBtn">
+          <div class="type-icon">🔄</div>
+          <h3>Returning Student</h3>
+          <p>Already enrolled previously</p>
+        </div>
+      </div>
+    </div>
 
-      <!-- 👨‍🎓 Student Information -->
-      <h2>Student Information</h2>
+    <!-- NEW STUDENT FORM -->
+    <div id="newStudentForm" class="form-section">
+      <button type="button" class="back-button" onclick="goBackToSelection()">← Back to Selection</button>
+      
+      <h2>New Student Enrollment <span class="info-badge">New</span></h2>
+      
+      <form id="jhsFormNew">
 
-      <label class="required">Last Name</label>
-      <input type="text" name="last_name" required>
+        <!-- Student Information -->
+        <h2>Student Information</h2>
 
-      <label class="required">First Name</label>
-      <input type="text" name="first_name" required>
+        <label class="required">Last Name</label>
+        <input type="text" name="last_name" required>
 
-      <label class="required">Middle Name</label>
-      <input type="text" name="middle_name" required>
+        <label class="required">First Name</label>
+        <input type="text" name="first_name" required>
 
-      <label class="optional">Ext. Name (Optional)</label>
-      <input type="text" name="ext_name" placeholder="e.g. Jr., III">
+        <label class="required">Middle Name</label>
+        <input type="text" name="middle_name" required>
 
-      <label class="required">Gender</label>
-      <select name="gender" required>
-        <option value="">-- Select --</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-      </select>
+        <label class="optional">Ext. Name (Optional)</label>
+        <input type="text" name="ext_name" placeholder="e.g. Jr., III">
 
-      <label class="required">Age</label>
-    <input type="number" required>
-
-      <label class="required">Birthdate</label>
-      <input type="date" name="birthdate" required>
-
-      <label class="required">Email</label>
-      <input type="email" name="email" required>
-
-      <label class="required">Phone</label>
-      <input type="text" name="phone" pattern="[0-9]{11}" placeholder="e.g. 09123456789" required>
-
-      <!-- 🏠 Address -->
-      <h2>Contacts/Address</h2>
-
-      <label class="required">Street</label>
-      <input type="text" name="street" required>
-
-      <label class="required">Barangay</label>
-      <input type="text" name="barangay" required>
-
-      <label class="required">City / Town</label>
-      <input type="text" name="city" required>
-
-      <label class="required">Province</label>
-      <input type="text" name="province" required>
-
-      <!-- Profile Information -->
-      <h2>Profile</h2>
-
-      <label class="required">Program</label>
-      <select name="program" required>
-        <option value="">-- Select --</option>
-        <option value="Junior High School" selected>Junior High School</option>
-      </select>
-
-      <label class="optional">Date Graduated (Optional)</label>
-      <input type="date" name="date_graduated">
-
-      <label class="required">LRN</label>
-      <input type="text" name="lrn" required>
-
-      <label class="required">Citizenship</label>
-      <input type="text" name="citizenship" required>
-
-      <label class="required">Religion</label>
-      <input type="text" name="religion" required>
-
-      <!-- 👨‍👩 Family Information -->
-      <h2>Family Information</h2>
-
-      <div class="guardian-group">
-        <label class="required">Relation</label>
-        <select name="family_relation[]" required>
+        <label class="required">Gender</label>
+        <select name="gender" required>
           <option value="">-- Select --</option>
-          <option value="Mother">Mother</option>
-          <option value="Father">Father</option>
-          <option value="Guardian">Guardian</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
         </select>
 
-        <label class="required">Full Name</label>
-        <input type="text" name="family_name[]" required>
+        <label class="required">Age</label>
+        <input type="number" name="age" required>
 
-        <label class="optional">Occupation (Optional)</label>
-        <input type="text" name="family_occupation[]">
+        <label class="required">Birthdate</label>
+        <input type="date" name="birthdate" required>
 
-        <label class="required">Contact No.</label>
-        <input type="text" name="family_contact[]" pattern="[0-9]{11}" placeholder="e.g. 09123456789" required>
+        <label class="required">Email</label>
+        <input type="email" name="email" required>
 
-        <label class="optional">Address (Optional)</label>
-        <input type="text" name="family_address[]">
-      </div>
+        <label class="required">Phone</label>
+        <input type="text" name="phone" pattern="[0-9]{11}" placeholder="e.g. 09123456789" required>
 
-      <div class="guardian-group">
-        <label class="optional">Relation (Optional)</label>
-        <select name="family_relation[]">
+        <!-- Address -->
+        <h2>Contacts/Address</h2>
+
+        <label class="required">Street</label>
+        <input type="text" name="street" required>
+
+        <label class="required">Barangay</label>
+        <input type="text" name="barangay" required>
+
+        <label class="required">City / Town</label>
+        <input type="text" name="city" required>
+
+        <label class="required">Province</label>
+        <input type="text" name="province" required>
+
+        <!-- Profile Information -->
+        <h2>Profile</h2>
+
+        <label class="required">Program</label>
+        <select name="program" required>
           <option value="">-- Select --</option>
-          <option value="Mother">Mother</option>
-          <option value="Father">Father</option>
-          <option value="Guardian">Guardian</option>
+          <option value="Junior High School" selected>Junior High School</option>
         </select>
 
-        <label class="optional">Full Name (Optional)</label>
-        <input type="text" name="family_name[]">
+        <label class="optional">Date Graduated (Optional)</label>
+        <input type="date" name="date_graduated">
 
-        <label class="optional">Occupation (Optional)</label>
-        <input type="text" name="family_occupation[]">
+        <label class="required">LRN</label>
+        <input type="text" name="lrn" required>
 
-        <label class="optional">Contact No. (Optional)</label>
-        <input type="text" name="family_contact[]" pattern="[0-9]{11}" placeholder="e.g. 09123456789">
+        <label class="required">Citizenship</label>
+        <input type="text" name="citizenship" required>
 
-        <label class="optional">Address (Optional)</label>
-        <input type="text" name="family_address[]">
-      </div>
+        <label class="required">Religion</label>
+        <input type="text" name="religion" required>
 
-      <!-- 🏫 Academic Information -->
-      <h2>Academic Information</h2>
+        <!-- Family Information -->
+        <h2>Family Information</h2>
 
-      <label class="required">Year Level</label>
-      <select id="jhsGrade" name="year_level" required>
-        <option value="">-- Select --</option>
-      </select>
+        <div class="guardian-group">
+          <label class="required">Relation</label>
+          <select name="family_relation[]" required>
+            <option value="">-- Select --</option>
+            <option value="Mother">Mother</option>
+            <option value="Father">Father</option>
+            <option value="Guardian">Guardian</option>
+          </select>
 
-      <div id="grade7Options" style="display: none;">
-        <label class="achievement-title">Academic Achievement (Select one):</label>
-        <label>
-          <input type="checkbox" name="achievement" value="Valedictorian" onclick="handleAchievementSelection(this)">
-          Valedictorian
-        </label>
-        <label>
-          <input type="checkbox" name="achievement" value="Salutatorian" onclick="handleAchievementSelection(this)">
-          Salutatorian
-        </label>
-        <label>
-          <input type="checkbox" name="achievement" value="N/A" onclick="handleAchievementSelection(this)">
-          N/A
-        </label>
-      </div>
+          <label class="required">Full Name</label>
+          <input type="text" name="family_name[]" required>
+
+          <label class="optional">Occupation (Optional)</label>
+          <input type="text" name="family_occupation[]">
+
+          <label class="required">Contact No.</label>
+          <input type="text" name="family_contact[]" pattern="[0-9]{11}" placeholder="e.g. 09123456789" required>
+
+          <label class="optional">Address (Optional)</label>
+          <input type="text" name="family_address[]">
+        </div>
+
+        <div class="guardian-group">
+          <label class="optional">Relation (Optional)</label>
+          <select name="family_relation[]">
+            <option value="">-- Select --</option>
+            <option value="Mother">Mother</option>
+            <option value="Father">Father</option>
+            <option value="Guardian">Guardian</option>
+          </select>
+
+          <label class="optional">Full Name (Optional)</label>
+          <input type="text" name="family_name[]">
+
+          <label class="optional">Occupation (Optional)</label>
+          <input type="text" name="family_occupation[]">
+
+          <label class="optional">Contact No. (Optional)</label>
+          <input type="text" name="family_contact[]" pattern="[0-9]{11}" placeholder="e.g. 09123456789">
+
+          <label class="optional">Address (Optional)</label>
+          <input type="text" name="family_address[]">
+        </div>
+
+        <!-- Academic Information -->
+        <h2>Academic Information</h2>
+
+        <label class="required">Year Level</label>
+        <select id="jhsGradeNew" name="year_level" required>
+          <option value="">-- Select --</option>
+        </select>
+
+        <div id="grade7OptionsNew" style="display: none;">
+          <label class="achievement-title">Academic Achievement (Select one):</label>
+          <label>
+            <input type="checkbox" name="achievement" value="Valedictorian" onclick="handleAchievementSelection(this, 'new')">
+            Valedictorian
+          </label>
+          <label>
+            <input type="checkbox" name="achievement" value="Salutatorian" onclick="handleAchievementSelection(this, 'new')">
+            Salutatorian
+          </label>
+          <label>
+            <input type="checkbox" name="achievement" value="N/A" onclick="handleAchievementSelection(this, 'new')">
+            N/A
+          </label>
+        </div>
+
+        <label class="required">School Year</label>
+        <input type="text" name="school_year" placeholder="e.g. 2024-2025" required>
+
+        <label class="required">Period</label>
+        <input type="text" name="period" placeholder="e.g. 1st Semester" required>
+
+        <label class="required">General Average</label>
+        <input type="number" name="general_average" step="0.01" min="65" max="100" placeholder="e.g. 89.50" >
+
+        <label class="optional">Previous School (Optional)</label>
+        <input type="text" name="previous_school" placeholder="Enter if applicable">
+
+        <label class="optional">School Address (Optional)</label>
+        <input type="text" name="previous_address" placeholder="Enter if applicable">
+
+        <button type="submit">Submit Application</button>
+      </form>
+    </div>
+
+    <!-- RETURNING STUDENT FORM -->
+    <div id="returningStudentForm" class="form-section">
+      <button type="button" class="back-button" onclick="goBackToSelection()">← Back to Selection</button>
+      
+      <h2>Returning Student Enrollment <span class="info-badge">Returning</span></h2>
+      
+      <form id="jhsFormReturning">
+
+        <!-- Student Information -->
+        <h2>Student Information</h2>
+
+        <label class="required">Student Number</label>
+        <input type="text" name="student_no" placeholder="e.g. A24-0001" required>
+
+        <label class="required">Last Name</label>
+        <input type="text" name="last_name" required>
+
+        <label class="required">First Name</label>
+        <input type="text" name="first_name" required>
+
+        <label class="required">Middle Name</label>
+        <input type="text" name="middle_name" required>
+
+        <label class="optional">Ext. Name (Optional)</label>
+        <input type="text" name="ext_name" placeholder="e.g. Jr., III">
+
+        <label class="required">Gender</label>
+        <select name="gender" required>
+          <option value="">-- Select --</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+
+        <label class="required">Age</label>
+        <input type="number" name="age" required>
+
+        <label class="required">Birthdate</label>
+        <input type="date" name="birthdate" required>
+
+        <label class="required">Email</label>
+        <input type="email" name="email" required>
+
+        <label class="required">Phone</label>
+        <input type="text" name="phone" pattern="[0-9]{11}" placeholder="e.g. 09123456789" required>
+
+        <!-- Address -->
+        <h2>Contacts/Address</h2>
+
+        <label class="required">Street</label>
+        <input type="text" name="street" required>
+
+        <label class="required">Barangay</label>
+        <input type="text" name="barangay" required>
+
+        <label class="required">City / Town</label>
+        <input type="text" name="city" required>
+
+        <label class="required">Province</label>
+        <input type="text" name="province" required>
+
+        <!-- Profile Information -->
+        <h2>Profile</h2>
+
+        <label class="required">Program</label>
+        <select name="program" required>
+          <option value="">-- Select --</option>
+          <option value="Junior High School" selected>Junior High School</option>
+        </select>
+
+        <label class="required">Citizenship</label>
+        <input type="text" name="citizenship" required>
+
+        <label class="required">Religion</label>
+        <input type="text" name="religion" required>
+
+        <!-- Family Information -->
+        <h2>Family Information</h2>
+
+        <div class="guardian-group">
+          <label class="required">Relation</label>
+          <select name="family_relation[]" required>
+            <option value="">-- Select --</option>
+            <option value="Mother">Mother</option>
+            <option value="Father">Father</option>
+            <option value="Guardian">Guardian</option>
+          </select>
+
+          <label class="required">Full Name</label>
+          <input type="text" name="family_name[]" required>
+
+          <label class="optional">Occupation (Optional)</label>
+          <input type="text" name="family_occupation[]">
+
+          <label class="required">Contact No.</label>
+          <input type="text" name="family_contact[]" pattern="[0-9]{11}" placeholder="e.g. 09123456789" required>
+
+          <label class="optional">Address (Optional)</label>
+          <input type="text" name="family_address[]">
+        </div>
+
+        <div class="guardian-group">
+          <label class="optional">Relation (Optional)</label>
+          <select name="family_relation[]">
+            <option value="">-- Select --</option>
+            <option value="Mother">Mother</option>
+            <option value="Father">Father</option>
+            <option value="Guardian">Guardian</option>
+          </select>
+
+          <label class="optional">Full Name (Optional)</label>
+          <input type="text" name="family_name[]">
+
+          <label class="optional">Occupation (Optional)</label>
+          <input type="text" name="family_occupation[]">
+
+          <label class="optional">Contact No. (Optional)</label>
+          <input type="text" name="family_contact[]" pattern="[0-9]{11}" placeholder="e.g. 09123456789">
+
+          <label class="optional">Address (Optional)</label>
+          <input type="text" name="family_address[]">
+        </div>
+
+        <!-- Academic Information -->
+        <h2>Academic Information</h2>
+
+        <label class="required">Year Level</label>
+        <select id="jhsGradeReturning" name="year_level" required>
+          <option value="">-- Select --</option>
+        </select>
+
+        <div id="grade7OptionsReturning" style="display: none;">
+          <label class="achievement-title">Academic Achievement (Select one):</label>
+          <label>
+            <input type="checkbox" name="achievement" value="Valedictorian" onclick="handleAchievementSelection(this, 'returning')">
+            Valedictorian
+          </label>
+          <label>
+            <input type="checkbox" name="achievement" value="Salutatorian" onclick="handleAchievementSelection(this, 'returning')">
+            Salutatorian
+          </label>
+          <label>
+            <input type="checkbox" name="achievement" value="N/A" onclick="handleAchievementSelection(this, 'returning')">
+            N/A
+          </label>
+        </div>
+
+        <label class="required">School Year</label>
+        <input type="text" name="school_year" placeholder="e.g. 2024-2025" required>
+
+        <label class="required">Period</label>
+        <input type="text" name="period" placeholder="e.g. 1st Semester" required>
 
 
-      <label class="required">School Year</label>
-      <input type="text" name="school_year" placeholder="e.g. 2024-2025" required>
-
-      <label class="required">Period</label>
-      <input type="text" name="period" placeholder="e.g. 1st Semester" required>
-
-      <label class="optional">Previous School (Optional)</label>
-      <input type="text" name="previous_school" placeholder="Enter if applicable">
-
-      <label class="optional">School Address (Optional)</label>
-      <input type="text" name="previous_address" placeholder="Enter if applicable">
-
-      <button type="submit">Submit Application</button>
-    </form>
+        <button type="submit">Submit Application</button>
+      </form>
+    </div>
   </div>
 
   <dialog id="successDialog">
@@ -307,267 +595,217 @@
     <button id="closeDialog">Close</button>
   </dialog>
 
-  <script >// API Base URL - Change port to match your server
-const API_URL = "http://localhost:5001";
-
-/**
- * Populate a select dropdown with grade levels
- * @param {string} selectId - The ID of the select element
- * @param {object} options - Object with start and end properties
- */
-function populateSelect(selectId, options) {
-    const select = document.getElementById(selectId);
-    if (!select) return;
-    
-    for (let i = options.start; i <= options.end; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = `Grade ${i}`;
-        select.appendChild(option);
-    }
-}
-
-/**
- * Setup form submission handler
- * @param {string} formId - The ID of the form element
- * @param {string} dialogId - The ID of the success dialog
- * @param {string} closeButtonId - The ID of the close button
- */
-function setupForm(formId, dialogId, closeButtonId) {
-    const form = document.getElementById(formId);
-    const dialog = document.getElementById(dialogId);
-    const closeButton = document.getElementById(closeButtonId);
-    
-    if (!form || !dialog) {
-        console.error("Form or dialog not found");
-        return;
-    }
-    
-    // Handle form submission
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        try {
-            // Collect form data
-            const formData = new FormData(form);
-            
-            // Prepare student data object
-            const studentData = {
-                student_no: "", // Will be auto-generated or set by admin
-                first_name: formData.get('first_name'),
-                middle_name: formData.get('middle_name'),
-                last_name: formData.get('last_name'),
-                ext_name: formData.get('ext_name') || "",
-                program: formData.get('program'),
-                curriculum_code: "", // Optional field
-                date_graduated: formData.get('date_graduated') || null,
-                lrn: formData.get('lrn'),
-                citizenship: formData.get('citizenship'),
-                religion: formData.get('religion'),
-                email: formData.get('email'),
-                phone: formData.get('phone'),
-                street: formData.get('street'),
-                barangay: formData.get('barangay'),
-                city: formData.get('city'),
-                province: formData.get('province'),
-                year_level: formData.get('year_level'),
-                admission_date: formData.get('admission_date'),
-                school_year: formData.get('school_year'),
-                period: formData.get('period'),
-                gender: formData.get('gender'),
-                age: formData.get('age') || 0,
-                section: "", // Will be assigned later by admin
-                status: "pending" // New applications default to pending
-            };
-            
-            // Collect family members
-            const familyMembers = [];
-            const relations = formData.getAll('family_relation[]');
-            const names = formData.getAll('family_name[]');
-            const occupations = formData.getAll('family_occupation[]');
-            const contacts = formData.getAll('family_contact[]');
-            const addresses = formData.getAll('family_address[]');
-            
-            for (let i = 0; i < relations.length; i++) {
-                // Only add family member if relation and name are provided
-                if (relations[i] && names[i]) {
-                    familyMembers.push({
-                        id: `family-${i + 1}`,
-                        relation: relations[i],
-                        name: names[i],
-                        occupation: occupations[i] || "",
-                        contact: contacts[i] || "",
-                        address: addresses[i] || ""
-                    });
-                }
-            }
-            
-            studentData.family_members = familyMembers;
-            
-            // Add achievement for Grade 7 students
-            const achievement = document.querySelector('input[name="achievement"]:checked');
-            if (achievement) {
-                studentData.achievement = achievement.value;
-            }
-            
-            // Add previous school information if provided
-            const previousSchool = formData.get('previous_school');
-            const previousAddress = formData.get('previous_address');
-            if (previousSchool) {
-                studentData.previous_school = previousSchool;
-            }
-            if (previousAddress) {
-                studentData.previous_school_address = previousAddress;
-            }
-            
-            console.log("Submitting student data:", studentData);
-            
-            // Submit to API
-            const response = await fetch(`${API_URL}/api/admissions`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(studentData)
-            });
-            
-            if (response.ok) {
-                const result = await response.json();
-                console.log("Application submitted successfully:", result);
-                
-                // Show success dialog
-                dialog.showModal();
-                
-                // Reset form
-                form.reset();
-                
-                // Hide Grade 7 options if they were showing
-                const grade7Options = document.getElementById('grade7Options');
-                if (grade7Options) {
-                    grade7Options.style.display = 'none';
-                }
-            } else {
-                const error = await response.json();
-                console.error("Server error:", error);
-                alert(`Error submitting application: ${error.error || 'Unknown error'}`);
-            }
-            
-        } catch (error) {
-            console.error("Error submitting form:", error);
-            alert("Could not submit application. Please check your internet connection and try again.");
-        }
-    });
-    
-    // Handle close button
-    if (closeButton) {
-        closeButton.addEventListener('click', () => {
-            dialog.close();
-        });
-    }
-    
-    // Close dialog when clicking outside
-    dialog.addEventListener('click', (e) => {
-        if (e.target === dialog) {
-            dialog.close();
-        }
-    });
-}
-
-/**
- * Load and display submitted applications (for admin use)
- */
-async function loadApplications() {
-    try {
-        const response = await fetch(`${API_URL}/api/admissions`);
-        
-        if (response.ok) {
-            const applications = await response.json();
-            console.log("Applications loaded:", applications);
-            return applications;
-        } else {
-            console.error("Error loading applications");
-            return [];
-        }
-    } catch (error) {
-        console.error("Error fetching applications:", error);
-        return [];
-    }
-}
-
-/**
- * Get a single application by ID
- */
-async function getApplication(id) {
-    try {
-        const response = await fetch(`${API_URL}/api/admissions/${id}`);
-        
-        if (response.ok) {
-            const application = await response.json();
-            return application;
-        } else {
-            console.error("Error loading application");
-            return null;
-        }
-    } catch (error) {
-        console.error("Error fetching application:", error);
-        return null;
-    }
-}
-
-/**
- * Update application status
- */
-async function updateApplicationStatus(id, status) {
-    try {
-        const response = await fetch(`${API_URL}/api/admissions/${id}/status`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ status })
-        });
-        
-        if (response.ok) {
-            const result = await response.json();
-            console.log("Status updated:", result);
-            return true;
-        } else {
-            console.error("Error updating status");
-            return false;
-        }
-    } catch (error) {
-        console.error("Error updating status:", error);
-        return false;
-    }
-}</script>
+  <script src="forms.js"></script>
   <script>
 
-    // Populate Grade 7–10
-    populateSelect("jhsGrade", { start: 7, end: 10 });
+    // Populate Grade 7–10 for both forms
+    populateSelect("jhsGradeNew", { start: 7, end: 10 });
+    populateSelect("jhsGradeReturning", { start: 7, end: 10 });
 
-    // Show/hide Grade 7 achievement options
-    document.getElementById('jhsGrade').addEventListener('change', function() {
-      const grade7Options = document.getElementById('grade7Options');
+    // Add event listeners for enrollment type buttons
+    document.getElementById('newStudentBtn').addEventListener('click', function() {
+      selectEnrollmentType('new');
+    });
+
+    document.getElementById('returningStudentBtn').addEventListener('click', function() {
+      selectEnrollmentType('returning');
+    });
+
+    // Show/hide Grade 7 achievement options for NEW students
+    document.getElementById('jhsGradeNew').addEventListener('change', function() {
+      const grade7Options = document.getElementById('grade7OptionsNew');
       if (this.value === '7') {
         grade7Options.style.display = 'block';
       } else {
         grade7Options.style.display = 'none';
-        // Clear all checkboxes when grade changes
-        document.querySelectorAll('input[name="achievement"]').forEach(cb => cb.checked = false);
+        document.querySelectorAll('#grade7OptionsNew input[name="achievement"]').forEach(cb => cb.checked = false);
+      }
+    });
+
+    // Show/hide Grade 7 achievement options for RETURNING students
+    document.getElementById('jhsGradeReturning').addEventListener('change', function() {
+      const grade7Options = document.getElementById('grade7OptionsReturning');
+      if (this.value === '7') {
+        grade7Options.style.display = 'block';
+      } else {
+        grade7Options.style.display = 'none';
+        document.querySelectorAll('#grade7OptionsReturning input[name="achievement"]').forEach(cb => cb.checked = false);
       }
     });
 
     // Handle checkbox selection - only one can be selected at a time
-    function handleAchievementSelection(selectedCheckbox) {
-      document.querySelectorAll('input[name="achievement"]').forEach(checkbox => {
+    function handleAchievementSelection(selectedCheckbox, formType) {
+      const containerId = formType === 'new' ? 'grade7OptionsNew' : 'grade7OptionsReturning';
+      document.querySelectorAll(`#${containerId} input[name="achievement"]`).forEach(checkbox => {
         if (checkbox !== selectedCheckbox) {
           checkbox.checked = false;
         }
       });
     }
 
-    // Setup form submission with dialog
-    setupForm("jhsForm", "successDialog", "closeDialog");
+    // Enrollment type selection
+    function selectEnrollmentType(type) {
+      document.getElementById('typeSelector').style.display = 'none';
+      
+      if (type === 'new') {
+        document.getElementById('newStudentForm').classList.add('active');
+      } else {
+        document.getElementById('returningStudentForm').classList.add('active');
+      }
+    }
+
+    // Go back to type selection
+    function goBackToSelection() {
+      document.getElementById('typeSelector').style.display = 'block';
+      document.getElementById('newStudentForm').classList.remove('active');
+      document.getElementById('returningStudentForm').classList.remove('active');
+      
+      // Reset forms
+      document.getElementById('jhsFormNew').reset();
+      document.getElementById('jhsFormReturning').reset();
+      
+      // Hide grade 7 options
+      document.getElementById('grade7OptionsNew').style.display = 'none';
+      document.getElementById('grade7OptionsReturning').style.display = 'none';
+    }
+
+    // Setup form submission for NEW students
+    document.getElementById('jhsFormNew').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await submitForm('jhsFormNew', true);
+    });
+
+    // Setup form submission for RETURNING students
+    document.getElementById('jhsFormReturning').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await submitForm('jhsFormReturning', false);
+    });
+
+    // Submit form function
+    async function submitForm(formId, isNewStudent) {
+      const form = document.getElementById(formId);
+      const dialog = document.getElementById('successDialog');
+      
+      try {
+        const formData = new FormData(form);
+        
+        const studentData = {
+          student_no: "",
+          first_name: formData.get('first_name'),
+          middle_name: formData.get('middle_name'),
+          last_name: formData.get('last_name'),
+          ext_name: formData.get('ext_name') || "",
+          program: formData.get('program'),
+          curriculum_code: "",
+          citizenship: formData.get('citizenship'),
+          religion: formData.get('religion'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+          street: formData.get('street'),
+          barangay: formData.get('barangay'),
+          city: formData.get('city'),
+          province: formData.get('province'),
+          year_level: formData.get('year_level'),
+          admission_date: new Date().toISOString().split('T')[0],
+          school_year: formData.get('school_year'),
+          period: formData.get('period'),
+          gender: formData.get('gender'),
+          age: formData.get('age') || 0,
+          general_average: formData.get('general_average'),
+          section: "",
+          status: "pending"
+        };
+
+        // Fields only for new students
+        if (isNewStudent) {
+          studentData.date_graduated = formData.get('date_graduated') || null;
+          studentData.lrn = formData.get('lrn');
+          studentData.previous_school = formData.get('previous_school') || "";
+          studentData.previous_school_address = formData.get('previous_address') || "";
+        } else {
+          // Returning students provide their student number
+          studentData.student_no = formData.get('student_no');
+          studentData.date_graduated = null;
+          studentData.lrn = "";
+        }
+        
+        // Collect family members
+        const familyMembers = [];
+        const relations = formData.getAll('family_relation[]');
+        const names = formData.getAll('family_name[]');
+        const occupations = formData.getAll('family_occupation[]');
+        const contacts = formData.getAll('family_contact[]');
+        const addresses = formData.getAll('family_address[]');
+        
+        for (let i = 0; i < relations.length; i++) {
+          if (relations[i] && names[i]) {
+            familyMembers.push({
+              id: `family-${i + 1}`,
+              relation: relations[i],
+              name: names[i],
+              occupation: occupations[i] || "",
+              contact: contacts[i] || "",
+              address: addresses[i] || ""
+            });
+          }
+        }
+        
+        studentData.family_members = familyMembers;
+        
+        // Add achievement for Grade 7 students
+        const achievement = form.querySelector('input[name="achievement"]:checked');
+        if (achievement) {
+          studentData.achievement = achievement.value;
+        }
+        
+        console.log("Submitting student data:", studentData);
+        
+        // Submit to API (API_URL is defined in forms.js)
+        const response = await fetch(`${API_URL}/api/admissions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(studentData)
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          console.log("Application submitted successfully:", result);
+          
+          dialog.showModal();
+          form.reset();
+          
+          // Hide Grade 7 options
+          if (isNewStudent) {
+            document.getElementById('grade7OptionsNew').style.display = 'none';
+          } else {
+            document.getElementById('grade7OptionsReturning').style.display = 'none';
+          }
+        } else {
+          const error = await response.json();
+          console.error("Server error:", error);
+          alert(`Error submitting application: ${error.error || 'Unknown error'}`);
+        }
+        
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        alert("Could not submit application. Please check your internet connection and try again.");
+      }
+    }
+
+    // Close dialog
+    document.getElementById('closeDialog').addEventListener('click', () => {
+      document.getElementById('successDialog').close();
+      goBackToSelection();
+    });
+
+    document.getElementById('successDialog').addEventListener('click', (e) => {
+      if (e.target.id === 'successDialog') {
+        e.target.close();
+        goBackToSelection();
+      }
+    });
   </script>
 
 </body>
